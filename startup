@@ -14,7 +14,7 @@ print("Setting OStag...")
 OStag = "ReboOSt"
 sleep(0.1)
 print("Setting OS version...")
-devpart = "Alpha"
+devpart = "DEV_Alpha"
 version = 1
 rosbuild = 0010
 sleep(0.2)
