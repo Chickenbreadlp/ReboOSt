@@ -1,0 +1,863 @@
+--[[
+	
+	Dodge The Game! A pong style game.
+    Copyright (C) 2013 Thibaut Schurch
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+	Public info :
+	
+	- Program name : Dodge
+	- Program Author : Thibaut Schurch
+	- Program Creation Date : 23/07/2013
+	- Program Class : Game
+	
+]]--
+
+--[[  logger = { 
+log = function(text) 
+		date = http.get("http://176.31.242.38/logger/time.php")
+			sDate = date.readAll()
+				date.close()
+				logfile = fs.open("dodge.log","w")
+					logfile.write(sDate.." [Logger] "..text)
+					logfile.close()					
+					end
+	}
+		]]--			
+local version = "1.0"
+local css = {title="Dodge The Game!",singleplayer="1 Player",multiplayer="2 Player's",
+			 credits="Credits",quit="Quit",developper="Developpers :",apiDev="API Developpers :",
+			 pOneName="Player 1 Name :", pTwoName="Player 2 Name :",roundCount="Round count :", 
+			 bye="Thank's for using DODGE by thib0704"}
+			 
+local devs = {"thib0704 (main)"}
+
+local apiDevs = {"GravityScore"}
+w,h = term.getSize()
+
+function printM(text, line)
+term.setCursorPos(math.floor(w-string.len(text))/2, line)
+print(text)
+end
+
+function setPos(xPos,yPos)
+	term.setCursorPos(xPos,yPos)
+end
+
+function printAt(text,sL,sY)
+	term.setCursorPos(sL,sY)
+		print(text)
+end
+
+function printQL(text, line)
+term.setCursorPos(math.floor(w-string.len(text))/2/2, line)
+print(text)
+end
+
+function printQR(text, line)
+term.setCursorPos(math.floor(w-string.len(text))/2/2+math.floor(w-string.len(text))/2, line)
+print(text)
+end
+
+function printFR(text,line)
+term.setCursorPos(math.floor(w-string.len(text)),line)
+print(text)
+end
+
+local function modRead(properties)
+        local w, h = term.getSize()
+        local defaults = {replaceChar = nil, history = nil, visibleLength = nil, textLength = nil,
+                liveUpdates = nil, exitOnKey = nil}
+        if not properties then properties = {} end
+        for k, v in pairs(defaults) do if not properties[k] then properties[k] = v end end
+        if properties.replaceChar then properties.replaceChar = properties.replaceChar:sub(1, 1) end
+        if not properties.visibleLength then properties.visibleLength = w end
+ 
+        local sx, sy = term.getCursorPos()
+        local line = ""
+        local pos = 0
+        local historyPos = nil
+ 
+        local function redraw(repl)
+                local scroll = 0
+                if properties.visibleLength and sx + pos > properties.visibleLength + 1 then
+                        scroll = (sx + pos) - (properties.visibleLength + 1)
+                end
+ 
+                term.setCursorPos(sx, sy)
+                local a = repl or properties.replaceChar
+                if a then term.write(string.rep(a, line:len() - scroll))
+                else term.write(line:sub(scroll + 1, -1)) end
+                term.setCursorPos(sx + pos - scroll, sy)
+        end
+ 
+        local function sendLiveUpdates(event, ...)
+                if type(properties.liveUpdates) == "function" then
+                        local ox, oy = term.getCursorPos()
+                        properties.liveUpdates(line, event, ...)
+                        if a == true and data == nil then
+                                term.setCursorBlink(false)
+                                return line
+                        elseif a == true and data ~= nil then
+                                term.setCursorBlink(false)
+                                return data
+                        end
+                        term.setCursorPos(ox, oy)
+                end
+        end
+ 
+        term.setCursorBlink(true)
+        while true do
+                local e, but, x, y, p4, p5 = os.pullEvent()
+ 
+                if e == "char" then
+                        local s = false
+                        if properties.textLength and line:len() < properties.textLength then s = true
+                        elseif not properties.textLength then s = true end
+ 
+                        local canType = true
+                        if not properties.grantPrint and properties.refusePrint then
+                                local canTypeKeys = {}
+                                if type(properties.refusePrint) == "table" then
+                                        for _, v in pairs(properties.refusePrint) do
+                                                table.insert(canTypeKeys, tostring(v):sub(1, 1))
+                                        end
+                                elseif type(properties.refusePrint) == "string" then
+                                        for char in properties.refusePrint:gmatch(".") do
+                                                table.insert(canTypeKeys, char)
+                                        end
+                                end
+                                for _, v in pairs(canTypeKeys) do if but == v then canType = false end end
+                        elseif properties.grantPrint then
+                                canType = false
+                                local canTypeKeys = {}
+                                if type(properties.grantPrint) == "table" then
+                                        for _, v in pairs(properties.grantPrint) do
+                                                table.insert(canTypeKeys, tostring(v):sub(1, 1))
+                                        end
+                                elseif type(properties.grantPrint) == "string" then
+                                        for char in properties.grantPrint:gmatch(".") do
+                                                table.insert(canTypeKeys, char)
+                                        end
+                                end
+                                for _, v in pairs(canTypeKeys) do if but == v then canType = true end end
+                        end
+ 
+                        if s and canType then
+                                line = line:sub(1, pos) .. but .. line:sub(pos + 1, -1)
+                                pos = pos + 1
+                                redraw()
+                        end
+                elseif e == "key" then
+                        if but == keys.enter then
+                                break
+                        elseif but == keys.left then
+                                if pos > 0 then pos = pos - 1 redraw() end
+                        elseif but == keys.right then
+                                if pos < line:len() then pos = pos + 1 redraw() end
+                        elseif (but == keys.up or but == keys.down) and properties.history then
+                                redraw(" ")
+                                if but == keys.up then
+                                        if historyPos == nil and #properties.history > 0 then
+                                                historyPos = #properties.history
+                                        elseif historyPos > 1 then
+                                                historyPos = historyPos - 1
+                                        end
+                                elseif but == keys.down then
+                                        if historyPos == #properties.history then historyPos = nil
+                                        elseif historyPos ~= nil then historyPos = historyPos + 1 end
+                                end
+ 
+                                if properties.history and historyPos then
+                                        line = properties.history[historyPos]
+                                        pos = line:len()
+                                else
+                                        line = ""
+                                        pos = 0
+                                end
+ 
+                                redraw()
+                                sendLiveUpdates("history")
+                        elseif but == keys.backspace and pos > 0 then
+                                redraw(" ")
+                                line = line:sub(1, pos - 1) .. line:sub(pos + 1, -1)
+                                pos = pos - 1
+                                redraw()
+                                sendLiveUpdates("delete")
+                        elseif but == keys.home then
+                                pos = 0
+                                redraw()
+                        elseif but == keys.delete and pos < line:len() then
+                                redraw(" ")
+                                line = line:sub(1, pos) .. line:sub(pos + 2, -1)
+                                redraw()
+                                sendLiveUpdates("delete")
+                        elseif but == keys["end"] then
+                                pos = line:len()
+                                redraw()
+                        elseif properties.exitOnKey then
+                                if but == properties.exitOnKey or (properties.exitOnKey == "control" and
+                                                (but == 29 or but == 157)) then
+                                        term.setCursorBlink(false)
+                                        return nil
+                                end
+                        end
+                end
+ 
+                sendLiveUpdates(e, but, x, y, p4, p5)
+        end
+ 
+        term.setCursorBlink(false)
+        if line ~= nil then line = line:gsub("^%s*(.-)%s*$", "%1") end
+        return line
+end
+
+function HUD(nameOne,winOne,nameTwo,winTwo,sCurrentCount,sTotalCount)
+printM(string.rep("-",w),1)
+printQL(nameOne.." : "..tostring(winOne),2)
+printQR(nameTwo.." : "..tostring(winTwo),2)
+printM("Round "..tostring(sCurrentCount).."/"..tostring(sTotalCount),3)
+printM(string.rep("-",w),4)
+end
+
+
+batOne = {
+	xpos = 1,
+	ypos = h/2,
+	
+	update = function(self, key)
+		if key == keys.w and self.ypos > 5+1 then
+			self.ypos = self.ypos - 1 
+		elseif key == keys.s and  self.ypos < h - 4 then
+			self.ypos = self.ypos + 1 
+		end
+	end,
+	
+		draw = function(self)
+			term.setCursorPos(self.xpos, self.ypos)
+			print("|")
+			print("|")
+			print("|")
+			print("|")
+		end
+}
+
+batTwo = {
+	xpos = w,
+	ypos = h/2,
+	
+	update = function(self, key)
+		if key == keys.up and self.ypos > 5+1 then
+			self.ypos = self.ypos - 1 
+		elseif key == keys.down and  self.ypos < h - 4 then
+			self.ypos = self.ypos + 1 
+		end
+	end,
+	
+		draw = function(self)
+			term.setCursorPos(self.xpos, self.ypos)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+1)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+2)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+3)
+			print("|")
+		end
+}
+
+batAI = {
+	xpos = w,
+	ypos = h/2,
+	
+	update = function(self, key)
+		if key == "up" and self.ypos > 5+1 then
+			self.ypos = self.ypos - 1 
+		elseif key == "down" and  self.ypos < h - 4 then
+			self.ypos = self.ypos + 1 
+		end
+	end,
+	
+		draw = function(self)
+			term.setCursorPos(self.xpos, self.ypos)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+1)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+2)
+			print("|")
+			term.setCursorPos(self.xpos, self.ypos+3)
+			print("|")
+		end
+}
+
+
+ ball = {
+		 xpos = math.random(7,w-7),
+		 ypos = math.random(6,h),
+		 xvel = -1, 
+		 yvel = 1, 
+		 
+			update = function(self)
+				self.xpos = self.xpos + self.xvel
+				self.ypos = self.ypos + self.yvel
+				
+					if batOne.xpos + 1 == self.xpos then 
+						if math.floor(batOne.ypos) == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+1 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+2 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+3 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+					end
+					
+						if batTwo.xpos - 1 == self.xpos then 
+						if math.floor(batTwo.ypos) == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batTwo.ypos)+1 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batTwo.ypos)+2 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batTwo.ypos)+3 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+					end
+				
+					if self.xpos <= 1 and self.xvel == -1 then
+						playerTwoScore = playerTwoScore + 1
+						sCount = sCount + 1
+						self.xpos = math.random(4,w-4)
+						self.ypos = math.random(7,h)
+						self.xvel = -1
+						self.yvel = -1
+					elseif self.xpos >= w and self.xvel == 1 then
+						playerOneScore = playerOneScore + 1
+						sCount = sCount + 1
+						self.xpos = math.random(4,w-4)
+						self.ypos = math.random(7,h)
+						self.xvel = -1
+						self.yvel = -1
+					end
+					if self.ypos <= 5 and self.yvel == -1 then
+						self.yvel = self.yvel * -1
+					elseif self.ypos >= h-1 and self.yvel == 1 then 	
+						self.yvel = self.yvel * -1
+					end
+			end,
+			
+			draw = function(self)
+				term.setCursorPos(self.xpos,self.ypos)
+				print("o")
+			end
+		 }
+		 
+AIball = {
+		 xpos = math.random(7,w-7),
+		 ypos = math.random(6,h),
+		 xvel = -1, 
+		 yvel = 1, 
+		 
+			update = function(self)
+				self.xpos = self.xpos + self.xvel
+				self.ypos = self.ypos + self.yvel
+				
+					if batOne.xpos + 1 == self.xpos then 
+						if math.floor(batOne.ypos) == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+1 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+2 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batOne.ypos)+3 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+					end
+					
+						if batAI.xpos - 1 == self.xpos then 
+						if math.floor(batAI.ypos) == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batAI.ypos)+1 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batAI.ypos)+2 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+						if math.floor(batAI.ypos)+3 == self.ypos then
+							self.xvel = self.xvel * -1
+						end
+					end
+				
+					if self.xpos <= 1 and self.xvel == -1 then
+						playerTwoScore = playerTwoScore + 1
+						sCount = sCount + 1
+						self.xpos = math.random(4,w-4)
+						self.ypos = math.random(7,h)
+						self.xvel = -1
+						self.yvel = -1
+					elseif self.xpos >= w and self.xvel == 1 then
+						playerOneScore = playerOneScore + 1
+						sCount = sCount + 1
+						self.xpos = math.random(4,w-4)
+						self.ypos = math.random(7,h)
+						self.xvel = -1
+						self.yvel = -1
+					end
+					if self.ypos <= 5 and self.yvel == -1 then
+						self.yvel = self.yvel * -1
+					elseif self.ypos >= h-1 and self.yvel == 1 then 	
+						self.yvel = self.yvel * -1
+					end
+			end,
+			
+			draw = function(self)
+				term.setCursorPos(self.xpos,self.ypos)
+				print("o")
+			end
+		 }
+
+function drawGame()
+	term.clear()
+	batOne:draw()
+	batTwo:draw()
+	ball:draw()
+end
+
+function updateGame()
+	id , p1 = os.pullEvent()
+	
+	if id == "key" then
+							if p1 == keys.backspace then running = false end
+		batOne:update(p1)
+		batTwo:update(p1)
+		
+	elseif id == "timer" and p1 == timerID then
+		ball:update()
+		timerID = os.startTimer(refreshRate)
+		
+	end
+end
+	
+	function drawWon(winner,winCount,looser,looserCount) 
+term.clear()
+printM(looser.." Won with "..looserCount.." points ",h/2/2+3)
+printM(winner.." Lost with "..winCount.." points ",h/2/2+5)
+printM("Congrats to "..looser.." for winning",h/2/2+7)
+end
+
+	function drawEquals(playerOne,playerOneScore,playerTwo,playerTwoScore)
+		term.clear()
+		printM(" This Game was a draw ",h/2/2+4)
+		printM(playerOne.." and "..playerTwo.." Had a score of "..playerOneScore,h/2/2+6)
+	end
+		
+function startGameTwo(nameOne, nameTwo, count)
+playerOneScore = 0
+playerTwoScore = 0
+sCount = 1
+refreshRate = 0.10
+timerID = os.startTimer(refreshRate)
+		running = true
+		while running do
+			if tonumber(count) <= tonumber(sCount)-1 then
+				running = false
+			end
+			
+			drawGame()
+			HUD(nameOne,tostring(playerOneScore),nameTwo,tostring(playerTwoScore),sCount,count)
+			updateGame()
+		end
+		if playerOneScore == playerTwoScore then
+			drawEquals(nameOne,playerOneScore,nameTwo,tostring(playerTwoScore))
+		elseif playerOneScore >= playerTwoScore then
+			drawWon(nameTwo,playerTwoScore,nameOne,tostring(playerOneScore))
+		else
+			drawWon(nameOne,playerOneScore,nameTwo,tostring(playerTwoScore))
+		end
+		sleep(6)
+			term.clear()
+end
+
+function drawGetNames()
+term.clear()
+printM(string.rep("-",w/2),h/2/2)
+printAt("|",w/2/2,h/2/2+ 1)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 1)
+printAt("|",w/2/2,h/2/2+ 2)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 2)
+printAt("|",w/2/2,h/2/2+ 3)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 3)
+printAt("|",w/2/2,h/2/2+ 4)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 4)
+printAt("|",w/2/2,h/2/2+ 5)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 5)
+printAt("|",w/2/2,h/2/2+ 6)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 6)
+printAt("|",w/2/2,h/2/2+ 7)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 7)
+printAt("|",w/2/2,h/2/2+ 8)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 8)
+printAt("|",w/2/2,h/2/2+ 9)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 9)
+printM(string.rep("-",w/2),h/2/2+10)
+printAt(css.pOneName,w/2/2+3,h/2/2+ 2)
+printAt(css.pTwoName,w/2/2+3,h/2/2+ 5)
+printAt(css.roundCount,w/2/2+3,h/2/2+ 8)
+setPos(w/2/2+3+#css.pOneName+1,h/2/2+ 2)
+local pOneName = modRead({textLength = 6})
+setPos(w/2/2+3+#css.pTwoName+1,h/2/2+ 5)
+local pTwoName = modRead({textLength = 6})
+setPos(w/2/2+3+#css.roundCount+1,h/2/2+ 8)
+local roundCount = modRead({textLength = 2})
+	printM(type(tonumber(roundCount)),17)
+	if type(tonumber(roundCount)) ~= "number" then
+		printM("Round Count must be a number",17)
+		
+		sleep(1)
+		else
+				if not pOneName or pOneName == "" then
+						pOneName = "Player 1"
+				end
+				if not pTwoName or pTwoName == "" then
+						pTwoName = "Player 2"
+				end  --// START 2P GAME
+		
+		startGameTwo(pOneName,pTwoName,roundCount)
+		
+		
+	end  --// END 2P GAME
+end
+
+function drawGetName()
+term.clear()
+printM(string.rep("-",w/2),h/2/2)
+printAt("|",w/2/2,h/2/2+ 1)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 1)
+printAt("|",w/2/2,h/2/2+ 2)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 2)
+printAt("|",w/2/2,h/2/2+ 3)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 3)
+printAt("|",w/2/2,h/2/2+ 4)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 4)
+printAt("|",w/2/2,h/2/2+ 5)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 5)
+printAt("|",w/2/2,h/2/2+ 6)
+printAt("|",w/2 + w/2/2 ,h/2/2+ 6)
+printM(string.rep("-",w/2),h/2/2+7)
+printAt(css.pOneName,w/2/2+3,h/2/2+2)
+printAt(css.roundCount,w/2/2+3,h/2/2+5)
+setPos(w/2/2+#css.pOneName+4,h/2/2+2)
+playerName = modRead({textLength = 6})
+setPos(w/2/2+#css.roundCount+4,h/2/2+5)
+roundCountMax = modRead({textLength = 2})
+	if type(tonumber(roundCountMax)) ~= "number" then
+		printM("Round Count must be a number",15)
+			
+		sleep(1)
+			os.queueEvent("key",keys.up)
+		else
+				if not playerName or playerName == "" then
+						playerName = "Me"
+				end
+				singleplayer()
+end
+end
+
+function sDrawGame()
+	term.clear()
+	batOne:draw()
+	batAI:draw()
+	AIball:draw()
+end
+
+function sUpdateGame()
+	id , p1 = os.pullEvent()
+	
+	if id == "key" then
+							if p1 == keys.backspace then running = false end
+		batOne:update(p1)		
+	elseif id == "timer" and p1 == Aid then
+		if AIball.ypos <= batAI.ypos and AIball.xvel ~= -1 then
+			batAI:update("up")
+		elseif AIball.ypos >= batAI.ypos and AIball.xvel ~= -1 then
+			batAI:update("down")
+		else
+
+		end	
+		Aid = os.startTimer(AIMovement)
+	elseif id == "timer" and p1 == renderID then
+		AIball:update()
+		renderID = os.startTimer(ballMovement)
+		
+	end
+end
+
+function singleplayer()
+term.clear()
+running = true
+nameTwo = "AI"
+playerOneScore = 0
+playerTwoScore = 0
+sCount = 0
+ballMovement = 0.10
+AIMovement = 0.11
+Aid = os.startTimer(AIMovement)
+renderID = os.startTimer(ballMovement)
+	while running do 
+		if tonumber(roundCountMax) <= tonumber(sCount)-1 then
+				running = false
+			end
+			
+			sDrawGame()
+			HUD(playerName,tostring(playerOneScore),nameTwo,tostring(playerTwoScore),tostring(sCount),tostring(roundCountMax))
+			sUpdateGame()
+	end
+		if playerOneScore == playerTwoScore then
+			drawEquals(playerName,playerOneScore,nameTwo,tostring(playerTwoScore))
+		elseif playerOneScore >= playerTwoScore then
+			drawWon(nameTwo,playerTwoScore,playerName,tostring(playerOneScore))
+		else
+			drawWon(playerName,playerOneScore,nameTwo,tostring(playerTwoScore))
+		end
+		sleep(6)
+			term.clear()
+				os.queueEvent("key",keys.up)
+end
+
+
+function drawGui()
+local select = 1
+term.clear()
+printM(string.rep("-",w),1)
+printM(string.rep("-",w),3)
+printM(css.title,2)
+printM(css.singleplayer,7)
+printM(css.multiplayer,10)
+printM(css.credits,13)
+printM(css.quit,17)
+end
+
+function drawCredits()
+local s = 7
+term.clear()
+printM(string.rep("-",w),1)
+printM(css.credits,2)
+printM(string.rep("-",w),3)
+printM(css.developper,5)
+for k, v in pairs(devs) do
+	printM(v,s+k)
+end
+printM(css.apiDev,s+2+#devs)
+for k,v in pairs(apiDevs) do
+printM(v,s+3+#devs+k)
+end
+printM(">"..css.quit.."<",h-2)
+
+while true do
+evt, key = os.pullEvent("key")
+	if key == keys.enter then
+		break
+	end
+end
+end
+
+function startInterface()
+	select = 1
+	drawGui()
+	printM("> "..css.singleplayer.." <",7)
+	while true do
+		evt,key = os.pullEvent("key")
+			term.clear()
+			drawGui()
+			if key == keys.down then
+				if select == 4 then
+				
+				else
+				select = select + 1
+				
+				end
+			end
+	
+			if key == keys.up then
+				if select == 1 then
+				
+				else
+				select = select - 1
+				
+				end
+			end
+			
+			if key == keys.enter then
+			
+				if select == 1 then
+					 drawGetName()
+				end
+			
+				if select == 2 then
+					drawGetNames()
+					drawGui()
+				end
+			
+				if select == 3 then
+				--	logger.log("Selected Credits")
+						drawCredits()
+						drawGui()
+				end
+				if select == 4 then
+					--logger.log("Manual quit From Dodge")
+					term.clear()
+					printM(css.bye,1)
+					break
+				end
+			
+			end
+			
+			if select == 1 then
+				printM("> "..css.singleplayer.." <",7)
+			end
+			if select == 2 then
+				printM("> "..css.multiplayer.." <",10)
+			end
+			if select == 3 then
+				printM("> "..css.credits.." <",13)
+			end
+			if select == 4 then
+				printM("> "..css.quit.." <",17)
+			end
+	end
+end
+	
+local tArgs = { ... }
+	
+if tArgs[1] == "bypass" then
+
+else	
+if http then
+	local sVersion = http.get("http://thib0704.zapto.org/dodge/version")
+		if not sVersion then
+			print("Oh noes The server is down or the Update file is gone!")
+			print("To run dodge use 'dodge bypass'")
+			return false
+		end
+		uVersion = sVersion.readAll()
+			sVersion.close()
+			
+			if uVersion == version then
+				-- Game is up to date
+			else
+				-- Game need's to be updated
+					local sFile = http.get("http://thib0704.zapto.org/dodge/dodge.lua")
+						if not sFile then 
+							print("Oh noes the Update file is gone !")
+							print("to play the game use 'dodge bypass'")
+							return false
+						end
+						print("Updating Game ...")
+						fs.delete("Dodge")
+						fs.delete("dodge")
+							file = fs.open("Dodge","w")
+								file.write(sFile.readAll())
+									sFile.close()
+							file.close()
+							print("Updated !")
+							return true
+			end
+end
+end
+local ok, err = pcall(startInterface)
+
+if not ok then
+	pSelect = 1
+	term.clear()
+	printM(string.rep("-",w),1)
+  printM("ERROR",2)
+	printM(string.rep("-",w),3)
+	printM("DODGE Catched an error",5)
+	printM("The error was :",6)
+	printM(err,8)
+	printM("What do you wand to do ?",10)
+	setPos(6,15)
+	print("Send Error Log")
+	setPos(32,15)
+	print("Ignore")
+	setPos(6,16)
+	print(string.rep("-",14))	
+	while true do 
+		evt,key = os.pullEvent("key")
+			if key == keys.right then
+				if pSelect == 2 then
+				
+				else
+				pSelect = pSelect + 1
+				end
+			end
+			if key == keys.left then
+				if pSelect == 1 then
+				
+				else
+				pSelect = pSelect - 1
+				end	
+			end
+			
+			if key == keys.enter then
+				if pSelect == 1 then
+					if http then
+					http.get("http://176.31.242.38/dodge/report.php?error="..textutils.urlEncode(err.." on version "..version))
+					end
+					term.clear()
+					printM("Sorry for this incovinience",1)
+					printM("We Hope it wont Happen again",2)
+					if http then
+					printM("The log as been sent",3)
+					elseif http == nil then
+					printM("The log as not been sent",3)
+					printM("because http is not enabled",4)
+					printM("Thank you.",5)
+					end 
+					if http then
+					printM("Thank you.",4)
+					end
+					break
+				end
+				if pSelect == 2 then
+					term.clear()
+					printM("Sorry for this incovinience",1)
+					printM("We Hope it wont Happen again",2)
+					break
+				end
+				
+			end
+			if pSelect == 1 then
+			setPos(6,16)
+			print(string.rep("-",14))	
+			setPos(32,16)
+			print(string.rep(" ",6))
+			end
+			if pSelect == 2 then
+			setPos(6,16)
+			print(string.rep(" ",14))	
+			setPos(32,16)
+			print(string.rep("-",6))
+			end
+end
+end
