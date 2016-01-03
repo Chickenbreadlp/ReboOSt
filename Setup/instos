@@ -1,27 +1,46 @@
-local function get(paste)
-    local response = http.get(
-        "http://pastebin.com/raw.php?i="..textutils.urlEncode( paste )
-    )
-        
-    if response then
-        local sResponse = response.readAll()
-        response.close()
-        return sResponse
-    else
-    end
-end
-local function download(pastecode, sFile)
-    local sPath = shell.resolve( sFile )
-    if fs.exists( sPath ) then
-        return
-    end
+local function GitHubGet(branch)
+    local gitPath = "/"
+    local banch = branch or nil
+    local URL = "https://api.github.com/repos/Chickenbreadlp/ReboOSt/contents/" .. (branch and "?ref=" or "") .. (branch or "")
+    local removeLuaExtention = true
     
-    -- GET the contents from pastebin
-    local res = get(pastecode)
-    if res then        
-        local file = fs.open( sPath, "w" )
-        file.write( res )
-        file.close()
+    function getFileDownloadURLs(url, gatheredFiles, gatheredDirectories)
+        assert(url, "url invalid")
+        local handle = assert(http.get(url), "Getting " .. url .. " failed")
+        local json = assert(handle.readAll(), "Reading failed for url " .. url)
+        json = json:gsub("%s*\n%s*", "") --removes white space around '\n' and '\n'
+        json = json:gsub("\"([^\"]*)\"%s*:%s*", "%1 = ") --turns '"hi": ' into 'hi = '
+        json = json:sub(2, #json - 1) --removes brackets around the almostJSON
+        json = "{" .. json .. "}" --adds curly brackets
+        local jsonTable = assert(textutils.unserialize(json), "Failed to unserialize:\n" .. json)
+        local files = gatheredFiles or {}
+        local directories = gatheredDirectories or {}
+        for k, v in ipairs(jsonTable) do
+            if v.type == "file" then
+                files[#files + 1] = {url = v.download_url, path = v.path}
+            elseif v.type == "dir" then
+                directories[#directories + 1] = v.url
+            end
+        end
+        local recursiveURL = directories[1]
+        if not recursiveURL then
+            return files
+        end
+        if recursiveURL then
+            table.remove(directories, 1)
+            return getFileDownloadURLs(recursiveURL, files, directories)
+        end
+    end
+
+    for k, v in ipairs(getFileDownloadURLs(URL)) do
+        if (v.path:sub(#v.path - 3) == ".lua") and removeLuaExtention then
+            v.path = v.path:sub(1, #v.path - 4)
+        end
+        local writeFile = fs.open("/" .. v.path, "w")
+        local webHandle = assert(http.get(v.url), "Getting " .. v.url .. " failed")
+        local webContents = assert(webHandle.readAll(), "Reading " .. v.url .. " failed")
+        writeFile.write(webContents)
+        writeFile.close()
     end
 end
 
@@ -62,13 +81,12 @@ function InstallingBack()
  term.clear()
  term.setCursorPos(1,1)
  term.setBackgroundColor(2048)
- print("ApfelOS 1.0 Pro Installation                       ")
+ print("ReboOSt Installation                               ")
  term.setBackgroundColor(8)
  print(" ")
- print("ApfelOS 1.0 Pro is now installing!")
+ print("ReboOSt is now installing!")
  print(" ")
  print("Downloading OS...")
- write("Starting Download for: ")
 end
 
 term.setBackgroundColor(8)
@@ -77,13 +95,13 @@ term.clear()
 term.setCursorPos(1,1)
 term.setBackgroundColor(2048)
 term.setTextColor(1)
-print("ApfelOS 1.0 Pro Installation                       ")
+print("ReboOSt Installation                               ")
 term.setBackgroundColor(8)
 print(" ")
-print("You want to install ApfelOS 1.0 Pro!               ")
+print("You want to install ReboOSt!                       ")
 print(" If you have already an other OS installed, it is  ")
 print(" recommend to uninstall it, before installing      ")
-print(" ApfelOS 1.0 or any other OS.                      ")
+print(" ReboOSt or any other OS.                          ")
 print(" ")
 print("Are you sure?                                      ")
 print(" ")
@@ -120,156 +138,41 @@ if XY == "14,14" and button == 1 then
  term.setCursorPos(1,1)
  term.setTextColor(1)
  term.setBackgroundColor(2048)
- print("ApfelOS 1.0 Pro Installation                       ")
+ print("ReboOSt Installation                               ")
  term.setBackgroundColor(8)
  print(" ")
- print("You want to install ApfelOS 1.0 Pro!               ")
+ print("You want to install ReboOSt!                       ")
  print(" If you have already an other OS installed, it is  ")
  print(" recommend to uninstall it, before installing      ")
- print(" ApfelOS 1.0 or any other OS.                      ")
+ print(" ReboOSt or any other OS.                          ")
  term.setCursorPos(1,18)
  term.setTextColor(16)
  print("                 Preparing Setup!                  ")
  term.setTextColor(1)
  sleep(3.5)
  
- if fs.exists("ApfelOS") then
-  fs.delete("ApfelOS")
+ if fs.exists("ReboOSt") then
+  fs.delete("ReboOSt")
  end
  
- if fs.exists("Pictures") then
-  fs.delete("Pictures")
+ if fs.exists("Programs") then
+  fs.delete("Programs")
+ end
+ 
+ if fs.exists("User") then
+  fs.delete("User")
  end
  
  if fs.exists("startup") then
   fs.delete("startup")
  end
 
- if fs.exists("Start.aef") then
-  fs.delete("Start.aef")
+ if fs.exists("Start") then
+  fs.delete("Start")
  end
  
- if fs.exists("..boot.blf") then
-  fs.delete("..boot.blf")
- end
- 
- fs.makeDir("ApfelOS")
- fs.makeDir("Pictures")
- fs.makeDir("Programs")
- fs.makeDir("Programs/Games")
  InstallingBack()
- print("startup")
- download("gd8pEebD", "startup")
- InstallingBack()
- print("Desktop")
- download("RdejfS8t", "ApfelOS/..Desk.adf")
- InstallingBack()
- print("Registartion")
- download("4zc5mE9K", "ApfelOS/..Regist.adf")
- InstallingBack()
- print("About Page")
- download("bJxes5Rn", "ApfelOS/aInfo.adf")
- InstallingBack()
- print("Login Routine")
- download("zSARBabX", "ApfelOS/aLogin.adf")
- InstallingBack()
- print("ApfelOS/aTime.adf")
- download("WyaFHUfd", "ApfelOS/aTime.adf")
- InstallingBack()
- print("Error screen")
- download("dqqQmbX8", "ApfelOS/Error.abf")
- InstallingBack()
- print("Ice-Browser")
- download("SLQxa1xY", "ApfelOS/ice-browser.adf")
- InstallingBack()
- print("ApfelOS/shut-off.adf")
- download("wVNzkSbc", "ApfelOS/shut-off.adf")
- InstallingBack()
- print("luaIDE")
- download("vyAZc6tJ", "ApfelOS/luaIDE.adf")
- InstallingBack()
- print("ApfelOS/reboot.adf")
- download("3hbB09yX", "ApfelOS/reboot.adf")
- InstallingBack()
- print("Updater")
- download("i0QM8eC3", "ApfelOS/updater.adf")
- InstallingBack()
- print("Background")
- download("MUEcV8MR", "Pictures/background.nfp")
- InstallingBack()
- print("Theme Changer")
- download("bihxqhNa", "ApfelOS/thmchg.adf")
- InstallingBack()
- print("Colortheme: Demo")
- download("tRADXLG2", "colortheme.ac")
- InstallingBack()
- print("Colortheme: Sky")
- download("csWJYYJA", "ApfelOS/..colortheme.ac")
- InstallingBack()
- print("Logo")
- download("tCqSHVLR", "ApfelOS/logo.nfp")
- InstallingBack()
- print("ApfelOS/sysmnu.adf")
- download("cYJ9uykQ", "ApfelOS/sysmnu.adf")
- InstallingBack()
- print("ApfelOS/fsmnu.adf")
- download("gQnNhSdk", "ApfelOS/fsmnu.adf")
- InstallingBack()
- print("ApfelOS/devmnu.adf")
- download("PjcncZg6", "ApfelOS/devmnu.adf")
- InstallingBack()
- print("First start routine")
- download("SVkeumDc", "ApfelOS/..firststart.adf")
- InstallingBack()
- print("Start")
- download("J0t3SSqS", "Start")
- InstallingBack()
- print("Logoff")
- download("r2ukwvcK", "ApfelOS/logoff.adf")
- InstallingBack()
- print("ApfelOS/cntxmnudi.adf")
- download("L1x3pV1L", "ApfelOS/cntxmnudi.adf")
- InstallingBack()
- print("ApfelOS/ctrlpnl.adf")
- download("3JJh3nQV", "ApfelOS/ctrlpnl.adf")
- InstallingBack()
- print("Logon.nfp")
- download("4GZ7JrMs", "ApfelOS/logon.nfp")
- InstallingBack()
- print("Games.nfp")
- download("Zi7ZT78e", "ApfelOS/Games.nfp")
- InstallingBack()
- print("disk.nfp")
- download("51sXKQMJ", "ApfelOS/disk.nfp")
- InstallingBack()
- print("Market")
- download("TDVLx1kw", "ApfelOS/market.adf")
- InstallingBack()
- print("Config")
- download("fsHKNPyv", "ApfelOS/..config")
- InstallingBack()
- print("Sketch")
- download("Mm5hd97E", "Pictures/sketch.adf")
- local file = fs.open("ApfelOS/..stcount.adf", "w")
- file.write("0")
- file.close()
- local file = fs.open("ApfelOS/..backgrounds", "w")
- file.write("clouds")
- file.close()
- term.setCursorPos(1,1)
- term.setBackgroundColor(2048)
- print("ApfelOS 1.0 Pro Installation                       ")
- term.setBackgroundColor(8)
- print(" ")
- print("ApfelOS 1.0 Pro is now installing!")
- fs.makeDir("ApfelOS/..Session")
- fs.makeDir("ApfelOS/..Benutzer")
- fs.makeDir("ApfelOS/..Benutzer/root")
- fs.makeDir("ApfelOS/..Benutzer/root/..PC1299")
- Laden()
- Laden()
- Laden()
- Laden()
+ GitHubGet(nil)
  term.clear()
  term.setCursorPos(1,1)
  term.setBackgroundColor(2048)
