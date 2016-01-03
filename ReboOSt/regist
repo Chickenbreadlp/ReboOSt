@@ -91,7 +91,12 @@ term.setTextColor(tbartxt)
 term.setCursorPos(1,1)
 print("                                                  ")
 term.setCursorPos(1,1)
-print(OStag.." "..devpart.." "..version)
+term.setBackgroundColor(mbar)
+term.setTextColor(mbartxt)
+write(OStag)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print(" "..devpart.." "..version)
 term.setTextColor(prog)
 term.setCursorPos(36,1)
 write("Registration ")
@@ -104,6 +109,9 @@ write("@")
 term.setBackgroundColor(buttonShut)
 term.setTextColor(buttonShtxt)
 print("X")
+term.setBackgroundColor(mbar)
+print("                                                   ")
+print("                                                   ")
 term.setBackgroundColor(colors.gray)
 term.setTextColor(colors.cyan)
 term.setCursorPos(15,5)
@@ -163,7 +171,7 @@ Screen()
 
  -- Back
 
-elseif XY == "49,1" and button == 1 then
+elseif X >= 1 and X <= 7 and Y == 1 and button == 1 then
 break
 
  -- Standart
