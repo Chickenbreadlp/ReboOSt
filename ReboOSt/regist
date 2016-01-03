@@ -1,0 +1,189 @@
+if login then
+
+local acc = ""
+rprog = "regist"
+
+function Regist()
+term.setBackgroundColor(tbar)
+term.setTextColor(prog)
+term.setCursorPos(36,1)
+print("   Registration ")
+term.setBackgroundColor(colors.gray)
+term.setTextColor(colors.cyan)
+term.setCursorPos(15,5)
+write("                      ")
+term.setCursorPos(17,7)
+term.setBackgroundColor(colors.gray)
+print("                                   ")
+print("                ")
+write("       Username:")
+term.setBackgroundColor(colors.white)
+print("                                   ")
+term.setBackgroundColor(colors.gray)
+write("                ")
+term.setBackgroundColor(colors.white)
+print("                                   ")
+term.setBackgroundColor(colors.gray)
+print("                                                   ")
+print("                                                   ")
+term.setBackgroundColor(colors.white)
+term.setCursorPos(18,9)
+local Name = read()
+
+if Name == "" then
+ term.setCursorPos(18,10)
+ print("Please enter in a Username!")
+ sleep(2.5)
+ Regist()
+elseif Name == "Reboot" or Name == "Shutdown" or Name == "root" then
+ term.setCursorPos(18,10)
+ print("Forbidden Username")
+ sleep(2.5)
+ Regist()
+elseif string.len(Name) >= 34 then
+ term.setCursorPos(18,10)
+ print("Username is too long!")
+ sleep(2.5)
+ Regist()
+elseif Name == "END" then
+elseif fs.exists("/User/"..Name) then
+ term.setCursorPos(18,10)
+ print("Username is already in use!")
+ sleep(2.5)
+ Regist()
+else
+ term.setCursorPos(17,7)
+ term.setBackgroundColor(colors.gray)
+ print(Name)
+ term.setCursorPos(8,9)
+ write("Password:")
+ term.setBackgroundColor(colors.white)
+ print("                                   ")
+ term.setCursorPos(18,9)
+ local Password = read("*")
+
+ if Password == "" then
+  term.setCursorPos(18,10)
+  print("Please enter in a Password!")
+  sleep(2.5)
+  Regist()
+ else
+
+  fs.makeDir("/User/"..Name)
+  local pass = encryption.sha256(Password)
+  local file = fs.open("/User/"..Name.."/..meta", "w")
+  file.writeLine(pass)
+  file.writeLine(acc)
+  file.close()
+  fs.copy("/User/root/Pictures", "/User/"..Name.."/Pictures")
+  term.setCursorPos(18,10)
+  print("Registration was successfull!")
+  sleep(2)
+ end
+end
+end
+
+function Screen()
+term.setBackgroundColor(colors.gray)
+term.clear()
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+term.setCursorPos(1,1)
+print("                                                  ")
+term.setCursorPos(1,1)
+print(OStag.." "..devpart.." "..version)
+term.setTextColor(prog)
+term.setCursorPos(36,1)
+write("Registration ")
+term.setBackgroundColor(buttonBack)
+term.setTextColor(buttonBatxt)
+write("<")
+term.setBackgroundColor(buttonReboot)
+term.setTextColor(buttonRetxt)
+write("@")
+term.setBackgroundColor(buttonShut)
+term.setTextColor(buttonShtxt)
+print("X")
+term.setBackgroundColor(colors.gray)
+term.setTextColor(colors.cyan)
+term.setCursorPos(15,5)
+write("Which type of Account?")
+term.setBackgroundColor(colors.white)
+term.setCursorPos(1,8)
+print("                                                   ")
+print("             Standart Account        X             ")
+print("                                                   ")
+print("             Admin Account           X             ")
+print("                                                   ")
+term.setCursorPos(1,18)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print(UserName)
+write("(C)Chickenbread 2015       ")
+if freeSpace >= 100000000 then
+ spacer = "     To many free Space"
+ format = " "
+elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
+ spacer = "         Free:"
+elseif freeSpace <= 1000000 and freeSpace >= 100000 then
+ spacer = "          Free:"
+elseif freeSpace <= 100000 and freeSpace >= 10000 then
+ spacer = "           Free:"
+elseif freeSpace <= 10000 and freeSpace >= 1000 then
+ spacer = "            Free:"
+elseif freeSpace <= 1000 and freeSpace >= 100 then
+ spacer = "             Free:"
+elseif freeSpace <= 100 and freeSpace >= 10 then
+ spacer = "              Free:"
+elseif freeSpace <= 10 and freeSpace >= 1 then
+ spacer = "               Free:"
+else
+ spacer = "           No Free"
+ format = "Space "
+end
+write(spacer.." "..freeSpace.." "..format)
+end
+Screen()
+
+while true do
+local event, button, X, Y = os.pullEvent("mouse_click")
+local XY = X..","..Y
+
+ -- shut down
+
+if XY == "51,1" and button == 1 then
+shell.run("/ReboOSt/shut-off")
+Screen()
+
+ -- reboot
+
+elseif XY == "50,1" and button == 1 then
+shell.run("/ReboOSt/reboot")
+Screen()
+
+ -- Back
+
+elseif XY == "49,1" and button == 1 then
+break
+
+ -- Standart
+
+elseif XY == "38,9" and button == 1 then
+ acc = "stand"
+ Regist()
+break
+
+ -- Admin
+
+elseif XY == "38,11" and button == 1 then
+ acc = "admin"
+ Regist()
+break
+end end
+
+else
+ term.setTextColor(16384)
+ term.setBackgroundColor(32768)
+ print("You don't even have ReboOSt started!")
+ term.setTextColor(1)
+end
