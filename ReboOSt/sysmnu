@@ -1,0 +1,167 @@
+if login then
+
+local diskiconactiv = false
+local deskback = true
+
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+term.setCursorPos(14,2)
+write("Themes        ")
+term.setCursorPos(14,3)
+write("About OS      ")
+term.setCursorPos(14,4)
+write("Market       ")
+if admin then print(" ") else print("!") end
+term.setCursorPos(14,5)
+write("Register     ")
+if admin then print(" ") else print("!") end
+term.setCursorPos(14,6)
+write("Updater      ")
+if admin then print(" ") else print("!") end
+term.setCursorPos(14,7)
+write("Control Panel")
+if admin then print(" ") else print("!") end
+
+local function menuundo()
+ if keepmenu == false then
+  term.setBackgroundColor(tbar)
+  term.setTextColor(tbartxt)
+  term.setCursorPos(1,1)
+  print(OStag)
+ end
+ paintutils.drawImage(Wallpaper,1,2)
+ term.setCursorPos(1,18)
+ term.setBackgroundColor(tbar)
+ term.setTextColor(tbartxt)
+ print(UserName)
+ if fs.exists("/disk") then
+  paintutils.drawImage(disklogo,2,4)
+  term.setCursorPos(2,8)
+  term.setBackgroundColor(mbar)
+  term.setTextColor(mbartxt)
+  print("Disk")
+  diskiconactiv = true
+ else
+  if diskiconactiv then
+   paintutils.drawImage(Wallpaper,1,2)
+   term.setCursorPos(1,18)
+   term.setBackgroundColor(tbar)
+   term.setTextColor(tbartxt)
+   print(UserName)
+  else
+  end
+ end
+end
+ 
+
+while true do
+local event, button, X, Y = os.pullEvent("mouse_click")
+XY = X..","..Y
+
+ -- shut down
+
+if XY == "51,1" and button == 1 then
+ keepmenu = false
+ menuundo()
+ shell.run("/ReboOSt/shut-off")
+break
+
+ -- reboot
+
+elseif XY == "50,1" and button == 1 then
+ keepmenu = false
+ menuundo()
+ shell.run("/ReboOSt/reboot")
+break
+
+ -- Themes
+
+elseif X >= 14 and X <= 27 and Y == 2 then
+ shell.run("/ReboOSt/thmchg")
+ keepmenu = false
+break
+
+ -- About AO
+
+elseif X >= 14 and X < 27 and Y == 3 then
+ shell.run("/ReboOSt/info")
+ keepmenu = false
+break
+
+ -- AO Market
+
+elseif X >= 14 and X < 27 and Y == 4 then
+ if admin then
+  keepmenu = false
+  menuundo()
+  shell.run("/ReboOSt/market")
+  break
+ end
+
+ -- Register
+
+elseif X >= 14 and X < 27 and Y == 5 then
+ if admin then
+  keepmenu = false
+  menuundo()
+  shell.run("/ReboOSt/regist")
+  break
+ end
+
+ -- Updater
+
+elseif X >= 14 and X < 27 and Y == 6 then
+ if admin then
+  keepmenu = false
+  menuundo()
+  shell.run("/ReboOSt/updater")
+ break
+ end
+
+ -- Control Panel
+
+elseif X >= 14 and X < 27 and Y == 7 then
+ if admin then
+  shell.run("/ReboOSt/ctrlpnl")
+  keepmenu = false
+  break
+ end
+
+ -- Logoff
+
+elseif XY == "51,18" and button == 1 then
+ keepmenu = false
+ menuundo()
+ term.setBackgroundColor(wico)
+ term.setTextColor(wicotxt)
+ term.setCursorPos(14,7)
+ print("        Logoff        ")
+ term.setBackgroundColor(wicotxt)
+ term.setTextColor(wico)
+ term.setCursorPos(14,8)
+ print("                      ")
+ term.setCursorPos(14,9)
+ print("    Logging off...    ")
+ term.setCursorPos(14,10)
+ print("                      ")
+ sleep(1.2)
+ shell.run("/ReboOSt/logoff")
+break
+
+ -- Go back
+
+elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+ keepmenu = true
+ menuundo()
+ break
+else
+ keepmenu = false
+ menuundo()
+ break
+end end
+else
+ term.setTextColor(16384)
+ term.setBackgroundColor(32768)
+ print("You don't even have ReboOSt started!")
+ term.setTextColor(1)
+end
