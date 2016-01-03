@@ -176,12 +176,12 @@ if XY == "14,14" and button == 1 then
  term.clear()
  term.setCursorPos(1,1)
  term.setBackgroundColor(2048)
- print("ApfelOS 1.0 Pro Installation                       ")
+ print("ReboOSt Installation                               ")
  term.setBackgroundColor(8)
  print(" ")
- print("ApfelOS ist now ready to go!                       ")
+ print("ReboOSt is now ready to go!                        ")
  sleep(2.5)
- shell.run("Setup/shut.adf")
+ shell.run("Setup/shut-off")
 break
 end
 
@@ -194,7 +194,7 @@ if XY == "36,14" and button == 1 then
  print("ApfelOS 1.0 Pro Installation                       ")
  term.setBackgroundColor(8)
  print(" ")
- print("You go now back to the Menue!                      ")
+ print("You go now back to the Menu!                       ")
  sleep(3)
- shell.run("Setup/contrll.adf")
+ shell.run("Setup/contrll")
 end end
