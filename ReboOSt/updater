@@ -325,8 +325,8 @@ if XY == "36,14" and button == 1 then
  sleep(3)
  fs.delete("/ReboOSt/Temp/updater2")
 break
+end end]]
 end end
-end]] end
 else
  if login then
   term.setCursorPos(15,10)
