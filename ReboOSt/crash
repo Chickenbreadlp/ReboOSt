@@ -1,0 +1,52 @@
+local x = 0
+local CCver = os.version()
+
+if login then
+ login = false
+end
+if crashcause == nil then
+ crashcause = "The mainframe was quited unexpectedly"
+end
+term.setCursorBlink(false)
+
+local file = fs.open("/ReboOSt/configs/stcount", "r")
+local fileData = {}
+local line = file.readLine()
+table.insert(fileData,line)
+file.close()
+local starts = fileData[1]
+
+local loop = "on"
+term.setBackgroundColor(crashscreen)
+term.clear()
+term.setTextColor(crashscreen)
+term.setBackgroundColor(crashscreentxt)
+term.setCursorPos(22,4)
+print(" Error ")
+term.setBackgroundColor(crashscreen)
+term.setTextColor(crashscreentxt)
+print(" ")
+print("     An Error has occured and ReboOSt has been     ")
+print(" shutdown. To power off your PC press CTRL + S for ")
+print("                     1 second.                     ")
+print(" ")
+print(" ")
+write("OStag: ")
+print(OStag)
+write("OS Version: ")
+print(devpart.." "..version)
+write("OS Starts: ")
+print(starts)
+write("Shell Version: ")
+print(CCver)
+if crashcause ~= nil then
+ write("Crash Cause: ")
+ print(crashcause)
+end
+while loop == "on" do
+local event, button, X, Y = os.pullEvent("mouse_click")
+ if X == 51 and Y == 1 then
+  loop = "off"
+  os.reboot()
+ end
+end
