@@ -19,14 +19,15 @@ version = 1
 rosbuild = 0010
 sleep(0.2)
 print("Starting Startuproutine...")
-rprog = "Startuproutine"
 sleep(0.25)
-local file = fs.open("/ReboOSt/configs/stcount", "r")
-local fileData = {}
-local line = file.readLine()
-table.insert(fileData,line)
-file.close()
-local starts = fileData[1]
+if fs.exists("/ReboOSt/configs/stcount") then
+ local file = fs.open("/ReboOSt/configs/stcount", "r")
+ local fileData = {}
+ local line = file.readLine()
+ table.insert(fileData,line)
+ file.close()
+ local starts = fileData[1]
+else starts = 0 end
 
 term.clear()
 term.setCursorPos(1,1)
