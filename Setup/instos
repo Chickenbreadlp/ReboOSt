@@ -100,12 +100,12 @@ print(" If you have already an other OS installed, it is")
 print(" recommend to uninstall it, before installing")
 print(" ReboOSt or any other OS.")
 print(" ")
-term.setCursorPos(13,8)
+term.setCursorPos(19,8)
 print("Are you sure?")
 print(" ")
 term.setCursorPos(5,11)
 term.setBackgroundColor(colors.lightGray)
-term.setTextColor(2048)
+term.setTextColor(1)
 print("                    ")
 term.setCursorPos(5,12)
 print("        Yes         ")
@@ -172,7 +172,7 @@ if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
 break
 end
 
-if XY == "36,14" and button == 1 then
+if X >= 27 and X <= 47 and Y >= 11 and Y <= 13 and button == 1 then
  term.setBackgroundColor(colors.gray)
  term.setTextColor(colors.cyan)
  term.clear()
