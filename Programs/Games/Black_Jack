@@ -1,0 +1,454 @@
+--BlackJack by Luiginico
+
+--@ = Spades, # = Hearts, + = Clubs, O = Diamonds
+
+--Variables
+--Cards created by Bej --> http://ascii.co.uk/art/cards
+
+deck = { {" _________ ","|A        |", "|@   *    |", "|   / \\   |", "|  /_@_\\  |", "|    !    |", "|   ~ ~  @|", "|        V|", " ~~~~~~~~~ ", "A@", 11    }, --A@
+		 {" _________ ", "|2        |", "|@        |", "|    @    |", "|         |", "|    @    |", "|        @|", "|        Z|", " ~~~~~~~~~ ", "2@", 2     }, --2@
+         {" _________ ", "|3        |", "|@   @    |", "|         |", "|    @    |", "|         |", "|    @   @|", "|        E|", " ~~~~~~~~~ ", "3@", 3     }, --3@
+         {" _________ ", "|4        |", "|@        |", "|  @   @  |", "|         |", "|  @   @  |", "|        @|", "|        b|", " ~~~~~~~~~ ", "4@", 4     }, --4@
+		 {" _________ ", "|5        |", "|@        |", "|  @   @  |", "|    @    |", "|  @   @  |", "|        @|", "|        S|", " ~~~~~~~~~ ", "5@", 5     }, --5@
+		 {" _________ ", "|6        |", "|@ @   @  |", "|         |", "|  @   @  |", "|         |", "|  @   @ @|", "|        9|", " ~~~~~~~~~ ", "6@", 6     }, --6@
+		 {" _________ ", "|7        |", "|@ @   @  |", "|    @    |", "|  @   @  |", "|         |", "|  @   @ @|", "|        L|", " ~~~~~~~~~ ", "7@", 7     }, --7@
+		 {" _________ ", "|8 @   @  |", "|@        |", "|  @   @  |", "|         |", "|  @   @  |", "|        @|", "|  @   @ 8|", " ~~~~~~~~~ ", "8@", 8     }, --8@
+		 {" _________ ", "|9 @   @  |", "|@        |", "|  @   @  |", "|    @    |", "|  @   @  |", "|        @|", "|  @   @ 6|", " ~~~~~~~~~ ", "9@", 9     }, --9@
+		 {" _________ ", "|10@   @  |", "|@   @    |", "|  @   @  |", "|         |", "|  @   @  |", "|    @   @|", "|  @   @0l|", " ~~~~~~~~~ ", "10@", 10     }, --10@
+		 {" _________ ", "|J /~~|_  |", "|@ ! -\\   |", "|  \\ -!   |", "|  ',\\',  |", "|   I- \\  |", "|   \\- I @|", "|  ~|__/ P|", " ~~~~~~~~~ ", "J@", 10}, --J@
+		 {" _________ ", "|Q |~~~|  |", "|@ \\- -/  |", "| o |-|   |", "|  I % I  |", "|   |-| o |", "|  /- -\\ @|", "|  |___| Q|", " ~~~~~~~~~ ", "Q@", 10   }, --Q@
+		 {" _________ ", "|K |/|\\|  |", "|@ \\- -/  |", "| ! |-|   |", "|  % I %  |", "|   |-| ! |", "|  /- -\\ @|", "|  |\\|/| X|", " ~~~~~~~~~ ", "K@", 10 }, --K@
+		 {" _________ ", "|A        |", "|# _   _  |", "| / ~V~ \\ |", "| \\ Bej / |", "|  \\ # /  |", "|   '.'  #|", "|        V|", " ~~~~~~~~~ ", "A#", 11  }, --A# 
+		 {" _________ ", "|2        |", "|#        |", "|    #    |", "|         |", "|    #    |", "|        #|", "|        Z|", " ~~~~~~~~~ ", "2#", 2},   --2#
+         {" _________ ", "|3        |", "|#   #    |", "|         |", "|    #    |", "|         |", "|    #   #|", "|        E|", " ~~~~~~~~~ ", "3#", 3},   --3#
+         {" _________ ", "|4        |", "|#        |", "|  #   #  |", "|         |", "|  #   #  |", "|        #|", "|        b|", " ~~~~~~~~~ ", "4#", 4},   --4#
+		 {" _________ ", "|5        |", "|#        |", "|  #   #  |", "|    #    |", "|  #   #  |", "|        #|", "|        S|", " ~~~~~~~~~ ", "5#", 5},   --5#
+		 {" _________ ", "|6        |", "|# #   #  |", "|         |", "|  #   #  |", "|         |", "|  #   # #|", "|        9|", " ~~~~~~~~~ ", "6#", 6},   --6#
+		 {" _________ ", "|7        |", "|# #   #  |", "|    #    |", "|  #   #  |", "|         |", "|  #   # #|", "|        L|", " ~~~~~~~~~ ", "7#", 7},   --7#
+		 {" _________ ", "|8 #   #  |", "|#        |", "|  #   #  |", "|         |", "|  #   #  |", "|        #|", "|  #   # 8|", " ~~~~~~~~~ ", "8#", 8},   --8#
+		 {" _________ ", "|9 #   #  |", "|#        |", "|  #   #  |", "|    #    |", "|  #   #  |", "|        #|", "|  #   # 6|", " ~~~~~~~~~ ", "9#", 9},   --9#
+		 {" _________ ", "|10#   #  |", "|#   #    |", "|  #   #  |", "|         |", "|  #   #  |", "|    #   #|", "|  #   #0l|", " ~~~~~~~~~ ", "10#", 10},   --10#
+		 {" _________ ", "|J /~~|_  |", "|# % *'.  |", "|  % <~   |", "| %% / %% |", "|   _> %  |", "|  ',* % #|", "|  ~|__/ P|", " ~~~~~~~~~ ", "J#", 10},   --J#
+		 {" _________ ", "|Q |~~~|  |", "|# %*,*%  |", "|  \\_o_/  |", "| -=<*>=- |", "|  /~o~\\  |", "|  %*'*% #|", "|  |___| Q|", " ~~~~~~~~~ ", "Q#", 10}, --Q#
+		 {" _________ ", "|K |/|\\|  |", "|# %*,*%  |", "|  \\_o_/  |", "| #>-=-<# |", "|  /~o~\\  |", "|  %*'*% #|", "|  |\\|/| X|", " ~~~~~~~~~ ", "K#", 10},--K#
+		 {" _________ ", "|A        |", "|+   *    |", "|    !    |", "|  *-+-*  |", "|    |    |", "|   ~~~  +|", "|        V|", " ~~~~~~~~~ ", "A+", 11},  --A+ 
+		 {" _________ ", "|2        |", "|+        |", "|    +    |", "|         |", "|    +    |", "|        +|", "|        Z|", " ~~~~~~~~~ ", "2+", 2},   --2+
+         {" _________ ", "|3        |", "|+   +    |", "|         |", "|    +    |", "|         |", "|    +   +|", "|        E|", " ~~~~~~~~~ ", "3+", 3},   --3+
+         {" _________ ", "|4        |", "|+        |", "|  +   +  |", "|         |", "|  +   +  |", "|        +|", "|        b|", " ~~~~~~~~~ ", "4+", 4},   --4+
+		 {" _________ ", "|5        |", "|+        |", "|  +   +  |", "|    +    |", "|  +   +  |", "|        +|", "|        S|", " ~~~~~~~~~ ", "5+", 5},   --5+
+		 {" _________ ", "|6        |", "|+ +   +  |", "|         |", "|  +   +  |", "|         |", "|  +   + +|", "|        9|", " ~~~~~~~~~ ", "6+", 6},   --6+
+		 {" _________ ", "|7        |", "|+ +   +  |", "|    +    |", "|  +   +  |", "|         |", "|  +   + +|", "|        L|", " ~~~~~~~~~ ", "7+", 7},   --7+
+		 {" _________ ", "|8 +   +  |", "|+        |", "|  +   +  |", "|         |", "|  +   +  |", "|        +|", "|  +   + 8|", " ~~~~~~~~~ ", "8+", 8},   --8+
+		 {" _________ ", "|9 +   +  |", "|+        |", "|  +   +  |", "|    +    |", "|  +   +  |", "|        +|", "|  +   + 6|", " ~~~~~~~~~ ", "9+", 9},   --9+
+		 {" _________ ", "|10+   +  |", "|+   +    |", "|  +   +  |", "|         |", "|  +   +  |", "|    +   +|", "|  +   +0l|", " ~~~~~~~~~ ", "10+", 10},   --10+
+		 {" _________ ", "|J /~~|_  |", "|+ | o',  |", "|  | -|   |", "| =~)+(_= |", "|   |- |  |", "|  '.o | +|", "|  ~|__/ P|", " ~~~~~~~~~ ", "J+", 10},   --J+
+		 {" _________ ", "|Q |~~~|  |", "|+ /o,o\\  |", "|  \\_-_/  |", "| _-~+_-~ |", "|  /~-~\\  |", "|  \\o'o/ +|", "|  |___| Q|", " ~~~~~~~~~ ", "Q#", 10}, --Q+
+		 {" _________ ", "|K |/|\\|  |", "|+ /o,o\\  |", "|  \\_-_/  |", "| ~-_-~-_ |", "|  /~-~\\  |", "|  \\o'o/ +|", "|  |\\|/| X|", " ~~~~~~~~~ ", "K+", 10},--K+
+		 {" _________ ", "|A        |", "|O  /~\\   |", "|  / ^ \\  |", "| |  )  | |", "|  \\ v /  |", "|   \\_/  O|", "|        V|", " ~~~~~~~~~ ", "AO", 11},  --AO 
+		 {" _________ ", "|2        |", "|O        |", "|    O    |", "|         |", "|    O    |", "|        O|", "|        Z|", " ~~~~~~~~~ ", "2O", 2},   --2O
+         {" _________ ", "|3        |", "|O   O    |", "|         |", "|    O    |", "|         |", "|    O   O|", "|        E|", " ~~~~~~~~~ ", "3O", 3},   --3O
+         {" _________ ", "|4        |", "|O        |", "|  O   O  |", "|         |", "|  O   O  |", "|        O|", "|        b|", " ~~~~~~~~~ ", "4O", 4},   --4O
+		 {" _________ ", "|5        |", "|O        |", "|  O   O  |", "|    O    |", "|  O   O  |", "|        O|", "|        S|", " ~~~~~~~~~ ", "5O", 5},   --5O
+		 {" _________ ", "|6        |", "|O O   O  |", "|         |", "|  O   O  |", "|         |", "|  O   O O|", "|        9|", " ~~~~~~~~~ ", "6O", 6},   --6O
+		 {" _________ ", "|7        |", "|O O   O  |", "|    O    |", "|  O   O  |", "|         |", "|  O   O O|", "|        L|", " ~~~~~~~~~ ", "7O", 7},   --7O
+		 {" _________ ", "|8 O   O  |", "|O        |", "|  O   O  |", "|         |", "|  O   O  |", "|        O|", "|  O   O 8|", " ~~~~~~~~~ ", "8O", 8},   --8O
+		 {" _________ ", "|9 O   O  |", "|O        |", "|  O   O  |", "|    O    |", "|  O   O  |", "|        O|", "|  O   O 6|", " ~~~~~~~~~ ", "9O", 9},   --9O
+		 {" _________ ", "|10O   O  |", "|O   O    |", "|  O   O  |", "|         |", "|  O   O  |", "|    O   O|", "|  O   O0l|", " ~~~~~~~~~ ", "10O", 10},   --10O
+		 {" _________ ", "|J /~~|_  |", "|O ( o\\   |", "|  ! \\l   |", "| ^^^Xvvv |", "|   l\\ I  |", "|   \\o ) O|", "|  ~|__/ P|", " ~~~~~~~~~ ", "JO", 10},   --JO
+		 {" _________ ", "|Q |~~~|  |", "|O |o.o|  |", "|   \\v/   |", "|  XXOXX  |", "|   /^\\   |", "|  |o'o| O|", "|  |___| Q|", " ~~~~~~~~~ ", "QO", 10}, --QO
+		 {" _________ ", "|K |/|\\|  |", "|O |o.o|  |", "|   \\v/   |", "|  XXXXX  |", "|   /^\\   |", "|  |o'o| O|", "|  |\\|/| X|", " ~~~~~~~~~ ", "KO", 10}--KO
+}
+
+imgCardStop = 9
+codeCard = 10
+valueCard = 11
+
+x, y = term.getSize()
+
+--Functions
+function reset()
+	myPoints = 0
+	DPoints = 0
+	DPointsReal = 0
+
+	myAceCount = 0
+	DAceCount = 0
+
+	faceDown = 0
+
+	myCards = { }
+	myCardsN = 0
+
+	cardsDrawn = 0
+
+	BlackJack = false
+	DBlackJack = false
+	
+	messages = { }
+	blank = " "
+	for i=2,x-2 do
+		blank = blank.. " "
+	end
+	for i=12,y-2 do
+		messages[i-11] = blank
+	end
+	
+	firstTurn = true
+end
+
+function shuffle(t)
+--http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+	local n = #t
+ 
+	while n >= 2 do
+		local k = math.random(n) 
+		t[n], t[k] = t[k], t[n]
+		n = n - 1
+	end
+ 
+	return t
+end
+
+function clear()
+	term.clear()
+	term.setCursorPos(1,1)
+end
+
+function drawScreen()
+	clear()
+	write("+")
+	for i=1,x-2 do
+		write("-")
+	end
+	write("+")
+	for j=2,y-1 do
+		write("|")
+		for i=1,x-2 do
+			write(" ")
+		end
+		write("|")
+	end
+	write("+")
+	for i=1,x-2 do
+		write("-")
+	end
+	write("+")
+	term.setCursorPos(x/2-15, y-1)
+	write("CCraft BlackJack, By Luiginico")
+end
+
+function tutorialScreen()
+	drawScreen()
+	term.setCursorPos(x/2-10,2)
+	write("How to play BlackJack")
+	term.setCursorPos(2, 4)
+	write("The object of the game is to reach more points")
+	term.setCursorPos(2, 5)
+	write("than the Dealer without exceding 21")
+	term.setCursorPos(2, 6)
+	write("Each player will start the game with 2 cards")
+	term.setCursorPos(2, 7)
+	write("Then you count the points of your cards:")
+	term.setCursorPos(2, 8)
+	write("o Cards from 2-10 = 2-10 points")
+	term.setCursorPos(2, 9)
+	write("o J, Q, K = 10 points each")
+	term.setCursorPos(2, 10)
+	write("o Aces = 11 or 1 points")
+	term.setCursorPos(2, 11)
+	write("If you have exactly 21 points you made")
+	term.setCursorPos(2, 12)
+	write("BlackJack and you have won!")
+	term.setCursorPos(2, 13)
+	write("Exept if the Dealer made BlackJack too")
+	term.setCursorPos(x/2-12, 15)
+	write("Press any key to continue")
+	sleep(.1)
+	os.pullEventRaw()
+	drawScreen()
+	term.setCursorPos(x/2-7,2)
+	write("A regular turn")
+	term.setCursorPos(2, 4)
+	write("During your turn you can choose to:")
+	term.setCursorPos(2, 5)
+	write("o Call for another card:")
+	term.setCursorPos(2, 6)
+	write("You will get a new card and all its points")
+	term.setCursorPos(2, 7)
+	write("Is the only way to get points")
+	term.setCursorPos(2, 8)
+	write("but you could go over 21 pretty easly")
+	term.setCursorPos(2, 9)
+	write("o Stop:")
+	term.setCursorPos(2, 10)
+	write("You finish your turn with the points you have")
+	term.setCursorPos(x/2-12, 12)
+	write("Press any key to continue")
+	sleep(.1)
+	os.pullEventRaw()
+	drawScreen()
+	term.setCursorPos(x/2-9,2)
+	write("Winnigs and Losings")
+	term.setCursorPos(2, 4)
+	write("At the end of the Dealer turns all the players")
+	term.setCursorPos(2, 5)
+	write("who have more points than the Dealer and less")
+	term.setCursorPos(2, 6)
+	write("than 22 points will win")
+	term.setCursorPos(2, 7)
+	write("People play against the Dealer and not against")
+	term.setCursorPos(2, 8)
+	write("each others")
+	term.setCursorPos(x/2-12, 10)
+	write("Press any key to continue")
+	sleep(.1)
+	os.pullEventRaw()
+	return loginScreen()
+end
+
+function loginGUI()
+	while true do
+		local event, p1, p2, p3 = os.pullEventRaw()
+		if event == "char" then
+			if p1 == "n" then
+				return true
+			elseif p1 == "e" then
+				return false
+			elseif p1 == "h" then
+				return tutorialScreen()
+			end
+		elseif event == "mouse_click" or event == "monitor_touch" then
+			if p3 == 3 then
+				return true
+			elseif p3 == 5 then
+				return false
+			elseif p3 == 7 then
+				return tutorialScreen()
+			end
+		end
+	end
+end
+
+
+
+function loginScreen()
+	drawScreen()
+	term.setCursorPos(x/2-4, 3)
+	write("New game")
+	term.setCursorPos(x/2-2, 5)
+	write("Exit")
+	term.setCursorPos(x/2-5, 7)
+	write("How to play")
+	term.setCursorPos(2, y-3)
+	write("Click or press the first letter to choose")
+	if loginGUI() then
+		return true
+	else
+		return false
+	end
+end
+
+function gameScreen()
+	drawScreen()
+	term.setCursorPos(x/2-5, 11)
+	write("More   Stop")
+	update()
+end
+
+function userlog(message)
+	for count=1,#messages-1 do
+		messages[#messages-count+1] = messages[#messages-count]
+	end
+	messages[1] = message
+	for count=1,#messages do
+		term.setCursorPos(2, 11+count)
+		write(blank)
+		term.setCursorPos(2, 11+count)
+		write(messages[count])
+	end
+	sleep(1)
+end
+
+function update()
+	term.setCursorPos(2, 11)
+	if myPoints > 21 then
+		if myAceCount > 0 then
+			myAceCount = myAceCount - 1
+			myPoints = myPoints - 10
+			update()
+		else
+			write("You: XX")
+		end
+	else
+		write("You: " ..myPoints)
+	end
+	term.setCursorPos(x-11, 11)
+	if DPoints > 21 then
+		if DAceCount > 0 then
+			DAceCount = DAceCount - 1
+			DPoints = DPoints - 10
+			update()
+		else
+			write("Dealer: XX")
+		end
+	else
+		write("Dealer: " ..DPoints)
+	end
+end
+
+function printCards(toPrint)
+	for i=1,#toPrint do
+		for j=1,imgCardStop do
+			term.setCursorPos(2+5*(i-1), 1+j)
+			write(deck[toPrint[i]][j])
+		end
+	end	
+end
+
+function givePlayer(card)
+	myPoints = myPoints + deck[card][valueCard]
+	if deck[card][valueCard] == 11 then
+		myAceCount = myAceCount + 1
+	end
+	userlog("You recieved a " ..deck[card][codeCard])
+	myCardsN = myCardsN + 1
+	myCards[myCardsN] = card
+	printCards(myCards)
+	update()
+end
+
+function giveDealerFaceDown(card)
+	DPointsReal = DPointsReal + deck[card][valueCard]
+	if deck[card][valueCard] == 11 then
+		DAceCount = DAceCount + 1
+	end
+	userlog("The Dealer received a face-down card")
+	faceDown = card
+end
+
+function giveDealer(card)
+	DPointsReal = DPointsReal + deck[card][valueCard]
+	if deck[card][valueCard] == 11 then
+		DAceCount = DAceCount + 1
+	end
+	DPoints = DPoints + deck[card][valueCard]
+	userlog("The Dealer received a " ..deck[card][codeCard])
+	update()
+end
+
+function drawCard()
+	cardsDrawn = cardsDrawn + 1
+	if cardsDrawn == 53 then
+		userlog("No more cards, the deck will be reshuffled")
+		deck = shuffle(deck)
+		cardsDrawn = 1
+	end
+	return cardsDrawn
+end
+
+function deal()
+	givePlayer(drawCard())
+	giveDealerFaceDown(drawCard())
+	givePlayer(drawCard())
+	giveDealer(drawCard())
+	if myPoints == 21 then
+		userlog("BlackJack")
+		BlackJack = true
+	end
+end
+
+function turn()
+	if myPoints < 21 then
+		userlog("Is your turn")
+		if firstTurn then  
+			firstTurn = false
+		end
+		while true do
+			local event, p1, p2, p3 = os.pullEventRaw()
+			if event == "char" then
+				if p1 == "m" then
+					givePlayer(drawCard())
+					return true
+				elseif p1 == "s" then
+					userlog("You stopped")
+					return false
+				end
+			elseif event == "mouse_click" or event == "monitor_touch" then
+				if p2 >= (x/2-5) and p2 <= (x/2-2) then
+					givePlayer(drawCard())
+					return true
+				elseif p2 >= (x/2+1) and p2 <= (x/2+4) then
+					userlog("You stopped")
+					return false
+				end
+			end
+		end
+	elseif myPoints > 21 then
+		if not(BlackJack) then
+			userlog("Your total is greater than 21, you are out")
+		end
+		return false
+	else
+		userlog("Your total is 21, you have to stop")
+		return false
+	end
+end
+
+function reveal()
+	userlog("The Dealer reveal the face down card")
+	userlog("It's a " ..deck[faceDown][codeCard])
+	DPoints = DPointsReal
+	if DPoints == 21 then
+		userlog("The dealer made BlackJack")
+		DBlackJack = true
+	end
+	update()
+end
+
+function DTurn()
+	if DPoints <= 15 then
+		giveDealer(drawCard())
+		return true
+	elseif DPoints >= 16 and DPoints <= 21 then
+		if not(DBlackJack) then
+			userlog("The Dealer stopped")
+			return false
+		end
+	elseif DPoints > 21 then
+		userlog("The Dealer total is greater than 21, he is out")
+		return false
+	end
+end
+
+function winners()
+	if DBlackJack or (DPoints <= 21 and myPoints <= 21 and DPoints >= myPoints) or myPoints > 21 then
+		userlog("You have lost")
+	else
+		userlog("You have won")
+	end
+	userlog("Press a key to continue")
+end
+
+function mainGame()
+	gameScreen()
+	deck = shuffle(deck)
+	deal()
+	if not(BlackJack) then
+		while turn() do end
+	end
+	userlog("Is the Dealer turn")
+	reveal()
+	if not(DBlackJack) then
+		while DTurn() do end
+	end
+	winners()
+end
+
+--Main
+while loginScreen() do
+	reset()
+	mainGame()
+	os.pullEventRaw()
+end
+term.clear()
+term.setCursorPos(1,1)
