@@ -3,13 +3,13 @@ term.clear()
 term.setCursorPos(1,1)
 term.setBackgroundColor(2048)
 term.setTextColor(1)
-print("ApfelOS 1.0 Pro Installation                       ")
+print("ReboOSt Installation                               ")
 term.setCursorPos(5,3)
 term.setBackgroundColor(1)
 term.setTextColor(2048)
 print("                    ")
 term.setCursorPos(5,4)
-print("    Install  Pro    ")
+print("      Install       ")
 term.setCursorPos(5,5)
 print("                    ")
 term.setCursorPos(5,6)
@@ -28,13 +28,13 @@ term.setCursorPos(27,7)
 print("                    ")
 
 while true do
-local event, button, X, Y = os.pullEvent("mouse_click")
+local event, button, X, Y = os.pullEventRaw("mouse_click")
 XY = X..","..Y
 
 if XY == "14,6" and button == 1 then
- shell.run("Setup/instaop.adf")
+ shell.run("Setup/instos")
 end
 
 if XY == "36,6" and button == 1 then
- shell.run("Setup/shut.adf")
+ shell.run("Setup/shut-off")
 end end
