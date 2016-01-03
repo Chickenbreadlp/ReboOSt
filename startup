@@ -15,8 +15,8 @@ OStag = "ReboOSt"
 sleep(0.1)
 print("Setting OS version...")
 devpart = "DEV_Alpha"
-version = 1
-rosbuild = 0010
+version = 1.1
+rosbuild = 0011
 sleep(0.2)
 print("Starting Startuproutine...")
 sleep(0.25)
@@ -169,7 +169,7 @@ else
   crashcause = "Login files not found!"
  end
 end
---[[if crash then
+if crash then
  shell.run("/ReboOSt/crash")
  os.shutdown()
-end]]
+end
