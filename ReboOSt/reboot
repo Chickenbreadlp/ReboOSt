@@ -1,0 +1,61 @@
+if login then
+
+term.setBackgroundColor(wico)
+term.setTextColor(wicotxt)
+term.setCursorPos(14,7)
+print("Do you want to reboot? ")
+term.setBackgroundColor(wicotxt)
+term.setTextColor(wico)
+term.setCursorPos(14,8)
+print("     Yes       No      ")
+term.setCursorPos(14,9)
+print("                       ")
+term.setCursorPos(14,10)
+print("     [X]       [X]     ")
+term.setCursorPos(14,11)
+print("                       ")
+
+while true do
+local event, button, X, Y = os.pullEvent("mouse_click")
+local XY = X..","..Y
+
+ -- Yes
+
+if XY == "20,10" and button == 1 then
+ term.setBackgroundColor(colors.gray)
+ term.clear()
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(colors.gray)
+ term.setTextColor(colors.white)
+ write("                      Rebo")
+ term.setTextColor(colors.cyan)
+ write("OS")
+ term.setTextColor(colors.white)
+ print("t                      ")
+ print("                  is shuting down                  ")
+ paintutils.drawImage(Logo,6,9)
+ fs.delete("/ReboOSt/Temp")
+ os.unloadAPI("encryption")
+ if starts == 0 then
+  starts = starts + 1
+  local file = fs.open("/ReboOSt/..stcount.adf", "w")
+  file.write(starts)
+  file.close()
+ end
+ sleep(0.7)
+ os.reboot()
+break
+end
+
+ -- No
+
+if XY == "30,10" and button == 1 then
+break
+end end
+
+else
+ term.setTextColor(16384)
+ term.setBackgroundColor(32768)
+ print("You don't even have ApfelOS started!")
+ term.setTextColor(1)
+end
