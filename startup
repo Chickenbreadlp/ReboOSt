@@ -169,7 +169,7 @@ else
   crashcause = "Login files not found!"
  end
 end
---[[if crash then
+if crash then
  shell.run("/ReboOSt/crash")
  os.shutdown()
-end]]
+end
