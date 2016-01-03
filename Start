@@ -1,11 +1,11 @@
 if login then
  crash = true
- sherllacc = false
+ shellacc = false
  shell.run("/ReboOSt/welcome")
---[[ if crash then
+ if crash then
   shell.run("/ReboOSt/crash")
   os.shutdown()
- end]]
+ end
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
