@@ -1,0 +1,198 @@
+if login then
+
+crash = true
+local diskiconactiv = false
+local diskXmin = nil
+local diskXmax = nil
+local gfolXmin = nil
+local gfolXmax = nil
+
+local function Desk()
+term.setCursorBlink(false)
+term.setBackgroundColor(tbar)
+term.clear()
+term.setCursorPos (1,1)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+--print("                                                  ")
+term.setCursorPos(1,1)
+print(OStag.." "..devpart.." "..version)
+term.setCursorPos(44,1)
+term.setTextColor(prog)
+write("Desktop ")
+term.setBackgroundColor(mbar)
+term.setTextColor(mbartxt)
+print("                                                   ")
+paintutils.drawImage(Wallpaper,1,2)
+term.setCursorPos(1,18)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print(UserName)
+write("(C)Chickenbread 2015       ")
+if freeSpace >= 100000000 then
+ spacer = "     To many free Space"
+ format = " "
+elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
+ spacer = "         Free:"
+elseif freeSpace <= 1000000 and freeSpace >= 100000 then
+ spacer = "          Free:"
+elseif freeSpace <= 100000 and freeSpace >= 10000 then
+ spacer = "           Free:"
+elseif freeSpace <= 10000 and freeSpace >= 1000 then
+ spacer = "            Free:"
+elseif freeSpace <= 1000 and freeSpace >= 100 then
+ spacer = "             Free:"
+elseif freeSpace <= 100 and freeSpace >= 10 then
+ spacer = "              Free:"
+elseif freeSpace <= 10 and freeSpace >= 1 then
+ spacer = "               Free:"
+else
+ spacer = "          No Free Space"
+ format = " "
+end
+write(spacer.." "..freeSpace.." "..format)
+end
+Desk()
+
+while true do
+
+if gfolder then diskXmin = 8 diskXmax = 11 else diskXmin = 2 diskXmax = 6 end
+if pfolder then gfolXmin = 8 gfolXmax = 11 diskXmin = 14 diskXmax = 17 else gfolXmin = 2 gfolXmax = 5 end
+
+if disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
+ paintutils.drawImage(disklogo,diskXmin,4)
+ term.setCursorPos(diskXmin,8)
+ term.setBackgroundColor(mbar)
+ term.setTextColor(mbartxt)
+ print("Disk")
+ diskiconactiv = true
+else
+ if diskiconactiv then
+  paintutils.drawImage(Background,1,2)
+  term.setCursorPos(1,18)
+  term.setBackgroundColor(tbar)
+  term.setTextColor(tbartxt)
+  print(UserName)
+ else
+ end
+end
+
+if gfolder then
+ paintutils.drawImage(Gamesfolder,gfolXmin,4)
+ term.setCursorPos(gfolXmin,8)
+ term.setBackgroundColor(mbar)
+ term.setTextColor(mbartxt)
+ print("Game")
+else
+end
+
+if pfolder then
+ paintutils.drawImage(ProgFold,2,4)
+ term.setCursorPos(2,8)
+ term.setBackgroundColor(mbar)
+ term.setTextColor(mbartxt)
+ print("Prog")
+end
+
+local event, button, X, Y = os.pullEvent("mouse_click")
+local XY = X..","..Y
+
+ -- Unimnu
+
+if X >= 1 and X <= 7 and Y == 1 then
+ shell.run("/ReboOSt/unimnu")
+ if login then
+  Desk()
+ else
+  break
+ end
+ if crash then
+  Desk()
+ else
+  shellacc = true
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(16)
+  term.clear()
+  term.setCursorPos(1,1)
+  print("Shell")
+  term.setTextColor(colors.red)
+  write("To go back enter: ")
+  term.setTextColor(colors.lime)
+  print("Start")
+  term.setTextColor(1)
+ break
+ end
+
+ -- Disk
+
+elseif disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
+ if X >= 8 and X <= 11 and Y >= 4 and Y <= 8 and button == 1 then
+  if disk.isPresent("bottom") and not disk.hasAudio("bottom") then
+   dir = disk.getMountPath("bottom")
+   dir = dir.."/"
+  elseif disk.isPresent("top") and not disk.hasAudio("top") then
+   dir = disk.getMountPath("top")
+   dir = dir.."/"
+  elseif disk.isPresent("left") and not disk.hasAudio("left") then
+   dir = disk.getMountPath("left")
+   dir = dir.."/"
+  elseif disk.isPresent("right") and not disk.hasAudio("right") then
+   dir = disk.getMountPath("right")
+   dir = dir.."/"
+  elseif disk.isPresent("back") and not disk.hasAudio("back") then
+   dir = disk.getMountPath("back")
+   dir = dir.."/"
+  elseif disk.isPresent("front") and not disk.hasAudio("front") then
+   dir = disk.getMountPath("front")
+   dir = dir.."/"
+  end
+  if fs.exists("/Programs/TDI") then
+   if fs.exists(dir.."tictactoe") or fs.exists(dir.."gameoflife") or fs.exists(dir.."maze3d") or fs.exists(dir.."protector") then
+    TDIunist = false
+    shell.run("/Programs/TDI")
+   else
+    shell.run("/ReboOSt/fbrws", "--dir "..dir)
+   end
+  else
+   shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  end
+  dir = nil
+  Desk()
+ end
+
+elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 then
+ if disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
+ rightclickdiskX = X
+ rightclickdiskY = Y
+ shell.run("/ReboOSt/cntxmnudi")
+ rightclickdiskX = nil
+ rightclickdiskY = nil
+ Desk()
+ end
+
+ -- Program Folder
+
+elseif X >= 2 and X <= 5 and Y >= 4 and Y <= 8 then
+ if gfolder then
+  dir = "/Programs/"
+  shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  dir = nil
+  Desk()
+ end
+
+ -- Games Folder
+
+elseif X >= gfolXmin and X <= gfolXmax and Y >= 4 and Y <= 8 then
+ if gfolder then
+  dir = "/Programs/Games"
+  shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  dir = nil
+  Desk()
+ end
+end end
+else
+ term.setTextColor(16384)
+ term.setBackgroundColor(32768)
+ print("You don't even have ApfelOS started!")
+ term.setTextColor(1)
+end
