@@ -1,0 +1,293 @@
+local changes = false
+if login then
+rprog = "ctrlpnl"
+local function Screen()
+term.setBackgroundColor(mbar)
+term.clear()
+term.setCursorPos(1,1)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print("                                                   ")
+term.setCursorPos(1,1)
+term.setBackgroundColor(mbar)
+term.setTextColor(mbartxt)
+write(OStag)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print(" "..devpart.." "..version)
+term.setCursorPos(36,1)
+term.setTextColor(prog)
+write("Control Panel ")
+term.setBackgroundColor(buttonReboot)
+term.setTextColor(buttonRetxt)
+write("@")
+term.setBackgroundColor(buttonShut)
+term.setTextColor(buttonShtxt)
+print("X")
+term.setBackgroundColor(mbar)
+term.setTextColor(tbartxt)
+print("")
+print("")
+write(" Auto Update          ")
+if autoupdate then
+ term.setBackgroundColor(colors.green)
+ write(" On")
+ term.setBackgroundColor(colors.red)
+ print(" ")
+else
+ term.setBackgroundColor(colors.green)
+ write(" ")
+ term.setBackgroundColor(colors.red)
+ print("Off")
+end
+term.setBackgroundColor(mbar)
+print("")
+write(" Modding              ")
+if modding then
+ term.setBackgroundColor(colors.green)
+ write(" On")
+ term.setBackgroundColor(colors.red)
+ print(" ")
+else
+ term.setBackgroundColor(colors.green)
+ write(" ")
+ term.setBackgroundColor(colors.red)
+ print("Off")
+end
+term.setBackgroundColor(mbar)
+print("")
+write(" Programs Folder      ")
+if pfolder then
+ term.setBackgroundColor(colors.green)
+ write(" On")
+ term.setBackgroundColor(colors.red)
+ print(" ")
+else
+ term.setBackgroundColor(colors.green)
+ write(" ")
+ term.setBackgroundColor(colors.red)
+ print("Off")
+end
+term.setBackgroundColor(mbar)
+print("")
+write(" Games Folder         ")
+if gfolder then
+ term.setBackgroundColor(colors.green)
+ write(" On")
+ term.setBackgroundColor(colors.red)
+ write(" ")
+else
+ term.setBackgroundColor(colors.green)
+ write(" ")
+ term.setBackgroundColor(colors.red)
+ write("Off")
+end
+term.setBackgroundColor(mbar)
+term.setTextColor(colors.red)
+print("   -- Currently Broken!")
+term.setCursorPos(1,16)
+term.setBackgroundColor(mbar)
+write("  [")
+term.setBackgroundColor(colors.red)
+term.setTextColor(1)
+write(" Discard ")
+term.setBackgroundColor(mbar)
+write("]                        [")
+if changes then term.setBackgroundColor(colors.lime) else term.setBackgroundColor(colors.gray) end
+write(" Confirm ")
+term.setBackgroundColor(mbar)
+write("]  ")
+term.setCursorPos(1,18)
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print(UserName)
+write("(C)Chickenbread 2015       ")
+if freeSpace >= 100000000 then
+ spacer = "     To many free Space"
+ format = " "
+elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
+ spacer = "         Free:"
+elseif freeSpace <= 1000000 and freeSpace >= 100000 then
+ spacer = "          Free:"
+elseif freeSpace <= 100000 and freeSpace >= 10000 then
+ spacer = "           Free:"
+elseif freeSpace <= 10000 and freeSpace >= 1000 then
+ spacer = "            Free:"
+elseif freeSpace <= 1000 and freeSpace >= 100 then
+ spacer = "             Free:"
+elseif freeSpace <= 100 and freeSpace >= 10 then
+ spacer = "              Free:"
+elseif freeSpace <= 10 and freeSpace >= 1 then
+ spacer = "               Free:"
+else
+ spacer = "          No Free Space"
+ format = " "
+end
+write(spacer.." "..freeSpace.." "..format)
+end
+Screen()
+
+local function changeSwitchGR(YY)
+ term.setCursorPos(26,YY)
+ term.setBackgroundColor(colors.red)
+ print("f")
+ term.setCursorPos(25,YY)
+ sleep(0.1)
+ term.setBackgroundColor(colors.red)
+ print("f")
+ term.setCursorPos(24,YY)
+ sleep(0.1)
+ term.setBackgroundColor(colors.red)
+ print("O")
+ sleep(0.1)
+ term.setCursorPos(23,YY)
+ term.setBackgroundColor(colors.green)
+ print(" ")
+end
+
+local function changeSwitchRG(YY)
+ term.setCursorPos(23,YY)
+ term.setBackgroundColor(colors.green)
+ print(" ")
+ term.setCursorPos(24,YY)
+ sleep(0.1)
+ term.setBackgroundColor(colors.green)
+ write("O")
+ term.setCursorPos(25,YY)
+ sleep(0.1)
+ term.setBackgroundColor(colors.green)
+ write("n")
+ sleep(0.1)
+ term.setCursorPos(26,YY)
+ term.setBackgroundColor(colors.red)
+ print(" ")
+end
+
+while true do
+local event, button, X, Y = os.pullEvent("mouse_click")
+local XY = X..","..Y
+
+ -- shut down
+ if XY == "51,1" and button == 1 then shell.run("/ReboOSt/shut-off") Desk() end
+
+ -- reboot
+ if XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Desk() end
+ 
+ -- Back
+ if X >= 1 and X <= 7 and Y == 1 and button == 1 then shell.run("/ReboOSt/configs/main") break end
+
+ -- Logoff
+
+ if XY == "51,18" and button == 1 then
+  term.setBackgroundColor(wico)
+  term.setTextColor(wicotxt)
+  term.setCursorPos(14,7)
+  print("        Logoff        ")
+  term.setBackgroundColor(wicotxt)
+  term.setTextColor(wico)
+  term.setCursorPos(14,8)
+  print("                      ")
+  term.setCursorPos(14,9)
+  print("    Logging off...    ")
+  term.setCursorPos(14,10)
+  print("                      ")
+  sleep(1.2)
+  shell.run("/ReboOSt/logoff.adf")
+  Desk()
+ end
+
+ -- Auto update
+
+ if X >= 23 and X <= 26 and Y == 4 then
+  if autoupdate then
+   autoupdate = false
+   changeSwitchGR(4)
+  else
+   autoupdate = true
+   changeSwitchRG(4)
+  end
+  changes = true
+  Screen()
+ end
+
+ -- Modding
+
+ if X >= 23 and X <= 26 and Y == 6 then
+  if modding then
+   modding = false
+   changeSwitchGR(6)
+  else
+   modding = true
+   changeSwitchRG(6)
+  end
+  changes = true
+  Screen()
+ end
+
+ -- programs Folder
+
+ if X >= 23 and X <= 26 and Y == 8 then
+  if pfolder then
+   pfolder = false
+   changeSwitchGR(8)
+  else
+   pfolder = true
+   changeSwitchRG(8)
+  end
+  changes = true
+  Screen()
+ end
+
+ -- Games Folder
+
+ if X >= 23 and X <= 26 and Y == 10 then
+  if gfolder then
+   gfolder = false
+   changeSwitchGR(10)
+  else
+   gfolder = true
+   changeSwitchRG(10)
+  end
+  changes = true
+  Screen()
+ end
+ 
+ -- Discart
+ if X >= 3 and X <= 11 and Y == 16 then shell.run("/ReboOSt/configs/main") changes = false Screen() end
+ 
+ -- Confirm
+ if X >= 40 and X <= 48 and Y == 16 and changes == true then
+  if fs.exists("/ReboOSt/configs/main") then fs.delete("/ReboOSt/configs/main") end
+  local file = fs.open("/ReboOSt/configs/main", "w")
+  if autoupdate then
+   file.writeLine("autoupdate = true")
+  else
+   file.writeLine("autoupdate = false")
+  end
+  if modding then
+   file.writeLine("modding = true")
+  else
+   file.writeLine("modding = false")
+  end
+  if pfolder then
+   file.writeLine("pfolder = true")
+  else
+   file.writeLine("pfolder = false")
+  end
+  if gfolder then
+   file.writeLine("gfolder = true")
+  else
+   file.writeLine("gfolder = false")
+  end
+  file.close()
+  changes = false
+  Screen()
+ end
+end
+
+else
+ term.setTextColor(16384)
+ term.setBackgroundColor(32768)
+ print("You don't even have ReboOSt started!")
+ term.setTextColor(1)
+end
