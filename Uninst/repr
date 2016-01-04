@@ -130,6 +130,8 @@ if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
   fs.delete("/ReboOSt")
  end
  GitHubGet(nil)
+ fs.delete("/README.md")
+ fs.delete("/version")
  if fs.exists("/Uninst/Backup/User") then
   fs.copy("/Uninst/Backup/User", "/User")
  end
@@ -162,15 +164,15 @@ if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
 break
 end
 
-if XY == "36,14" and button == 1 then
+if X >= 27 and X <= 47 and Y >= 11 and Y <= 13 and button == 1 then
  term.setBackgroundColor(colors.gray)
  term.clear()
  term.setCursorPos(1,1)
- term.setTextColor(1)
+ term.setTextColor(colors.white)
  print("ReboOSt Installation")
  term.setTextColor(colors.cyan)
  print(" ")
- print("You go now back to the Menu!                       ")
- sleep(3)
+ print("You'll go now back to the Menu!")
+ sleep(2)
  break
 end end
