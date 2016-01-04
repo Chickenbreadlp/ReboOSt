@@ -1,5 +1,5 @@
-local oldpe = os.pullEvent()
-local os.pullEvent = os.pullEventRaw()
+local oldpe = os.pullEvent
+local os.pullEvent = os.pullEventRaw
 
 term.setTextColor(updatPre)
 term.setBackgroundColor(tbar)
