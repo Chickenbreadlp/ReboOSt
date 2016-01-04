@@ -3,21 +3,17 @@ term.setBackgroundColor(colors.gray)
 term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(1)
-print("ReboOSt Installation                               ")
-term.setCursorPos(5,3)
-term.setBackgroundColor(colors.lightGray)
-term.setTextColor(1)
-print("                    ")
-term.setCursorPos(5,4)
-print("      Install       ")
-term.setCursorPos(5,5)
-print("                    ")
-term.setCursorPos(27,3)
-print("                    ")
-term.setCursorPos(27,4)
-print("      Shutdown      ")
-term.setCursorPos(27,5)
-print("                    ")
+print("ReboOSt Installation")
+term.setCursorPos(1,3)
+term.setBackgroundColor(1)
+term.setTextColor(colors.cyan)
+print("                                                   ")
+print("                      Install                      ")
+print("                                                   ")
+term.setCursorPos(1,7)
+print("                                                   ")
+print("                     Shutdown                      ")
+print("                                                   ")
 end
 DrawScreen()
 
@@ -25,11 +21,11 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 XY = X..","..Y
 
-if X >= 5 and X <= 25 and Y >= 3 and Y <= 5 and button == 1 then
+if Y >= 3 and Y <= 5 and button == 1 then
  shell.run("Setup/instos")
  DrawScreen()
 end
 
-if X >= 27 and X <= 47 and Y >= 3 and Y <= 5 and button == 1 then
+if Y >= 7 and Y <= 9 and button == 1 then
  shell.run("Setup/shut-off")
 end end
