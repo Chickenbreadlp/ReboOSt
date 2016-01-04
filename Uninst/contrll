@@ -4,26 +4,20 @@ term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(1)
 print("ReboOSt Installation                               ")
-term.setCursorPos(5,3)
-term.setBackgroundColor(colors.lightGray)
-term.setTextColor(1)
-print("                    ")
-term.setCursorPos(5,4)
-print("   Uninstall  Pro   ")
-term.setCursorPos(5,5)
-print("                    ")
-term.setCursorPos(27,3)
-print("                    ")
-term.setCursorPos(27,4)
-print("      Shutdown      ")
-term.setCursorPos(27,5)
-print("                    ")
-term.setCursorPos(5,9)
-print("                    ")
-term.setCursorPos(5,10)
-print("     Repair Pro     ")
-term.setCursorPos(5,11)
-print("                    ")
+term.setCursorPos(1,5)
+term.setBackgroundColor(1)
+term.setTextColor(colors.cyan)
+print("                                                   ")
+print("                   Uninstall Pro                   ")
+print("                                                   ")
+term.setCursorPos(1,9)
+print("                                                   ")
+print("                     Shutdown                      ")
+print("                                                   ")
+term.setCursorPos(1,13)
+print("                                                   ")
+print("                    Repair  Pro                    ")
+print("                                                   ")
 end
 DrawScreen()
 
@@ -31,16 +25,16 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 XY = X..","..Y
 
-if X >= 5 and X <= 25 and Y >= 3 and Y <= 5 and button == 1 then
- shell.run("Setup/uninst")
+if X >= 1 and X <= 51 and Y >= 5 and Y <= 7 and button == 1 then
+ shell.run("/Uninst/uninst")
  DrawScreen()
 end
 
-if X >= 27 and X <= 47 and Y >= 3 and Y <= 5 and button == 1 then
- shell.run("Setup/repr")
- DrawScreen()
-end
-
-if X >= 5 and X <= 25 and Y >= 9 and Y <= 11 and button == 1 then
- shell.run("Setup/shut-off")
+if Y >= 9 and Y <= 11 and button == 1 then
+ shell.run("/Uninst/shut-off")
 end end
+
+if X >= 1 and X <= 51 and Y >= 13 and Y <= 15 and button == 1 then
+ shell.run("/Uninst/repr")
+ DrawScreen()
+end
