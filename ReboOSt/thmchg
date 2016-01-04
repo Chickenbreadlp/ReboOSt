@@ -1,6 +1,5 @@
 local inet = nil
 local changes = false
-rprog = "thmchg"
 
 freeSpace = fs.getFreeSpace("/")
 spacer = " "
@@ -20,8 +19,13 @@ term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 write(OStag)
 term.setBackgroundColor(tbar)
-term.setTextColor(tbartxt)
-print(" "..devpart.." "..version)
+if rosdebug then
+ term.setTextColor(colors.red)
+ print(" "..devpart.." "..version)
+else
+ term.setTextColor(tbartxt)
+ print(" "..devpart.." "..version)
+end
 term.setCursorPos(36,1)
 term.setTextColor(prog)
 write("Theme Changer ")
