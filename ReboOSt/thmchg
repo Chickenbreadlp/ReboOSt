@@ -247,22 +247,22 @@ if XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Screen() end
 if X >= 1 and X <= 7 and Y == 1 then shell.run("/ReboOSt/configs/colortheme") break end
 
  -- tbar
-if XY == "20,4" and button == 1 then tbar = colors.black tbartxt = colors.white prog = colors.gray updatpre = colors.white changes = true Screen() end -- tBar Black
-if XY == "21,4" and button == 1 then tbar = colors.gray tbartxt = colors.white prog = colors.lightGray updatpre = colors.cyan changes = true Screen() end -- tbar Gray
-if XY == "22,4" and button == 1 then tbar = colors.lightGray tbartxt = colors.white prog = colors.white updatpre = colors.yellow changes = true Screen() end -- tbar lightGray
-if XY == "23,4" and button == 1 then tbar = colors.white tbartxt = colors.black prog = colors.lightGray updatpre = colors.yellow changes = true Screen() end -- tbar White
-if XY == "24,4" and button == 1 then tbar = colors.yellow tbartxt = colors.black prog = colors.red updatpre = colors.lime changes = true Screen() end -- tbar Yellow
-if XY == "25,4" and button == 1 then tbar = colors.orange tbartxt = colors.white prog = colors.red updatpre = colors.lime changes = true Screen() end -- tbar Orange
-if XY == "26,4" and button == 1 then tbar = colors.red tbartxt = colors.white prog = colors.orange updatpre = colors.lime changes = true Screen() end -- tbar Red
-if XY == "27,4" and button == 1 then tbar = colors.purple tbartxt = colors.white prog = colors.magenta updatpre = colors.yellow changes = true Screen() end -- tbar Purple
-if XY == "28,4" and button == 1 then tbar = colors.magenta tbartxt = colors.white prog = colors.pink updatpre = colors.yellow changes = true Screen() end -- tbar Magenta
-if XY == "29,4" and button == 1 then tbar = colors.lightBlue tbartxt = colors.white prog = colors.cyan updatpre = colors.yellow changes = true Screen() end -- tbar light blue
-if XY == "30,4" and button == 1 then tbar = colors.cyan tbartxt = colors.white prog = colors.blue updatpre = colors.yellow changes = true Screen() end -- tbar Cyan
-if XY == "31,4" and button == 1 then tbar = colors.blue tbartxt = colors.white prog = colors.lightBlue updatpre = colors.yellow changes = true Screen() end -- tbar Blue
-if XY == "32,4" and button == 1 then tbar = colors.green tbartxt = colors.white prog = colors.lime updatpre = colors.yellow changes = true Screen() end -- tbar green
-if XY == "33,4" and button == 1 then tbar = colors.lime tbartxt = colors.white prog = colors.green updatpre = colors.yellow changes = true Screen() end -- tbar lime
-if XY == "34,4" and button == 1 then tbar = colors.pink tbartxt = colors.white prog = colors.magenta updatpre = colors.red changes = true Screen() end -- tbar pink
-if XY == "35,4" and button == 1 then tbar = colors.brown tbartxt = colors.white prog = colors.red updatpre = colors.yellow changes = true Screen() end -- tbar brown
+if XY == "20,4" and button == 1 then tbar = colors.black tbartxt = colors.white prog = colors.gray sndtxt = colors.cyan changes = true Screen() end -- tBar Black
+if XY == "21,4" and button == 1 then tbar = colors.gray tbartxt = colors.white prog = colors.lightGray sndtxt = colors.cyan changes = true Screen() end -- tbar Gray
+if XY == "22,4" and button == 1 then tbar = colors.lightGray tbartxt = colors.white prog = colors.white sndtxt = colors.cyan changes = true Screen() end -- tbar lightGray
+if XY == "23,4" and button == 1 then tbar = colors.white tbartxt = colors.black prog = colors.lightGray sndtxt = colors.cyan changes = true Screen() end -- tbar White
+if XY == "24,4" and button == 1 then tbar = colors.yellow tbartxt = colors.black prog = colors.red sndtxt = colors.cyan changes = true Screen() end -- tbar Yellow
+if XY == "25,4" and button == 1 then tbar = colors.orange tbartxt = colors.white prog = colors.red sndtxt = colors.cyan changes = true Screen() end -- tbar Orange
+if XY == "26,4" and button == 1 then tbar = colors.red tbartxt = colors.white prog = colors.orange sndtxt = colors.lime changes = true Screen() end -- tbar Red
+if XY == "27,4" and button == 1 then tbar = colors.purple tbartxt = colors.white prog = colors.magenta sndtxt = colors.lime changes = true Screen() end -- tbar Purple
+if XY == "28,4" and button == 1 then tbar = colors.magenta tbartxt = colors.white prog = colors.pink sndtxt = colors.cyan changes = true Screen() end -- tbar Magenta
+if XY == "29,4" and button == 1 then tbar = colors.lightBlue tbartxt = colors.white prog = colors.cyan sndtxt = colors.gray changes = true Screen() end -- tbar light blue
+if XY == "30,4" and button == 1 then tbar = colors.cyan tbartxt = colors.white prog = colors.blue sndtxt = colors.blue changes = true Screen() end -- tbar Cyan
+if XY == "31,4" and button == 1 then tbar = colors.blue tbartxt = colors.white prog = colors.lightBlue sndtxt = colors.cyan changes = true Screen() end -- tbar Blue
+if XY == "32,4" and button == 1 then tbar = colors.green tbartxt = colors.white prog = colors.lime sndtxt = colors.lime changes = true Screen() end -- tbar green
+if XY == "33,4" and button == 1 then tbar = colors.lime tbartxt = colors.white prog = colors.green sndtxt = colors.cyan changes = true Screen() end -- tbar lime
+if XY == "34,4" and button == 1 then tbar = colors.pink tbartxt = colors.white prog = colors.magenta sndtxt = colors.magenta changes = true Screen() end -- tbar pink
+if XY == "35,4" and button == 1 then tbar = colors.brown tbartxt = colors.white prog = colors.red sndtxt = colors.red changes = true Screen() end -- tbar brown
 
  -- mbar
 if XY == "20,5" and button == 1 then mbar = colors.black mbartxt = colors.white changes = true Screen() end -- mbar black
@@ -343,7 +343,7 @@ if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
  file.writeLine("mbartxt = "..mbartxt)
  file.writeLine("bodytxt = "..bodytxt)
  file.writeLine("wicotxt = "..wicotxt)
- file.writeLine("updatPre = "..updatPre)
+ file.writeLine("sndtxt = "..sndtxt)
  file.close()
  changes = false
  Screen()
