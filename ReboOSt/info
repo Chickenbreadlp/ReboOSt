@@ -8,7 +8,7 @@ local yaupos = 52 - yaulen
 
 if login then
 function Screen()
-term.setBackgroundColor(colors.gray)
+term.setBackgroundColor(tbar)
 term.clear()
 term.setCursorPos (1,1)
 term.setBackgroundColor(tbar)
@@ -38,8 +38,8 @@ term.setTextColor(mbartxt)
 term.setCursorPos(yaupos,2)
 print("You are using Build "..rosbuild.." from "..OStag)
 term.setCursorPos(1,4)
-term.setBackgroundColor(colors.gray)
-term.setTextColor(colors.cyan)
+term.setBackgroundColor(tbar)
+term.setTextColor(sndtxt)
 print([[                                                   
 ReboOSt was originally build upon ApfelOS. While ReboOSt still contains some of the internal Workloads, it was massively improved.]])
 print("")
