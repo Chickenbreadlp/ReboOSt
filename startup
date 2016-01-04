@@ -15,8 +15,8 @@ OStag = "ReboOSt"
 sleep(0.1)
 print("Setting OS version...")
 devpart = "DEV_Alpha"
-version = 1.1
-rosbuild = 0011
+version = 1.2
+rosbuild = 0012
 sleep(0.2)
 print("Starting Startuproutine...")
 sleep(0.25)
@@ -29,15 +29,28 @@ if fs.exists("/ReboOSt/configs/stcount") then
  local starts = fileData[1]
 else starts = 0 end
 
+if fs.exists("/ReboOSt/configs/main") then
+ shell.run("/ReboOSt/configs/main")
+else
+ crashcause = "Main Config not found!"
+ crashscreen = colors.gray
+ crashscreentxt = colors.cyan
+ shell.run("/ReboOSt/crash")
+ os.shutdown()
+end
+
 term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(colors.lightGray)
-write("                  Rebo")
+local hll = string.len("ReboOSt Build "..rosbuild)
+local hlx = (52-hll)/2
+term.setCursorPos(hlx,1)
+write("Rebo")
 term.setTextColor(colors.cyan)
 write("OS")
 term.setTextColor(colors.lightGray)
-print("t 1.0 Pro                  ")
-print(" ")
+print("t Build "..rosbuild)
+print("")
 write("    ")
 term.setBackgroundColor(colors.lightGray)
 print("                                           ")
@@ -51,6 +64,12 @@ term.setBackgroundColor(colors.lightGray)
 print("                                           ")
 term.setBackgroundColor(32768)
 print(" ")
+if rosdebug then
+ term.setTextColor(colors.red)
+ print("Debug Mode enabled!")
+else
+ print("")
+end
 if fs.exists("/ReboOSt/Logo.nfp") then
  Logo = paintutils.loadImage("/ReboOSt/Logo.nfp")
 else
@@ -109,15 +128,6 @@ else
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end
-if fs.exists("/ReboOSt/configs/main") then
- shell.run("/ReboOSt/configs/main")
-else
- crashcause = "Main Config not found!"
- crashscreen = colors.gray
- crashscreentxt = colors.cyan
- shell.run("/ReboOSt/crash")
- os.shutdown()
-end
 fs.makeDir("/ReboOSt/Temp")
 freeSpace = fs.getFreeSpace("/")
 spacer = " "
@@ -169,7 +179,7 @@ else
   crashcause = "Login files not found!"
  end
 end
-if crash then
+if crash and not rosdebug then
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end

@@ -20,7 +20,13 @@ term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
 print("                                                  ")
 term.setCursorPos(1,1)
-print(OStag.." "..devpart.." "..version)
+write(OStag)
+if rosdebug then
+ term.setTextColor(colors.red)
+ print(" "..devpart.." "..version)
+else
+ print(" "..devpart.." "..version)
+end
 term.setCursorPos(46,1)
 term.setTextColor(prog)
 print("Login ")
@@ -111,7 +117,13 @@ local function Login()
   term.setBackgroundColor(tbar)
   print("                                                   ")
   term.setCursorPos(1,1)
-  print(OStag.." "..devpart.." "..version)
+  write(OStag)
+  if rosdebug then
+   term.setTextColor(colors.red)
+   print(" "..devpart.." "..version)
+  else
+   print(" "..devpart.." "..version)
+  end
   print("                                                   ")
   paintutils.drawImage(Loginback,1,3)
   term.setCursorPos(1,18)
@@ -161,7 +173,13 @@ local function Login()
    term.setTextColor(tbartxt)
    print("                                                  ")
    term.setCursorPos(1,1)
-   print(OStag.." "..devpart.." "..version)
+   write(OStag)
+   if rosdebug then
+    term.setTextColor(colors.red)
+    print(" "..devpart.." "..version)
+   else
+    print(" "..devpart.." "..version)
+   end
    term.setCursorPos(46,1)
    term.setTextColor(prog)
    print("Login ")

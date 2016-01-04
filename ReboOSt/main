@@ -6,6 +6,9 @@ local diskXmin = nil
 local diskXmax = nil
 local gfolXmin = nil
 local gfolXmax = nil
+local pfolXmin = nil
+local pfolXmax = nil
+local dir = nil
 
 local function Desk()
 term.setCursorBlink(false)
@@ -16,7 +19,13 @@ term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
 --print("                                                  ")
 term.setCursorPos(1,1)
-print(OStag.." "..devpart.." "..version)
+write(OStag)
+if rosdebug then
+ term.setTextColor(colors.red)
+ print(" "..devpart.." "..version)
+else
+ print(" "..devpart.." "..version)
+end
 term.setCursorPos(44,1)
 term.setTextColor(prog)
 write("Desktop ")
@@ -56,8 +65,8 @@ Desk()
 
 while true do
 
-if gfolder then diskXmin = 8 diskXmax = 11 else diskXmin = 2 diskXmax = 6 end
-if pfolder then gfolXmin = 8 gfolXmax = 11 diskXmin = 14 diskXmax = 17 else gfolXmin = 2 gfolXmax = 5 end
+if gfolder then gfolXmin = 2 gfolXmax = 6 diskXmin = 8 diskXmax = 11 else gfolXmin = 0 gfolXmax = 0 diskXmin = 2 diskXmax = 6 end
+if pfolder then pfolXmin = 2 pfolXmax = 6 if gfolder then gfolXmin = 8 gfolXmax = 11 diskXmin = 14 diskXmax = 17 else diskXmin = 8 diskXmax = 11 end else pfolXmin = 0 pfolXmax = 0 gfolXmin = 2 gfolXmax = 5 end
 
 if disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
  paintutils.drawImage(disklogo,diskXmin,4)
@@ -106,22 +115,7 @@ if X >= 1 and X <= 7 and Y == 1 then
  else
   break
  end
- if crash then
-  Desk()
- else
-  shellacc = true
-  term.setBackgroundColor(colors.black)
-  term.setTextColor(16)
-  term.clear()
-  term.setCursorPos(1,1)
-  print("Shell")
-  term.setTextColor(colors.red)
-  write("To go back enter: ")
-  term.setTextColor(colors.lime)
-  print("Start")
-  term.setTextColor(1)
- break
- end
+ Desk()
 
  -- Disk
 
@@ -172,11 +166,9 @@ elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 the
 
  -- Program Folder
 
-elseif X >= 2 and X <= 5 and Y >= 4 and Y <= 8 then
- if gfolder then
-  dir = "/Programs/"
-  shell.run("/ReboOSt/fbrws", "--dir "..dir)
-  dir = nil
+elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
+ if pfolder then
+  shell.run("/ReboOSt/fbrws", "--dir /Programs")
   Desk()
  end
 
@@ -184,15 +176,13 @@ elseif X >= 2 and X <= 5 and Y >= 4 and Y <= 8 then
 
 elseif X >= gfolXmin and X <= gfolXmax and Y >= 4 and Y <= 8 then
  if gfolder then
-  dir = "/Programs/Games"
-  shell.run("/ReboOSt/fbrws", "--dir "..dir)
-  dir = nil
+  shell.run("/ReboOSt/fbrws", "--dir /Programs/Games")
   Desk()
  end
 end end
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
- print("You don't even have ApfelOS started!")
+ print("You don't even have ReboOSt started!")
  term.setTextColor(1)
 end
