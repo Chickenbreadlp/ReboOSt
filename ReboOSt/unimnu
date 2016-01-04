@@ -78,6 +78,7 @@ elseif X >= 1 and X < 14 and Y == 4 then
 elseif X >= 1 and X < 14 and Y == 5 then
  if admin then
   shell.run("/ReboOSt/shell")
+  menuundo()
 --  crash = false
 --  break
  end
