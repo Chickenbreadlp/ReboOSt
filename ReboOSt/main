@@ -107,7 +107,6 @@ if X >= 1 and X <= 7 and Y == 1 then
   break
  end
  Desk()
- end
 
  -- Disk
 
