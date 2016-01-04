@@ -1,4 +1,4 @@
 autoupdate = false
-modding = false
+rosdebug = false
 pfolder = false
 gfolder = false
