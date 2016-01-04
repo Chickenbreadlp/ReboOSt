@@ -1,12 +1,12 @@
 local oldpe = os.pullEvent
 
-term.setTextColor(updatPre)
+term.setTextColor(sndtxt)
 term.setBackgroundColor(tbar)
 term.clear()
 term.setCursorPos(1,1)
 print("RebOSt Shell   --   To go back enter Start")
 while true do
- term.setTextColor(updatPre)
+ term.setTextColor(sndtxt)
  write("-> ")
  os.pullEvent = os.pullEventRaw
  local name = read()
