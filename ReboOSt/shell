@@ -1,12 +1,13 @@
 local oldpe = os.pullEvent
-os.pullEvent = os.pullEventRaw
 
 term.setTextColor(updatPre)
 term.setBackgroundColor(tbar)
 print("RebOSt Shell   --   To go back enter Start")
 while true do
  write("-> ")
+ os.pullEvent = os.pullEventRaw
  local name = read()
+ os.pullEvent = oldpe
  print("")
  if name == "rm /ReboOSt/*" or name == "rm /ReboOSt" or name == "rm ReboOSt" or name == "rm reboost" or name == "rm *" or name == "rm Programs" then
   term.setTextColor(colors.red)
