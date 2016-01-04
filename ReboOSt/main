@@ -106,21 +106,7 @@ if X >= 1 and X <= 7 and Y == 1 then
  else
   break
  end
- if crash then
-  Desk()
- else
-  shellacc = true
-  term.setBackgroundColor(colors.black)
-  term.setTextColor(16)
-  term.clear()
-  term.setCursorPos(1,1)
-  print("Shell")
-  term.setTextColor(colors.red)
-  write("To go back enter: ")
-  term.setTextColor(colors.lime)
-  print("Start")
-  term.setTextColor(1)
- break
+ Desk()
  end
 
  -- Disk
