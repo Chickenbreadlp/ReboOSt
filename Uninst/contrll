@@ -1,12 +1,12 @@
-term.setBackgroundColor(8)
+local function DrawScreen()
+term.setBackgroundColor(colors.gray)
 term.clear()
 term.setCursorPos(1,1)
-term.setBackgroundColor(2048)
 term.setTextColor(1)
-print("ApfelOS 1.0 Pro Installation                       ")
+print("ReboOSt Installation                               ")
 term.setCursorPos(5,3)
-term.setBackgroundColor(1)
-term.setTextColor(2048)
+term.setBackgroundColor(colors.lightGray)
+term.setTextColor(1)
 print("                    ")
 term.setCursorPos(5,4)
 print("   Uninstall  Pro   ")
@@ -36,6 +36,8 @@ term.setCursorPos(5,12)
 print("        [X]         ")
 term.setCursorPos(5,13)
 print("                    ")
+end
+DrawScreen()
 
 while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
@@ -43,6 +45,7 @@ XY = X..","..Y
 
 if XY == "14,6" and button == 1 then
  shell.run("Setup/uninst000.adf")
+ DrawScreen()
 end
 
 if XY == "14,12" and button == 1 then
