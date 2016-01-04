@@ -1,12 +1,10 @@
-if fs.exists("Setup") then
-fs.delete("Setup")
-term.setBackgroundColor(8)
+if fs.exists("/Setup") then fs.delete("/Setup") end
+term.setBackgroundColor(colors.gray)
 term.clear()
 term.setCursorPos(1,1)
-term.setBackgroundColor(2048)
 term.setTextColor(1)
 print("ReboOSt Installation                             ")
-term.setBackgroundColor(8)
+term.setTextColor(colors.cyan)
 print(" ")
 print("   The Computer will be shutdown in 5 seconds.   ")
 sleep(1)
@@ -23,4 +21,3 @@ term.setCursorPos(37,3)
 print("1")
 sleep(1)
 os.shutdown()
-end
