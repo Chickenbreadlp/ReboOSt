@@ -1,7 +1,6 @@
 if login then
 
 local acc = ""
-rprog = "regist"
 
 function Regist()
 term.setBackgroundColor(tbar)
@@ -91,8 +90,13 @@ term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 write(OStag)
 term.setBackgroundColor(tbar)
-term.setTextColor(tbartxt)
-print(" "..devpart.." "..version)
+if rosdebug then
+ term.setTextColor(colors.red)
+ print(" "..devpart.." "..version)
+else
+ term.setTextColor(tbartxt)
+ print(" "..devpart.." "..version)
+end
 term.setTextColor(prog)
 term.setCursorPos(37,1)
 write("Registration ")
