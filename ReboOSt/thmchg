@@ -1,8 +1,6 @@
 local inet = nil
 local changes = false
 
-CCver = os.version()
-
 if login then
 function Screen()
 term.setBackgroundColor(mbar)
@@ -334,7 +332,6 @@ end
 
  -- Discard
 if X >= 7 and X <= 21 and Y == 11 and button == 1 then shell.run("/User/"..UserName.."/..colortheme") changes = false Screen() end
-
 end
 
 else
