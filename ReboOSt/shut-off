@@ -22,34 +22,37 @@ if instashut then
 else
 if login then
 
-term.setBackgroundColor(wico)
-term.setTextColor(wicotxt)
-term.setCursorPos(13,7)
-print("Do you want to shutdown? ")
-term.setBackgroundColor(wicotxt)
-term.setTextColor(wico)
-term.setCursorPos(13,8)
-print("     Yes        No       ")
-term.setCursorPos(13,9)
-print("                         ")
-term.setCursorPos(13,10)
-print("     [X]        [X]      ")
-term.setCursorPos(13,11)
-print("                         ")
+term.setBackgroundColor(tbar)
+term.setTextColor(sndtxt)
+term.setCursorPos(1,7)
+print("             Do you want to shutdown?              ")
+print("                                                   ")
+write("                   ")
+term.setBackgroundColor(mbar)
+term.setTextColor(mbartxt)
+write("Yes")
+term.setBackgroundColor(tbar)
+write("        ")
+term.setBackgroundColor(mbar)
+write("No")
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print("                   ")
+print("                                                   ")
 
 while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
-XY = X..","..Y
+local XY = X..","..Y
 
  -- Yes
 
-if XY == "19,10" and button == 1 then
+if X >= 20 and X <= 22 and Y == 9 and button == 1 then
  Shutdown()
-break
+end
 
  -- No
 
-elseif XY == "30,10" and button == 1 then
+if X >= 31 and X <= 32 and Y == 9 and button == 1 then
 break
 end end
 

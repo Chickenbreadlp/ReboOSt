@@ -12,14 +12,14 @@ print("Checking CraftOS Version...")
 sleep(0.1)
 print("Setting OStag...")
 OStag = "ReboOSt"
-sleep(0.1)
+sleep(0.05)
 print("Setting OS version...")
-devpart = "DEV_Alpha"
-version = 2
-rosbuild = 0020
-sleep(0.2)
+devpart = "Alpha"
+version = 1
+rosbuild = 1010
+sleep(0.05)
 print("Starting Startuproutine...")
-sleep(0.25)
+sleep(0.05)
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
  local fileData = {}
@@ -27,7 +27,7 @@ if fs.exists("/ReboOSt/configs/stcount") then
  table.insert(fileData,line)
  file.close()
  local starts = fileData[1]
-else starts = 0 end
+else starts = "0" end
 
 if fs.exists("/ReboOSt/configs/main") then
  shell.run("/ReboOSt/configs/main")
@@ -82,7 +82,7 @@ end
 paintutils.drawImage(Logo,6,9)
 term.setCursorPos(6,4)
 term.setBackgroundColor(colors.cyan)
-textutils.slowPrint("             ")
+textutils.slowPrint("             ", 1000)
 if fs.exists("/ReboOSt/APIs/encryption") then
  os.loadAPI("/ReboOSt/APIs/encryption")
 else
@@ -131,7 +131,7 @@ end
 fs.makeDir("/ReboOSt/Temp")
 freeSpace = fs.getFreeSpace("/")
 freeSpace = freeSpace/1024
--- spacer = " "
+term.setBackgroundColor(colors.cyan)
 start = true
 
 if fs.exists("/ReboOSt/configs/colortheme") then
@@ -145,25 +145,27 @@ else
 end
 
 if starts == "0" then
- starts = 1
  term.setCursorPos(19,4)
- textutils.slowPrint("                            ")
- if fs.exists("ReboOSt/firststart") then
-  shell.run("ReboOSt/firststart")
+ textutils.slowPrint("                          ", 1000)
+ if fs.exists("/ReboOSt/firststart") then
+  shell.run("/ReboOSt/firststart")
  else
-  crashcause = "Firststart Information not found!"
+  crashcause = "Firststart Routine not found!"
  end
  crashscreen = colors.gray
  crashscreentxt = colors.cyan
 else
  term.setCursorPos(19,4)
- textutils.slowPrint("              ")
- starts = 1
- --[[ local file = fs.open("/ReboOSt/configs/stcount", "w")
- file.write(starts)
- file.close()]]
+ textutils.slowPrint("              ", 1000)
+ starts = "1"
+ if fs.exists("/ReboOSt/configs/stcount") then
+  fs.delete("/ReboOSt/configs/stcount")
+  local file = fs.open("/ReboOSt/configs/stcount", "w")
+  file.write(starts)
+  file.close()
+ end
  term.setCursorPos(33,4)
- textutils.slowPrint("              ")
+ textutils.slowPrint("              ", 1000)
  if autoupdate then
   if fs.exists("/ReboOSt/updater") then
    shell.run("/ReboOSt/updater")

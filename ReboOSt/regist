@@ -73,7 +73,7 @@ else
   file.writeLine(acc)
   file.close()
   fs.copy("/User/root/Pictures", "/User/"..Name.."/Pictures")
-  fs.copy("/ReboOSt/configs/colortheme", "/User/"..UserName.."/..colortheme")
+  fs.copy("/ReboOSt/configs/colortheme", "/User/"..Name.."/..colortheme")
   term.setCursorPos(18,10)
   print("Registration was successfull!")
   sleep(2)

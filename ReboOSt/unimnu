@@ -26,9 +26,6 @@ local function menuundo()
  term.setTextColor(tbartxt)
  print(OStag)
  paintutils.drawImage(Wallpaper,1,2)
- term.setCursorPos(1,18)
- term.setBackgroundColor(tbar)
- print(UserName)
  if fs.exists("/disk") then
   paintutils.drawImage(disklogo,2,4)
   term.setCursorPos(2,8)
@@ -39,11 +36,6 @@ local function menuundo()
  else
   if diskiconactiv then
    paintutils.drawImage(Wallpaper,1,2)
-   term.setBackgroundColor(tbar)
-   term.setTextColor(tbartxt)
-   term.setCursorPos(1,18)
-   print(UserName)
-  else
   end
  end
 end

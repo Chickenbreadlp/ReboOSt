@@ -1,8 +1,8 @@
 local inet = nil
 
-local function get(paste)
+local function get(branch, paste)
     local response = http.get(
-        "http://pastebin.com/raw.php?i="..textutils.urlEncode( paste )
+        "https://raw.githubusercontent.com/Chickenbreadlp/ReboOSt/"..branch.."/"..textutils.urlEncode( paste )
     )
         
     if response then
@@ -12,14 +12,14 @@ local function get(paste)
     else
     end
 end
-local function download(pastecode, sFile)
+local function download(branch, pastecode, sFile)
     local sPath = shell.resolve( sFile )
     if fs.exists( sPath ) then
         return
     end
     
     -- GET the contents from pastebin
-    local res = get(pastecode)
+    local res = get(branch, pastecode)
     if res then        
         local file = fs.open( sPath, "w" )
         file.write( res )
@@ -43,7 +43,7 @@ if login then
  term.setCursorPos(14,11)
  print("                       ")
 end
-local inet = get("tUajHSeB")
+local inet = get("release", "README.md")
 if inet then
  if login then
   term.setCursorPos(21,10)
@@ -51,21 +51,13 @@ if inet then
   sleep(2.5)
  end
 
-if fs.exists("/ReboOSt/Temp/updater2") then
- fs.delete("/ReboOSt/Temp/updater2")
+if fs.exists("/ReboOSt/Temp/updattmp1") then
+ fs.delete("/ReboOSt/Temp/updattmp1")
 end
-download("tUajHSeB", "/ReboOSt/Temp/updater2")
-if fs.exists("/ReboOSt/Temp/updater2") then
+download(updatstream, "version", "/ReboOSt/Temp/updattmp1")
+if fs.exists("/ReboOSt/Temp/updattmp1") then
 
---[[local file = fs.open("/ReboOSt/Temp/updater2", "r")
-local fileData = {}
-local line = file.readLine()
-table.insert(fileData,line)
-file.close()
-local NewOSver = fileData[1]
-]]
-shell.run("/ReboOSt/Temp/updater2")
-
+shell.run("/ReboOSt/Temp/updattmp1")
 
 if rosbuildo <= rosbuild then
  if login then
@@ -96,47 +88,11 @@ if rosbuildo <= rosbuild then
   print(" ")
   print("There is no new Version available!")
   print(" ")
- if login then
   print("You will get back to the Desk in any second.")
- else
-  print("You will get to the login any second.")
- end
   sleep(3)
  end
- fs.delete("/ReboOSt/Temp/updater2")
+ fs.delete("/ReboOSt/Temp/updattmp1")
 elseif rosbuildo > rosbuild then
---[[function  Laden()
- term.setCursorPos(19,7)
- print("Please wait |")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait /")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait -")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait |")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait /")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait -")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait |")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait /")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait -")
- sleep(0.1)
- term.setCursorPos(19,7)
- print("Please wait |")
- sleep(0,1)
-end]]
 
 term.setBackgroundColor(mbar)
 term.clear()
@@ -163,33 +119,22 @@ term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print(" ")
 print("There is a new Version available.                  ")
+print(" Build: "..rosbuildo)
+term.setCursorPos(15,10)
+print("Do you want to update?")
 print(" ")
-print(" ")
-print(" ")
-print(" ")
-print("Please manually download Build "..rosbuildo)
---[[print("Do you want to update?                             ")
-print(" ")
-term.setCursorPos(5,11)
-term.setBackgroundColor(wicotxt)
-term.setTextColor(wico)
-print("                    ")
-term.setCursorPos(5,12)
-print("        Yes         ")
 term.setCursorPos(5,13)
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
 print("                    ")
 term.setCursorPos(5,14)
-print("        [X]         ")
+print("        Yes         ")
 term.setCursorPos(5,15)
 print("                    ")
-term.setCursorPos(27,11)
-print("                    ")
-term.setCursorPos(27,12)
-print("        No          ")
 term.setCursorPos(27,13)
 print("                    ")
 term.setCursorPos(27,14)
-print("        [X]         ")
+print("        No          ")
 term.setCursorPos(27,15)
 print("                    ")
 
@@ -197,7 +142,7 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 XY = X..","..Y
 
-if XY == "14,14" and button == 1 then
+if X >=5 and X <= 25 and Y >= 13 and Y <= 15 and button == 1 then
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -219,41 +164,12 @@ if XY == "14,14" and button == 1 then
  print(" ")
  print("There is a new Version available. And you want to  ")
  print(" update. This will be deleting any custom mods.    ")
- print(" ")
- print(" ")
- print(" ")
  term.setCursorPos(1,18)
  term.setTextColor(sndtxt)
  print("                 Preparing Setup!                  ")
  term.setTextColor(mbartxt)
- sleep(3.5)
- term.setBackgroundColor(mbar)
- term.clear()
- term.setCursorPos(1,1)
- term.setBackgroundColor(tbar)
- term.setTextColor(tbartxt)
- print("                                                   ")
- term.setCursorPos(1,1)
- term.setBackgroundColor(mbar)
- term.setTextColor(mbartxt)
- write(OStag)
- term.setBackgroundColor(tbar)
- term.setTextColor(tbartxt)
- print(" "..devpart.." "..version)
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
- term.setBackgroundColor(mbar)
- term.setTextColor(mbartxt)
- print(" ")
- print("ApfelOS 1.0 Pro is now updating.                   ")
- print(" ")
- print("Downloading OS...")
- 
- download("VMD4n1tb", "/ReboOSt/Temp/updater1")
- shell.run("/ReboOSt/Temp/updater1")
- fs.delete("/ReboOSt/Temp/updater1")
- 
+ download(updatstream, "updat", "/ReboOSt/Temp/updattmp2")
+ sleep(2.5)
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -274,10 +190,12 @@ if XY == "14,14" and button == 1 then
  term.setTextColor(mbartxt)
  print(" ")
  print("ReboOSt is now updating.                           ")
- Laden()
- Laden()
- Laden()
- Laden()
+ print(" ")
+ print("Downloading OS...")
+ 
+ shell.run("/ReboOSt/Temp/updattmp2")
+ fs.delete("/ReboOSt/Temp/updattmp2")
+ 
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -299,14 +217,12 @@ if XY == "14,14" and button == 1 then
  print(" ")
  print("ReboOSt is now on the newest Version.              ")
  print("The system will be rebooting any second.           ")
- fs.delete("Setup")
  sleep(3)
- fs.delete("/ReboOSt/Temp/updater2")
  os.reboot()
 break
 end
 
-if XY == "36,14" and button == 1 then
+if X >= 27 and X <= 47 and Y >= 13 and Y <= 15 and button == 1 then
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -335,7 +251,7 @@ if XY == "36,14" and button == 1 then
  sleep(3)
  fs.delete("/ReboOSt/Temp/updater2")
 break
-end end]]
+end end
 end end
 else
  if login then

@@ -17,10 +17,6 @@ print("luaIDE      ")
 
 local function menuundo()
  paintutils.drawImage(Wallpaper,1,2)
- term.setCursorPos(1,18)
- term.setBackgroundColor(tbar)
- term.setTextColor(tbartxt)
- print(UserName)
  if fs.exists("/disk") then
   paintutils.drawImage(disklogo,2,4)
   term.setCursorPos(2,8)
@@ -31,10 +27,6 @@ local function menuundo()
  else
   if diskiconactiv then
    paintutils.drawImage(Wallpaper,1,2)
-   term.setCursorPos(1,18)
-   term.setBackgroundColor(tbar)
-   term.setTextColor(tbartxt)
-   print(UserName)
   else
   end
  end
@@ -44,26 +36,10 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shut down
-
-if XY == "51,1" and button == 1 then
-menuundo()
-shell.run("/ReboOSt/shut-off")
-break
-
- -- reboot
-
-elseif XY == "50,1" and button == 1 then
-menuundo()
-shell.run("/ReboOSt/reboot")
-break
-
  -- browser
 
-elseif X >= 14 and X <= 24 and Y == 3 then
- dir = ""
- shell.run("/ReboOSt/fbrws", "--dir "..dir)
- dir = nil
+if X >= 14 and X <= 24 and Y == 3 then
+ shell.run("/ReboOSt/fbrws")
  keepmenu = false
 break
 
@@ -97,30 +73,9 @@ elseif X >= 14 and X <= 24 and Y == 7 then
  keepmenu = false
 break
 
- -- Logoff
-
-elseif XY == "51,18" and button == 1 then
- menuundo()
- term.setBackgroundColor(wico)
- term.setTextColor(wicotxt)
- term.setCursorPos(14,7)
- print("        Logoff        ")
- term.setBackgroundColor(wicotxt)
- term.setTextColor(wico)
- term.setCursorPos(14,8)
- print("                      ")
- term.setCursorPos(14,9)
- print("    Logging off...    ")
- term.setCursorPos(14,10)
- print("                      ")
- sleep(1.2)
- shell.run("/ReboOSt/logoff")
-break
-end
-
  -- Go back
 
-if X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
  keepmenu = true
  menuundo()
  break
