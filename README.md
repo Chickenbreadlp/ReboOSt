@@ -1,9 +1,9 @@
-# ReboOSt Dev-Alpha 1
+# ReboOSt Dev-Alpha 2
 ReboOSt is a continuation of something I worked on before, ApfelOS.
 Just to recap: ApfelOS was created when I was still young and childish. It was kinda crappy in it's own ways.
 
-It's over 1,5 Years ago and I improved a lot in lua, so I decided to give ApfelOS a look and think what I could have done better. I was so satisfied with the ideas that came to my mind, that I began to develope on it again. Now, about a week later or so, I can present to you the Dev Build 0012. It's for testing purposes only but still contains most of the feature from the first Alpha, which I'm planning to release this month.
-Please Note, that Build 0012 is beeing displayed as Build 12 inside the About panel.
+It's over 1,5 Years ago and I improved a lot in lua, so I decided to give ApfelOS a look and think what I could have done better. I was so satisfied with the ideas that came to my mind, that I began to develope on it again. Now, about a week later or so, I can present to you the Dev Build 0020. It's for testing purposes only but still contains most of the feature from the first Alpha, which I'm planning to release this month.
+Please Note, that Build 0020 is beeing displayed as Build 20 inside the About panel.
 
 This Build of ReboOSt in perticular contains the following features:
 
@@ -13,5 +13,6 @@ This Build of ReboOSt in perticular contains the following features:
     Sketch by oeed
     luaIDE by GravityScore
     edit the wallpaper to your needs; every user has it's own
+    a little shell overlay to prevent damaging system files (still not completly finished)
 
 *all changes apply for every user and can be changed by every user. changes do not apply for 3rd Party Programs
