@@ -13,8 +13,8 @@ term.setCursorPos(14,4)
 write("Register     ")
 if admin then print(" ") else print("!") end
 term.setCursorPos(14,5)
-write("Updater      !")
---if admin then print(" ") else print("!") end
+write("Updater      ")
+if admin then print(" ") else print("!") end
 term.setCursorPos(14,6)
 write("Control Panel")
 if admin then print(" ") else print("!") end
@@ -73,13 +73,13 @@ elseif X >= 14 and X < 27 and Y == 4 then
 
  -- Updater
 
---[[elseif X >= 14 and X < 27 and Y == 5 then
+elseif X >= 14 and X < 27 and Y == 5 then
  if admin then
   keepmenu = false
   menuundo()
   shell.run("/ReboOSt/updater")
  break
- end]]
+ end
 
  -- Control Panel
 
