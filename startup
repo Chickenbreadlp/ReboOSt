@@ -15,8 +15,8 @@ OStag = "ReboOSt"
 sleep(0.1)
 print("Setting OS version...")
 devpart = "DEV_Alpha"
-version = 1.2
-rosbuild = 0012
+version = 2
+rosbuild = 0020
 sleep(0.2)
 print("Starting Startuproutine...")
 sleep(0.25)
@@ -130,8 +130,8 @@ else
 end
 fs.makeDir("/ReboOSt/Temp")
 freeSpace = fs.getFreeSpace("/")
-spacer = " "
-format = "B"
+freeSpace = freeSpace/1024
+-- spacer = " "
 start = true
 
 if fs.exists("/ReboOSt/configs/colortheme") then
