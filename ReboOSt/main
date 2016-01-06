@@ -33,35 +33,21 @@ term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("                                                   ")
 paintutils.drawImage(Wallpaper,1,2)
-term.setCursorPos(1,18)
+term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
-print(UserName)
-write("(C)Chickenbread 2015       ")
-if freeSpace >= 100000000 then
- spacer = "     To many free Space"
- format = " "
-elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
- spacer = "         Free:"
-elseif freeSpace <= 1000000 and freeSpace >= 100000 then
- spacer = "          Free:"
-elseif freeSpace <= 100000 and freeSpace >= 10000 then
- spacer = "           Free:"
-elseif freeSpace <= 10000 and freeSpace >= 1000 then
- spacer = "            Free:"
-elseif freeSpace <= 1000 and freeSpace >= 100 then
- spacer = "             Free:"
-elseif freeSpace <= 100 and freeSpace >= 10 then
- spacer = "              Free:"
-elseif freeSpace <= 10 and freeSpace >= 1 then
- spacer = "               Free:"
+write(UserName)
+local fslen = string.len(freeSpace)
+local fsX = 49 - fslen
+term.setCursorPos(fsX,19)
+write(freeSpace.." KB")
+end
+if termstart then
+ shell.run("/ReboOSt/shell")
+ Desk()
 else
- spacer = "          No Free Space"
- format = " "
+ Desk()
 end
-write(spacer.." "..freeSpace.." "..format)
-end
-Desk()
 
 while true do
 

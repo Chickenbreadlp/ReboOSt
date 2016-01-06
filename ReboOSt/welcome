@@ -35,29 +35,11 @@ term.setCursorPos(1,18)
 print("                                                   ")
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
-write("(C)Chickenbread 2015       ")
-if freeSpace >= 100000000 then
- spacer = "     To many free Space"
- format = " "
-elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
- spacer = "         Free:"
-elseif freeSpace <= 1000000 and freeSpace >= 100000 then
- spacer = "          Free:"
-elseif freeSpace <= 100000 and freeSpace >= 10000 then
- spacer = "           Free:"
-elseif freeSpace <= 10000 and freeSpace >= 1000 then
- spacer = "            Free:"
-elseif freeSpace <= 1000 and freeSpace >= 100 then
- spacer = "             Free:"
-elseif freeSpace <= 100 and freeSpace >= 10 then
- spacer = "              Free:"
-elseif freeSpace <= 10 and freeSpace >= 1 then
- spacer = "               Free:"
-else
- spacer = "          No Free Space"
- format = " "
-end
-write(spacer.." "..freeSpace.." "..format)
+write("© Chickenbread 2015 - 2016                         ")
+local fslen = string.len(freeSpace)
+local fsX = 49 - fslen
+term.setCursorPos(fsX,19)
+write(freeSpace.." KB")
 end
 
 local function Login()
@@ -74,11 +56,14 @@ local function Login()
  write("                                   ")
  term.setCursorPos(18,9)
  UserName = read()
+ local linput = string.lower(UserName)
  
- if UserName == "Reboot" then
-  os.reboot()
- elseif UserName == "Shutdown" then
-  os.shutdown()
+ if linput == "reboot" then
+  instashut = true
+  shell.run("/ReboOSt/reboot")
+ elseif linput == "shutdown" then
+  instashut = true
+  shell.run("/ReboOSt/shut-off")
  elseif UserName == "" then
   Login()
  end
@@ -94,6 +79,7 @@ local function Login()
  if UserPass == "" then
   Login()
  end
+ if fs.exists("/User/"..UserName) then
  local file = fs.open("/User/"..UserName.."/..meta", "r")
  local fileData = {}
  local line = file.readLine()
@@ -101,9 +87,9 @@ local function Login()
  table.insert(fileData,line)
  line = file.readLine()
  until line == nil
- file.close()
  ruserpass = fileData[1]
  type = fileData[2]
+ file.close()
  userpasse = encryption.sha256(UserPass)
  if userpasse == ruserpass then
   if type == "admin" then
@@ -130,34 +116,23 @@ local function Login()
   term.setBackgroundColor(tbar)
   term.setTextColor(tbartxt)
   print("                                                   ")
-  write("(C)Chickenbread 2015       ")
-  if freeSpace >= 100000000 then
-   spacer = "     To many free Space"
-   format = " "
-  elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
-   spacer = "         Free:"
-  elseif freeSpace <= 1000000 and freeSpace >= 100000 then
-   spacer = "          Free:"
-  elseif freeSpace <= 100000 and freeSpace >= 10000 then
-   spacer = "           Free:"
-  elseif freeSpace <= 10000 and freeSpace >= 1000 then
-   spacer = "            Free:"
-  elseif freeSpace <= 1000 and freeSpace >= 100 then
-   spacer = "             Free:"
-  elseif freeSpace <= 100 and freeSpace >= 10 then
-   spacer = "              Free:"
-  elseif freeSpace <= 10 and freeSpace >= 1 then
-   spacer = "               Free:"
-  else
-   spacer = "           No Free"
-   format = "Space "
-  end
-  write(spacer.." "..freeSpace.." "..format)
+  write("© Chickenbread 2015 - 2016")
+  local fslen = string.len(freeSpace)
+  local fsX = 49 - fslen
+  term.setCursorPos(fsX,19)
+  write(freeSpace.." KB")
   if fs.exists("/User/"..UserName.."/Pictures/wallpaper.nfp") then
    Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
   else
    fs.copy("/User/root/Pictures/wallpaper.nfp", "/User/"..UserName.."/Pictures/wallpaper.nfp")
    Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
+  end
+  if fs.exists("/User/"..UserName.."/..colortheme") then
+   shell.run("/User/"..UserName.."/..colortheme")
+  else
+   crashcause = "Colortheme file not found!"
+   shell.run("/ReboOSt/crash")
+   os.shutdown()
   end
   term.setTextColor(colors.cyan)
   term.setBackgroundColor(colors.gray)
@@ -168,27 +143,18 @@ local function Login()
   welcome()
   shell.run("/ReboOSt/main")
   if login == false then
-   term.setCursorPos(1,1)
-   term.setBackgroundColor(tbar)
-   term.setTextColor(tbartxt)
-   print("                                                  ")
-   term.setCursorPos(1,1)
-   write(OStag)
-   if rosdebug then
-    term.setTextColor(colors.red)
-    print(" "..devpart.." "..version)
-   else
-    print(" "..devpart.." "..version)
-   end
-   term.setCursorPos(46,1)
-   term.setTextColor(prog)
-   print("Login ")
-   print("                                                   ")
-   term.setCursorPos(1,18)
-   print("                                                   ")
+   shell.run("/ReboOSt/configs/colortheme")
+   FirstDraw()
    Login()
   elseif login then
   end
+ else
+  term.setCursorPos(18,10)
+  term.setTextColor(colors.cyan)
+  print("Wrong Username or Password")
+  sleep(1)
+  Login()
+ end
  else
   term.setCursorPos(18,10)
   term.setTextColor(colors.cyan)
@@ -208,6 +174,7 @@ local function Start()
   end
  else
   term.setCursorBlink(false)
+  shell.run("/ReboOSt/configs/colortheme")
   FirstDraw()
   Login()
  end

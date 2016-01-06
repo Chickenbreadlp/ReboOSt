@@ -1,3 +1,32 @@
+local function Reboot()
+ term.setBackgroundColor(colors.gray)
+ term.clear()
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(colors.gray)
+ term.setTextColor(colors.white)
+ write("                      Rebo")
+ term.setTextColor(colors.cyan)
+ write("OS")
+ term.setTextColor(colors.white)
+ print("t                      ")
+ print("                   is rebooting                    ")
+ paintutils.drawImage(Logo,6,9)
+ fs.delete("/ReboOSt/Temp")
+ os.unloadAPI("encryption")
+ if starts == 0 then
+  starts = starts + 1
+  local file = fs.open("/ReboOSt/..stcount.adf", "w")
+  file.write(starts)
+  file.close()
+ end
+ sleep(0.7)
+ os.reboot()
+end
+
+if instashut then
+ Reboot()
+else
+
 if login then
 
 term.setBackgroundColor(wico)
@@ -22,28 +51,7 @@ local XY = X..","..Y
  -- Yes
 
 if XY == "20,10" and button == 1 then
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setBackgroundColor(colors.gray)
- term.setTextColor(colors.white)
- write("                      Rebo")
- term.setTextColor(colors.cyan)
- write("OS")
- term.setTextColor(colors.white)
- print("t                      ")
- print("                  is shuting down                  ")
- paintutils.drawImage(Logo,6,9)
- fs.delete("/ReboOSt/Temp")
- os.unloadAPI("encryption")
- if starts == 0 then
-  starts = starts + 1
-  local file = fs.open("/ReboOSt/..stcount.adf", "w")
-  file.write(starts)
-  file.close()
- end
- sleep(0.7)
- os.reboot()
+ Reboot()
 break
 end
 
@@ -56,6 +64,7 @@ end end
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
- print("You don't even have ApfelOS started!")
+ print("You don't even have ReboOSt started!")
  term.setTextColor(1)
+end
 end

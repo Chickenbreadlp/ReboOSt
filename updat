@@ -1,0 +1,73 @@
+local function GitHubGet(branch)
+    local gitPath = "/"
+    local banch = branch or nil
+    local URL = "https://api.github.com/repos/Chickenbreadlp/ReboOSt/contents/" .. (branch and "?ref=" or "") .. (branch or "")
+    local removeLuaExtention = true
+    
+    function getFileDownloadURLs(url, gatheredFiles, gatheredDirectories)
+        assert(url, "url invalid")
+        local handle = assert(http.get(url), "Getting " .. url .. " failed")
+        local json = assert(handle.readAll(), "Reading failed for url " .. url)
+        json = json:gsub("%s*\n%s*", "") --removes white space around '\n' and '\n'
+        json = json:gsub("\"([^\"]*)\"%s*:%s*", "%1 = ") --turns '"hi": ' into 'hi = '
+        json = json:sub(2, #json - 1) --removes brackets around the almostJSON
+        json = "{" .. json .. "}" --adds curly brackets
+        local jsonTable = assert(textutils.unserialize(json), "Failed to unserialize:\n" .. json)
+        local files = gatheredFiles or {}
+        local directories = gatheredDirectories or {}
+        for k, v in ipairs(jsonTable) do
+            if v.type == "file" then
+                files[#files + 1] = {url = v.download_url, path = v.path}
+            elseif v.type == "dir" then
+                directories[#directories + 1] = v.url
+            end
+        end
+        local recursiveURL = directories[1]
+        if not recursiveURL then
+            return files
+        end
+        if recursiveURL then
+            table.remove(directories, 1)
+            return getFileDownloadURLs(recursiveURL, files, directories)
+        end
+    end
+
+    for k, v in ipairs(getFileDownloadURLs(URL)) do
+        if (v.path:sub(#v.path - 3) == ".lua") and removeLuaExtention then
+            v.path = v.path:sub(1, #v.path - 4)
+        end
+        local writeFile = fs.open("/" .. v.path, "w")
+        local webHandle = assert(http.get(v.url), "Getting " .. v.url .. " failed")
+        local webContents = assert(webHandle.readAll(), "Reading " .. v.url .. " failed")
+        writeFile.write(webContents)
+        writeFile.close()
+    end
+end
+
+fs.makeDir("/updattemp")
+if fs.exists("/ReboOSt/configs/browser") then
+ fs.copy("/ReboOSt/configs/browser", "/updattemp/brwsconf")
+end
+if fs.exists("/ReboOSt/configs/main") then
+ fs.copy("/ReboOSt/configs/main", "/updattemp/mainconf")
+end
+if fs.exists("/User")
+ fs.copy("/User", "/updatetemp/user")
+end
+
+GitHubGet(updatstream)
+fs.delete("/README.md")
+fs.delete("/updat")
+fs.delete("/version")
+if fs.exists("/updattemp/brwsconf") then
+ fs.delete("/ReboOSt/configs/browser")
+ fs.copy("/updattemp/brwsconf", "/ReboOSt/configs/browser")
+end
+if fs.exists("/updattemp/mainconf") then
+ fs.delete("/ReboOSt/configs/main")
+ fs.copy("/updattemp/mainconf", "/ReboOSt/configs/browser")
+end
+if fs.exists("/updattemp/user") then
+ fs.delete("/updattemp/user/root")
+ fs.copy("/updattemp/user", "/User")
+end

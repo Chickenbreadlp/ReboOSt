@@ -1,4 +1,6 @@
 autoupdate = false
-rosdebug = false
+rosdebug = true
 pfolder = false
 gfolder = false
+termstart = false
+updatstream = "release"
