@@ -29,32 +29,13 @@ term.setCursorPos(rightclickdiskX,rightclickdiskY)
 print("Eject        ")
 rightclickdiskY = rightclickdiskY + 1
 term.setCursorPos(rightclickdiskX,rightclickdiskY)
-if fs.exists("Programs/TDI") then
- if fs.exists(dir.."tictactoe") or fs.exists(dir.."gameoflife") or fs.exists(dir.."maze3d") or fs.exists(dir.."protector") then
-  print("TDI          ")
- else
-  print("-------------")
- end
-else
- print("-------------")
-end
+print("-------------")
 rightclickdiskY = rightclickdiskY + 1
 term.setCursorPos(rightclickdiskX,rightclickdiskY)
 print("Control Panel")
 rightclickdiskY = rightclickdiskY - 3
 
 local m = rightclickdiskX
-local a = rightclickdiskX + 1
-local b = rightclickdiskX + 2
-local c = rightclickdiskX + 3
-local d = rightclickdiskX + 4
-local e = rightclickdiskX + 5
-local f = rightclickdiskX + 6
-local g = rightclickdiskX + 7
-local h = rightclickdiskX + 8
-local i = rightclickdiskX + 9
-local j = rightclickdiskX + 10
-local k = rightclickdiskX + 11
 local l = rightclickdiskX + 12
 
 local p = rightclickdiskY
@@ -74,26 +55,10 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shut down
-
-if XY == "51,1" and button == 1 then
-menuundo()
-shell.run("/ReboOSt/shut-off")
-break
-
- -- reboot
-
-elseif XY == "50,1" and button == 1 then
-menuundo()
-shell.run("/ReboOSt/reboot")
-break
-
  -- Open
 
-elseif X >= m and X <= l and Y == p then
- dir = "disk/"
- shell.run("/ReboOSt/ice-browser")
- dir = nil
+if X >= m and X <= l and Y == p then
+ shell.run("/ReboOSt/fbrws", "--dir "..dir)
 break
 
  -- Eject
@@ -112,17 +77,6 @@ break
 elseif X >= m and X <= l and Y == o then
  shell.run("/ReboOSt/ctrlpnl")
 break
-
- -- do nothing (TDI intigration)
-
-elseif X >= m and X <= l and Y == q then
- if fs.exists("Programs/TDI") then
-  if fs.exists(dir.."tictactoe") or fs.exists(dir.."gameoflife") or fs.exists(dir.."maze3d") or fs.exists(dir.."protector") then
-   TDIunist = true
-   shell.run("Programs/TDI")
-  end
- break
- end
 
  -- Go back
 
