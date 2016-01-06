@@ -1,22 +1,237 @@
 local oldpe = os.pullEvent
 
-term.setTextColor(sndtxt)
+local function clear()
 term.setBackgroundColor(tbar)
+term.setTextColor(sndtxt)
 term.clear()
 term.setCursorPos(1,1)
-print("RebOSt Shell   --   To go back enter Start")
+write("Enter ")
+term.setTextColor(prog)
+write("Home, Exit, Back")
+term.setTextColor(sndtxt)
+write(" or ")
+term.setTextColor(prog)
+write("Start")
+term.setTextColor(sndtxt)
+print(" to go back")
+print(OStag.." Shell")
+print("")
+term.setTextColor(tbartxt)
+end
+clear()
 while true do
- term.setTextColor(sndtxt)
- write("-> ")
+ term.setTextColor(tbartxt)
+ local currdir = shell.dir()
+ write(currdir.." -> ")
  os.pullEvent = os.pullEventRaw
- local name = read()
+ local input = read()
+ local linput = string.lower(input)
  os.pullEvent = oldpe
- if name == "rm /ReboOSt/*" or name == "rm /ReboOSt" or name == "rm ReboOSt" or name == "rm reboost" or name == "rm *" or name == "rm Programs" then
+ if (linput:find('rm') and linput:find('reboost')) or (linput:find('rm') and linput:find('programs')) or (linput:find('rm') and linput:find('user')) or (linput:find('rm') and linput:find("meta")) or (linput:find('rm') and linput:find('startup')) then
   term.setTextColor(colors.red)
   print("Forbidden Command!")
- elseif name == "Start" or name == "START" or name == "start" then
+ elseif linput == "start" or linput == "home" or linput == "exit" or linput == "back" or linput == "close" then
   break
+ elseif linput == "reboot" then
+  instashut = true
+  shell.run("/ReboOSt/reboot")
+ elseif linput == "shutdown" then
+  instashut = true
+  shell.run("/ReboOSt/shut-off")
+ elseif linput == "about" then
+  term.setTextColor(sndtxt)
+  print("ReboOSt was originally build upon ApfelOS. While ReboOSt still contains some of the internal Workloads, it was massively improved.")
+ elseif linput == "themes" then
+  shell.run("/ReboOSt/thmchg")
+  clear()
+ elseif linput == "settings" then
+  term.setTextColor(sndtxt)
+  print([[Usage: -view     --shows current config 
+       -modify   --changes config
+       -save     --saves current config
+       -discard  --returns to old config
+       -gui      --opens Graphical Interface]])
+  term.setTextColor(tbartxt)
+ elseif linput == "settings -gui" then
+  shell.run("/ReboOSt/ctrlpnl")
+  clear()
+ elseif linput == "settings -modify" then
+  print("Please specify the setting you want to change. (Variable Name)")
+  write("   > ")
+  os.pullEvent = os.pullEventRaw
+  input = string.lower(read())
+  os.pullEvent = oldpe
+  local function onoff(var, vars)
+   print("Turn "..vars.." on or off?")
+   write("   > ")
+   os.pullEvent = os.pullEventRaw
+   input = string.lower(read())
+   os.pullEvent = oldpe
+   if input == "on" then
+    var = true
+	print(vars.." was changed to true.")
+   elseif input == "off" then
+    var = false
+	print(vars.." was changed to false.")
+   else
+    print("Exiting...")
+   end
+   return var
+  end
+  if input == "autoupdate" then
+   autoupdate = onoff(autoupdate, "Auto Update")
+  elseif input == "rosdebug" then
+   rosdebug = onoff(rosdebug, "Debug Mode")
+  elseif input == "pfolder" then
+   pfolder = onoff(pfolder, "Programs Folder icon")
+  elseif input == "gfolder" then
+   gfolder = onoff(gfolder, "Games Folder icon")
+  elseif input == "termstart" then
+   termstart = onoff(termstart, "Shell after login")
+  else
+   print("Not a setting! Exiting...")
+  end
+ elseif linput == "settings -discard" then
+  shell.run("/ReboOSt/configs/main")
+ elseif linput == "settings -save" then
+  local file = fs.open("/ReboOSt/configs/main", "w")
+  if autoupdate then
+   file.writeLine("autoupdate = true")
+  else
+   file.writeLine("autoupdate = false")
+  end
+  if rosdebug then
+   file.writeLine("rosdebug = true")
+  else
+   file.writeLine("rosdebug = false")
+  end
+  if pfolder then
+   file.writeLine("pfolder = true")
+  else
+   file.writeLine("pfolder = false")
+  end
+  if gfolder then
+   file.writeLine("gfolder = true")
+  else
+   file.writeLine("gfolder = false")
+  end
+  if termstart then
+   file.writeLine("termstart = true")
+  else
+   file.writeLine("termstart = false")
+  end
+  file.writeLine('updatstream = "'..updatstream..'"')
+  file.close()
+  print("Settings Saved!")
+ elseif linput == "settings -view" then
+  term.setTextColor(sndtxt)
+  write("autoupdate = ") if autoupdate then print("true") else print("false") end
+  write("rosdebug = ") if rosdebug then print("true") else print("false") end
+  write("pfolder = ") if pfolder then print("true") else print("false") end
+  write("gfolder = ") if gfolder then print("true") else print("false") end
+  write("termstart = ") if tempstart then print("true") else print("false") end
+  print("updatstream = "..updatstream)
+  term.setTextColor(tbartxt)
+ elseif linput == "shell" then
+  term.setTextColor(sndtxt)
+  write("This is ReboOSt Shell. Basicly it is just another GUI for ReboOSt. Use ")
+  term.setTextColor(prog)
+  write("shell -? or shell -help")
+  term.setTextColor(sndtxt)
+  print(" for extra ReboOSt commands.")
+ elseif linput == "shell -?" or linput == "shell -help" then
+  print([[Use "themes" to modify the current theme.
+Use "settings" to modify current settings.
+Use "files" to open File Browser.
+Use "sketch" to open sketch from anywhere.]])
+ elseif linput == "files" then
+  shell.run("/ReboOSt/fbrws")
+  clear()
+ elseif linput == "luaide" then
+  shell.run("/ReboOSt/luaIDE")
+  clear()
+ elseif linput == "sketch" then
+  shell.run("/Programs/sketch")
+  clear()
+ elseif linput == "clear" then
+  clear()
+ elseif linput == "debug" then
+  if rosdebug then
+   write("Please enter Mainainance Password: ")
+   os.pullEvent = os.pullEventRaw
+   input = read("*")
+   local inpute = encryption.sha256(input)
+    if inpute == "10a462ec70472bd9367839a857e709f366ff7399f9e0becb9aa5ad70b13a15ea" then
+    print("Warning! This is very experimental and you can break the whole OS with it! Use at own risk! Enter close to get back to normal shell.")
+    local debugshell = true
+    while debugshell do
+     term.setTextColor(sndtxt)
+     write(" -> ")
+     term.setTextColor(tbartxt)
+     os.pullEvent = os.pullEventRaw
+     input = read()
+     os.pullEvent = oldpe
+     linput = string.lower(input)
+     if linput == "cpass" then
+      print("What User do you want to edit?")
+ 	  term.setTextColor(sndtxt)
+      write(" -> ")
+  	  term.setTextColor(tbartxt)
+      os.pullEvent = os.pullEventRaw
+      ouser = read()
+	  if ouser == "" then
+	   print("Please enter a username! Exiting...")
+      elseif fs.exists("/User/"..ouser) then
+       print("Enter new User Name")
+	   term.setTextColor(sndtxt)
+	   write(" -> ")
+	   term.setTextColor(tbartxt)
+	   os.pullEvent = os.pullEventRaw
+	   nuser = read()
+	   lnuser = string.lower(input)
+	   os.pullEvent = oldpe
+	   if nuser == "" or lnuser == "root" or lnuser == "reboot" or lnuser == "shutdown" then
+	    print("Forbidden Username! Exiting.")
+	   else
+	    fs.move("/User/"..ouser , "/User/"..nuser)
+	    print("Please enter new Password")
+	    term.setTextColor(sndtxt)
+	    write(" -> ")
+	    term.setTextColor(tbartxt)
+	    os.pullEvent = os.pullEventRaw
+	    local pass = read()
+	    local passe = encryption.sha256(pass)
+	    local file = fs.open("/User/"..nuser.."/..meta", "r")
+	    local metaData = {}
+	    local line = file.readLine()
+	    repeat
+	    table.insert(metaData,line)
+	    line = file.readLine()
+	    until line == nil
+	    local file = fs.open("/User/"..Name.."/..meta", "w")
+	    file.writeLine(passe)
+	    file.writeLine(metaData[2])
+	    file.close()
+	    passe = nil
+	    pass = nil
+	   end
+      else
+       print("User dosn't exists! Exiting.")
+      end
+     elseif linput == "close" then
+      print("Exiting debug shell...")
+      break
+     else
+      shell.run(input)
+     end
+    end
+   else
+    print("Wrong Password! Exiting...")
+   end
+  else
+  print("Debug Mode must be enabled!")
+  end
  else
-  shell.run(name)
+  shell.run(input)
  end
 end
