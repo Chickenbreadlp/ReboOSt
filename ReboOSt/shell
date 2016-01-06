@@ -27,7 +27,7 @@ while true do
  local input = read()
  local linput = string.lower(input)
  os.pullEvent = oldpe
- if (linput:find('rm') and linput:find('reboost')) or (linput:find('rm') and linput:find('programs')) or (linput:find('rm') and linput:find('user')) or (linput:find('rm') and linput:find("meta")) or (linput:find('rm') and linput:find('startup')) then
+ if linput:find('reboost') or linput:find("programs") or (linput:find("rm") and linput:find("user")) or (linput:find("rename") and linput:find("user")) or (linput:find("mv") and linput:find("user")) or (linput:find("move") and linput:find("user")) or linput:find("meta") or linput:find("startup") then
   term.setTextColor(colors.red)
   print("Forbidden Command!")
  elseif linput == "start" or linput == "home" or linput == "exit" or linput == "back" or linput == "close" then
@@ -42,18 +42,137 @@ while true do
   term.setTextColor(sndtxt)
   print("ReboOSt was originally build upon ApfelOS. While ReboOSt still contains some of the internal Workloads, it was massively improved.")
  elseif linput == "themes" then
+  term.setTextColor(sndtxt)
+  print([[Usage: -view        --shows current theme setting
+       -modify      --changes theme settings
+       -modify:all  --changes theme in luaIDE
+       -save        --saves current config
+       -discard     --returns to old config
+       -gui         --opens Graphical Interface]])
+  term.setTextColor(tbartxt)
+ elseif linput == "themes -gui" then
   shell.run("/ReboOSt/thmchg")
   clear()
+ elseif linput == "themes -discard" then
+  shell.run("/User/"..UserName.."/..colortheme")
+  clear()
+  term.setTextColor(sndtxt)
+  print("Discarded current theme!")
+  term.setTextColor(tbartxt)
+ elseif linput == "themes -view" then
+  term.setTextColor(sndtxt)
+  print("tbar = "..tbar)
+  print("mbar = "..mbar)
+  print("body = "..body)
+  print("wico = "..wico)
+  print("crashscreen = "..crashscreen)
+  print("crashscreentxt = "..crashscreentxt)
+  print("prog = "..prog)
+  print("buttonBack = "..buttonBack)
+  print("buttonBatxt = "..buttonBatxt)
+  print("buttonReboot = "..buttonReboot)
+  print("buttonRetxt = "..buttonRetxt)
+  print("buttonShut = "..buttonShut)
+  print("buttonShtxt = "..buttonShtxt)
+  print("tbartxt = "..tbartxt)
+  print("mbartxt = "..mbartxt)
+  print("bodytxt = "..bodytxt)
+  print("wicotxt = "..wicotxt)
+  print("sndtxt = "..sndtxt)
+  term.setTextColor(tbartxt)
+ elseif linput == "themes -modify:all" then
+  shell.run("/ReboOSt/luaIDE", "/User/"..UserName.."/..colortheme")
+  clear()
+ elseif linput == "themes -modify" then
+  print("Please specify the setting you want to change. (Variable Name)")
+  write("   > ")
+  os.pullEvent = os.pullEventRaw
+  input = string.lower(read())
+  os.pullEvent = oldpe
+  local function onoff(var, vars)
+   print("Which Color should "..vars.." get?")
+   write("   > ")
+   os.pullEvent = os.pullEventRaw
+   input = read()
+   os.pullEvent = oldpe
+   if input == "black" then var = colors.black print(vars.." was changed to "..input)
+   elseif input == "gray" then var = colors.gray print(vars.." was changed to "..input)
+   elseif input == "lightGray" then var = colors.lightGray print(vars.." was changed to "..input)
+   elseif input == "white" then var = colors.white print(vars.." was changed to "..input)
+   elseif input == "yellow" then var = colors.yellow print(vars.." was changed to "..input)
+   elseif input == "orange" then var = colors.orange print(vars.." was changed to "..input)
+   elseif input == "red" then var = colors.red print(vars.." was changed to "..input)
+   elseif input == "purple" then var = colors.purple print(vars.." was changed to "..input)
+   elseif input == "magenta" then var = colors.magenta print(vars.." was changed to "..input)
+   elseif input == "lightBlue" then var = colors.lightBlue print(vars.." was changed to "..input)
+   elseif input == "cyan" then var = colors.cyan print(vars.." was changed to "..input)
+   elseif input == "blue" then var = colors.blue print(vars.." was changed to "..input)
+   elseif input == "green" then var = colors.green print(vars.." was changed to "..input)
+   elseif input == "lime" then var = colors.lime print(vars.." was changed to "..input)
+   elseif input == "pink" then var = colors.pink print(vars.." was changed to "..input)
+   elseif input == "brown" then var = colors.brown print(vars.." was changed to "..input)
+   else
+    print("Not a Color! Exiting...")
+   end
+   return var
+  end
+  if input == "tbar" then tbar = onoff(tbar, "Header BG")
+  elseif input == "tbartxt" then tbartxt = onoff(tbartxt, "Header text")
+  elseif input == "mbar" then mbar = onoff(mbar, "Panel BG")
+  elseif input == "mbartxt" then mbartxt = onoff(mbartxt, "Panel text")
+  elseif input == "body" then body = onoff(body, "Menu BG")
+  elseif input == "bodytxt" then bodytxt = onoff(bodytxt, "Menu text")
+  elseif input == "wico" then wico = onoff(wico, "Window Header & Text")
+  elseif input == "wicotxt" then wicotxt = onoff(wicotxt, "Window BG & Header text")
+  elseif input == "buttonBack" then buttonBack = onoff(buttonBack, "Back button")
+  elseif input == "buttonBatxt" then buttonBatxt = onoff(buttonBatxt, "Back button text")
+  elseif input == "buttonReboot" then buttonReboot = onoff(buttonReboot, "Reboot button")
+  elseif input == "buttonRetxt" then buttonRetxt = onoff(buttonRetxt, "Reboot button text")
+  elseif input == "buttonShut" then buttonShut = onoff(buttonShut, "Shutdown button")
+  elseif input == "buttonShtxt" then buttonShtxt = onoff(buttonShtxt, "Shutdown button text")
+  elseif input == "crashscreen" then crashscreen = onoff(crashscreen, "Crashscreen BG")
+  elseif input == "crashscreentxt" then bodytxt = onoff(bodytxt, "Crashscreen text")
+  elseif input == "prog" then prog = onoff(prog, "Program indicator text")
+  elseif input == "sndtxt" then sndtxt = onoff(sndtxt, "Second text Color")
+  else print("Not a Variable! Exiting...") end
+ elseif linput == "themes -save" then
+  local file = fs.open("/User/"..UserName.."/..colortheme", "w")
+  file.writeLine("tbar = "..tbar)
+  file.writeLine("mbar = "..mbar)
+  file.writeLine("body = "..body)
+  file.writeLine("wico = "..wico)
+  file.writeLine("crashscreen = "..tbar)
+  file.writeLine("crashscreentxt = "..prog)
+  file.writeLine("prog = "..prog)
+  file.writeLine("buttonBack = "..buttonBack)
+  file.writeLine("buttonBatxt = "..buttonBatxt)
+  file.writeLine("buttonReboot = "..buttonReboot)
+  file.writeLine("buttonRetxt = "..buttonRetxt)
+  file.writeLine("buttonShut = "..buttonShut)
+  file.writeLine("buttonShtxt = "..buttonShtxt)
+  file.writeLine("tbartxt = "..tbartxt)
+  file.writeLine("mbartxt = "..mbartxt)
+  file.writeLine("bodytxt = "..bodytxt)
+  file.writeLine("wicotxt = "..wicotxt)
+  file.writeLine("sndtxt = "..sndtxt)
+  file.close()
+  term.setTextColor(sndtxt)
+  print("Theme saved!")
+  term.setTextColor(tbartxt)
  elseif linput == "settings" then
   term.setTextColor(sndtxt)
-  print([[Usage: -view     --shows current config 
-       -modify   --changes config
-       -save     --saves current config
-       -discard  --returns to old config
-       -gui      --opens Graphical Interface]])
+  print([[Usage: -view        --shows current config 
+       -modify      --changes config
+       -modify:all  --changes config in luaIDE
+       -save        --saves current config
+       -discard     --returns to old config
+       -gui         --opens Graphical Interface]])
   term.setTextColor(tbartxt)
  elseif linput == "settings -gui" then
   shell.run("/ReboOSt/ctrlpnl")
+  clear()
+ elseif linput == "settings -modify:all" then
+  shell.run("/ReboOSt/luaIDE", "/ReboOSt/configs/main")
   clear()
  elseif linput == "settings -modify" then
   print("Please specify the setting you want to change. (Variable Name)")
@@ -88,6 +207,21 @@ while true do
    gfolder = onoff(gfolder, "Games Folder icon")
   elseif input == "termstart" then
    termstart = onoff(termstart, "Shell after login")
+  elseif input == "updatstream" then
+   print("Turn Dev-Update-Stream on or off?")
+   write("   > ")
+   os.pullEvent = os.pullEventRaw
+   input = string.lower(read())
+   os.pullEvent = oldpe
+   if input == "on" then
+	print("You'll now get Updates from the Development-Stream")
+	updatstream = "development"
+   elseif input == "off" then
+	print("You'll now get Updates from the Release-Stream")
+	updatstream = "release"
+   else
+    print("Exiting...")
+   end
   else
    print("Not a setting! Exiting...")
   end
@@ -140,10 +274,12 @@ while true do
   term.setTextColor(sndtxt)
   print(" for extra ReboOSt commands.")
  elseif linput == "shell -?" or linput == "shell -help" then
+  term.setTextColor(sndtxt)
   print([[Use "themes" to modify the current theme.
 Use "settings" to modify current settings.
 Use "files" to open File Browser.
 Use "sketch" to open sketch from anywhere.]])
+  term.setTextColor(tbartxt)
  elseif linput == "files" then
   shell.run("/ReboOSt/fbrws")
   clear()
@@ -225,9 +361,9 @@ Use "sketch" to open sketch from anywhere.]])
       shell.run(input)
      end
     end
-   else
-    print("Wrong Password! Exiting...")
-   end
+    else
+     print("Wrong Password! Exiting...")
+    end
   else
   print("Debug Mode must be enabled!")
   end
