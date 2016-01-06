@@ -13,9 +13,9 @@ local function Reboot()
  paintutils.drawImage(Logo,6,9)
  fs.delete("/ReboOSt/Temp")
  os.unloadAPI("encryption")
- if starts == 0 then
-  starts = starts + 1
-  local file = fs.open("/ReboOSt/..stcount.adf", "w")
+ if not fs.exists("/ReboOSt/configs/stcount") then
+  starts = 1
+  local file = fs.open("/ReboOSt/configs/stcount", "w")
   file.write(starts)
   file.close()
  end
@@ -29,20 +29,23 @@ else
 
 if login then
 
-term.setBackgroundColor(wico)
-term.setTextColor(wicotxt)
-term.setCursorPos(14,7)
-print("Do you want to reboot? ")
-term.setBackgroundColor(wicotxt)
-term.setTextColor(wico)
-term.setCursorPos(14,8)
-print("     Yes       No      ")
-term.setCursorPos(14,9)
-print("                       ")
-term.setCursorPos(14,10)
-print("     [X]       [X]     ")
-term.setCursorPos(14,11)
-print("                       ")
+term.setBackgroundColor(tbar)
+term.setTextColor(sndtxt)
+term.setCursorPos(1,7)
+print("              Do you want to reboot?               ")
+print("                                                   ")
+write("                   ")
+term.setBackgroundColor(mbar)
+term.setTextColor(mbartxt)
+write("Yes")
+term.setBackgroundColor(tbar)
+write("        ")
+term.setBackgroundColor(mbar)
+write("No")
+term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
+print("                   ")
+print("                                                   ")
 
 while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
@@ -50,14 +53,13 @@ local XY = X..","..Y
 
  -- Yes
 
-if XY == "20,10" and button == 1 then
+if X >= 20 and X <= 22 and Y == 9 and button == 1 then
  Reboot()
-break
 end
 
  -- No
 
-if XY == "30,10" and button == 1 then
+if X >= 31 and X <= 32 and Y == 9 and button == 1 then
 break
 end end
 
