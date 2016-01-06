@@ -1,6 +1,3 @@
-freeSpace = fs.getFreeSpace("/")
-spacer = " "
-format = "B "
 CCver = os.version()
 local yau = "You are using Build "..rosbuild.." from "..OStag
 local yaulen = string.len(yau)
@@ -48,33 +45,14 @@ term.setTextColor(sndtxt)
 print([[                                                   
 ReboOSt was originally build upon ApfelOS. While ReboOSt still contains some of the internal Workloads, it was massively improved.]])
 print("")
-term.setCursorPos(1,18)
+term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
-print(UserName)
-write("(C)Chickenbread 2015       ")
-if freeSpace >= 100000000 then
- spacer = "     To many free Space"
- format = " "
-elseif freeSpace <= 10000000 and freeSpace >= 1000000 then
- spacer = "         Free:"
-elseif freeSpace <= 1000000 and freeSpace >= 100000 then
- spacer = "          Free:"
-elseif freeSpace <= 100000 and freeSpace >= 10000 then
- spacer = "           Free:"
-elseif freeSpace <= 10000 and freeSpace >= 1000 then
- spacer = "            Free:"
-elseif freeSpace <= 1000 and freeSpace >= 100 then
- spacer = "             Free:"
-elseif freeSpace <= 100 and freeSpace >= 10 then
- spacer = "              Free:"
-elseif freeSpace <= 10 and freeSpace >= 1 then
- spacer = "               Free:"
-else
- spacer = "           No Free"
- format = "Space "
-end
-write(spacer.." "..freeSpace.." "..format)
+write(UserName)
+local fslen = string.len(freeSpace)
+local fsX = 49 - fslen
+term.setCursorPos(fsX,19)
+write(freeSpace.." KB")
 end
 Screen()
 
@@ -97,6 +75,6 @@ end
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
- print("You don't even have ApfelOS started!")
+ print("You don't even have ReboOSt started!")
  term.setTextColor(1)
 end
