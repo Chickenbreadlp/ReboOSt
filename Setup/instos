@@ -173,6 +173,10 @@ if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
  print("Downloading OS...")
  
  GitHubGet(nil)
+ fs.delete("/README.md")
+ fs.delete("/updat")
+ fs.delete("/version")
+ 
  term.setBackgroundColor(colors.gray)
  term.clear()
  term.setCursorPos(1,1)
