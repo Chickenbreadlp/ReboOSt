@@ -132,6 +132,7 @@ if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
  GitHubGet(nil)
  fs.delete("/README.md")
  fs.delete("/version")
+ fs.delete("/updat")
  if fs.exists("/Uninst/Backup/User") then
   fs.copy("/Uninst/Backup/User", "/User")
  end
