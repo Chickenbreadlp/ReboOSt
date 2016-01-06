@@ -1,3 +1,25 @@
+local function Shutdown()
+ term.setBackgroundColor(colors.gray)
+ term.clear()
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(colors.gray)
+ term.setTextColor(colors.white)
+ write("                      Rebo")
+ term.setTextColor(colors.cyan)
+ write("OS")
+ term.setTextColor(colors.white)
+ print("t                      ")
+ print("                  is shuting down                  ")
+ paintutils.drawImage(Logo,6,9)
+ fs.delete("/ReboOSt/Temp")
+ os.unloadAPI("encryption")
+ sleep(0.7)
+ os.shutdown()
+end
+
+if instashut then
+ Shutdown()
+else
 if login then
 
 term.setBackgroundColor(wico)
@@ -22,22 +44,7 @@ XY = X..","..Y
  -- Yes
 
 if XY == "19,10" and button == 1 then
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setBackgroundColor(colors.gray)
- term.setTextColor(colors.white)
- write("                      Rebo")
- term.setTextColor(colors.cyan)
- write("OS")
- term.setTextColor(colors.white)
- print("t                      ")
- print("                  is shuting down                  ")
- paintutils.drawImage(Logo,6,9)
- fs.delete("/ReboOSt/Temp")
- os.unloadAPI("encryption")
- sleep(0.7)
- os.shutdown()
+ Shutdown()
 break
 
  -- No
@@ -51,4 +58,5 @@ else
  term.setBackgroundColor(32768)
  print("You don't even have ReboOSt started!")
  term.setTextColor(1)
+end
 end
