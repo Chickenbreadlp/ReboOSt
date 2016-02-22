@@ -1,4 +1,7 @@
 local function Reboot()
+ if rosloging then
+  roslog.writeLine("Rebooting...")
+ end
  term.setBackgroundColor(colors.gray)
  term.clear()
  term.setCursorPos(1,1)
