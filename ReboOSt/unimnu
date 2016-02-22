@@ -49,12 +49,18 @@ XY = X..","..Y
  -- System
 
 if X >= 1 and X < 14 and Y == 2 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": opening sys menu")
+ end
  shell.run("/ReboOSt/sysmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
  -- Programs
 
 elseif X >= 1 and X < 14 and Y == 3 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": opening prog menu")
+ end
  shell.run("/ReboOSt/progmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
@@ -62,6 +68,9 @@ elseif X >= 1 and X < 14 and Y == 3 then
 
 elseif X >= 1 and X < 14 and Y == 4 then
  menuundo()
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/time")
+ end
  shell.run("/ReboOSt/time")
  break
 
@@ -69,6 +78,9 @@ elseif X >= 1 and X < 14 and Y == 4 then
 
 elseif X >= 1 and X < 14 and Y == 5 then
  if admin then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/shell")
+  end
   shell.run("/ReboOSt/shell")
   menuundo()
   break
@@ -78,6 +90,9 @@ elseif X >= 1 and X < 14 and Y == 5 then
 
 elseif X >= 1 and X < 14 and Y == 7 then
  menuundo()
+ if rosloging then
+  roslog.writeLine("Loging "..UserName.." off")
+ end
  term.setBackgroundColor(wico)
  term.setTextColor(wicotxt)
  term.setCursorPos(14,7)
@@ -111,6 +126,9 @@ elseif X >= 1 and X < 14 and Y == 9 then
  -- Go back
 
 else
+if rosloging then
+ roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+end
 break
 end end
 else
