@@ -14,19 +14,20 @@ print("Setting OStag...")
 OStag = "ReboOSt"
 sleep(0.05)
 print("Setting OS version...")
-devpart = "Alpha"
-version = 1
-rosbuild = 1010
+devpart = "Alpha in DEV"
+version = 1.1
+rosbuild = 0030
 sleep(0.05)
 print("Starting Startuproutine...")
 sleep(0.05)
+
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
  local fileData = {}
  local line = file.readLine()
  table.insert(fileData,line)
  file.close()
- local starts = fileData[1]
+ starts = fileData[1]
 else starts = "0" end
 
 if fs.exists("/ReboOSt/configs/main") then
@@ -157,7 +158,7 @@ if starts == "0" then
 else
  term.setCursorPos(19,4)
  textutils.slowPrint("              ", 1000)
- starts = "1"
+ starts = starts + 1
  if fs.exists("/ReboOSt/configs/stcount") then
   fs.delete("/ReboOSt/configs/stcount")
   local file = fs.open("/ReboOSt/configs/stcount", "w")

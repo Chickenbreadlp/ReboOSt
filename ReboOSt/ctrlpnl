@@ -1,5 +1,21 @@
 local changes = false
 if login then
+
+local function SwiStat(var)
+ if var then
+  term.setBackgroundColor(colors.green)
+  write(" On")
+  term.setBackgroundColor(colors.red)
+  write(" ")
+ else
+  term.setBackgroundColor(colors.green)
+  write(" ")
+  term.setBackgroundColor(colors.red)
+  write("Off")
+ end
+ term.setBackgroundColor(mbar)
+end
+
 local function Screen()
 term.setBackgroundColor(mbar)
 term.clear()
@@ -33,62 +49,22 @@ term.setTextColor(tbartxt)
 print("")
 print("")
 write(" Auto Update          ")
-if autoupdate then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(autoupdate)
+print("")
 print("")
 write(" Debug Mode           ")
-if rosdebug then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(rosdebug)
+print("")
 print("")
 write(" Programs Folder      ")
-if pfolder then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(pfolder)
+print("")
 print("")
 write(" Games Folder         ")
-if gfolder then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- write(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- write("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(gfolder)
 term.setTextColor(colors.red)
 print("   -- Currently Broken!")
+
 term.setCursorPos(1,16)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
@@ -121,11 +97,9 @@ local function changeSwitchGR(YY)
  print("f")
  term.setCursorPos(25,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.red)
  print("f")
  term.setCursorPos(24,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.red)
  print("O")
  sleep(0.1)
  term.setCursorPos(23,YY)
@@ -139,11 +113,9 @@ local function changeSwitchRG(YY)
  print(" ")
  term.setCursorPos(24,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.green)
  write("O")
  term.setCursorPos(25,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.green)
  write("n")
  sleep(0.1)
  term.setCursorPos(26,YY)
@@ -271,6 +243,11 @@ local XY = X..","..Y
    file.writeLine("termstart = true")
   else
    file.writeLine("termstart = false")
+  end
+  if rosloging then
+   file.writeLine("rosloging = true")
+  else
+   file.writeLine("rosloging = false")
   end
   file.writeLine('updatstream = "'..updatstream..'"')
   file.close()

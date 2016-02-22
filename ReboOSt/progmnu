@@ -39,6 +39,9 @@ local XY = X..","..Y
  -- browser
 
 if X >= 14 and X <= 24 and Y == 3 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/fbrws")
+ end
  shell.run("/ReboOSt/fbrws")
  keepmenu = false
 break
@@ -46,6 +49,9 @@ break
  -- Snake
 
 elseif X >= 14 and X <= 24 and Y == 4 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /worm")
+ end
  term.setBackgroundColor(32768)
  term.setTextColor(1)
  shell.run("worm")
@@ -55,6 +61,9 @@ break
  -- Redirection
 
 elseif X >= 14 and X <= 24 and Y == 5 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /redirection")
+ end
  shell.run("redirection")
  keepmenu = false
 break
@@ -62,6 +71,9 @@ break
  -- Sketch
 
 elseif X >= 14 and X <= 24 and Y == 6 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /Programs/sketch")
+ end
  shell.run("/Programs/sketch")
  keepmenu = false
 break
@@ -69,6 +81,9 @@ break
  -- luaIDE
 
 elseif X >= 14 and X <= 24 and Y == 7 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/luaIDE")
+ end
  shell.run("/ReboOSt/luaIDE")
  keepmenu = false
 break
@@ -76,10 +91,16 @@ break
  -- Go back
 
 elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to Unimenu")
+ end
  keepmenu = true
  menuundo()
  break
 else
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
  keepmenu = false
  menuundo()
  break
