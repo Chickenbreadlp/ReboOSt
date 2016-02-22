@@ -59,6 +59,10 @@ if fs.exists("/ReboOSt/Temp/updattmp1") then
 
 shell.run("/ReboOSt/Temp/updattmp1")
 
+if updatstream == "development" then
+ rosbuildo = rosbuildo + 1000
+end
+
 if rosbuildo <= rosbuild then
  if login then
   local loop = "on"
@@ -93,6 +97,8 @@ if rosbuildo <= rosbuild then
  end
  fs.delete("/ReboOSt/Temp/updattmp1")
 elseif rosbuildo > rosbuild then
+
+rosbuildo = rosbuildo - 1000
 
 term.setBackgroundColor(mbar)
 term.clear()
