@@ -16,7 +16,7 @@ sleep(0.05)
 print("Setting OS version...")
 devpart = "Alpha"
 version = 1
-rosbuild = 1010
+rosbuild = 1011
 sleep(0.05)
 print("Starting Startuproutine...")
 sleep(0.05)
