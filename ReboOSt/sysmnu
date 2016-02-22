@@ -50,6 +50,9 @@ XY = X..","..Y
  -- Themes
 
 if X >= 14 and X <= 27 and Y == 2 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/thmchg")
+ end
  shell.run("/ReboOSt/thmchg")
  keepmenu = false
 break
@@ -57,6 +60,9 @@ break
  -- About OS
 
 elseif X >= 14 and X < 27 and Y == 3 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/info")
+ end
  shell.run("/ReboOSt/info")
  keepmenu = false
 break
@@ -67,6 +73,9 @@ elseif X >= 14 and X < 27 and Y == 4 then
  if admin then
   keepmenu = false
   menuundo()
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/regist")
+  end
   shell.run("/ReboOSt/regist")
   break
  end
@@ -77,6 +86,9 @@ elseif X >= 14 and X < 27 and Y == 5 then
  if admin then
   keepmenu = false
   menuundo()
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/updater")
+  end
   shell.run("/ReboOSt/updater")
  break
  end
@@ -85,6 +97,9 @@ elseif X >= 14 and X < 27 and Y == 5 then
 
 elseif X >= 14 and X < 27 and Y == 6 then
  if admin then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/ctrlpnl")
+  end
   shell.run("/ReboOSt/ctrlpnl")
   keepmenu = false
   break
@@ -93,10 +108,16 @@ elseif X >= 14 and X < 27 and Y == 6 then
  -- Go back
 
 elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to Unimenu")
+ end
  keepmenu = true
  menuundo()
  break
 else
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
  keepmenu = false
  menuundo()
  break
