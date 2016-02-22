@@ -95,12 +95,10 @@ local XY = X..","..Y
  -- Unimnu
 
 if X >= 1 and X <= 7 and Y == 1 then
- shell.run("/ReboOSt/unimnu")
- if login then
-  Desk()
- else
-  break
+ if rosloging then
+  roslog.writeLine("mainframe: opening Unimenu")
  end
+ shell.run("/ReboOSt/unimnu")
  Desk()
 
  -- Disk
@@ -126,15 +124,12 @@ elseif disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresen
    dir = disk.getMountPath("front")
    dir = dir.."/"
   end
-  if fs.exists("/Programs/TDI") then
-   if fs.exists(dir.."tictactoe") or fs.exists(dir.."gameoflife") or fs.exists(dir.."maze3d") or fs.exists(dir.."protector") then
-    TDIunist = false
-    shell.run("/Programs/TDI")
-   else
-    shell.run("/ReboOSt/fbrws", "--dir "..dir)
-   end
-  else
-   shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  if rosloging then
+   roslog.writeLine("mainframe: executing: '/ReboOSt/fbrws --dir "..dir.."'")
+  end
+  shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  if rosloging then
+   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
   end
   dir = nil
   Desk()
@@ -154,7 +149,13 @@ elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 the
 
 elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
  if pfolder then
+  if rosloging then
+   roslog.writeLine("mainframe: executing: '/ReboOSt/fbrws --dir /Programs'")
+  end
   shell.run("/ReboOSt/fbrws", "--dir /Programs")
+  if rosloging then
+   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
+  end
   Desk()
  end
 
@@ -162,7 +163,13 @@ elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
 
 elseif X >= gfolXmin and X <= gfolXmax and Y >= 4 and Y <= 8 then
  if gfolder then
-  shell.run("/ReboOSt/fbrws", "--dir /Programs/Games")
+  if rosloging then
+   roslog.writeLine("mainframe: executing: /ReboOSt/fbrws --dir /Programs/Games")
+  end
+  shell.run("/ReboOSt/fbrws", "--dir", "/Programs/Games")
+  if rosloging then
+   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
+  end
   Desk()
  end
 end end
