@@ -205,6 +205,8 @@ while true do
    pfolder = onoff(pfolder, "Programs Folder icon")
   elseif input == "gfolder" then
    gfolder = onoff(gfolder, "Games Folder icon")
+  elseif input == "rosloging" then
+   rosloging = onoff(rosloging, "Logfile")
   elseif input == "termstart" then
    termstart = onoff(termstart, "Shell after login")
   elseif input == "updatstream" then
@@ -253,6 +255,11 @@ while true do
    file.writeLine("termstart = true")
   else
    file.writeLine("termstart = false")
+  end
+  if rosloging then
+   file.writeLine("rosloging = true")
+  else
+   file.writeLine("rosloging = false")
   end
   file.writeLine('updatstream = "'..updatstream..'"')
   file.close()
