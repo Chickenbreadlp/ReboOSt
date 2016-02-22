@@ -1,4 +1,7 @@
 local function Shutdown()
+ if rosloging then
+  roslog.writeLine("Shuting down...")
+ end
  term.setBackgroundColor(colors.gray)
  term.clear()
  term.setCursorPos(1,1)
