@@ -71,7 +71,7 @@ if tbar == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Sub Bars:         [")
+write("Panel Color:      [")
 term.setBackgroundColor(colors.black)
 if mbar == colors.black then write("X") else write(" ") end
 term.setBackgroundColor(colors.gray)
