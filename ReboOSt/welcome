@@ -15,6 +15,17 @@ local function welcome()
 end
 
 local function FirstDraw()
+
+if rosloging then
+ if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+  fs.delete("/ReboOSt/logs/"..starts..".txt")
+ end
+ roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
+end
+if rosloging then
+ roslog.writeLine("startup: Startup successfull. Lauched Login.")
+end
+
 term.setCursorPos(1,1)
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
@@ -64,7 +75,7 @@ local function Login()
  elseif linput == "shutdown" then
   instashut = true
   shell.run("/ReboOSt/shut-off")
- elseif UserName == "" then
+ elseif UserName == "" or linput == "root" then
   Login()
  end
  
@@ -98,6 +109,9 @@ local function Login()
    admin = false
   end
   login = true
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": Entered password for User "..UserName.." was correct. Logging in...")
+  end
   term.setTextColor(tbartxt)
   term.setCursorPos(1,1)
   term.setBackgroundColor(tbar)
@@ -137,6 +151,11 @@ local function Login()
   term.setTextColor(colors.cyan)
   term.setBackgroundColor(colors.gray)
   welcome()
+  
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": Login successfull. Starting mainframe...")
+  end
+  
   welcome()
   shell.run("/ReboOSt/main")
   if login == false then
