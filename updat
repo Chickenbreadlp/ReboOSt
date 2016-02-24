@@ -53,10 +53,10 @@ if fs.exists("/ReboOSt/configs/main") then
 end
 if fs.exists("/User")
  fs.copy("/User", "/updattemp/user")
+ fs.delete("/User")
 end
 fs.delete("/ReboOSt")
 fs.delete("/startup")
-fs.delete("/User")
 
 GitHubGet(updatstream)
 fs.delete("/README.md")
@@ -68,7 +68,7 @@ if fs.exists("/updattemp/brwsconf") then
 end
 if fs.exists("/updattemp/mainconf") then
  fs.delete("/ReboOSt/configs/main")
- fs.copy("/updattemp/mainconf", "/ReboOSt/configs/browser")
+ fs.copy("/updattemp/mainconf", "/ReboOSt/configs/main")
 end
 if fs.exists("/updattemp/user") then
  fs.delete("/updattemp/user/root")
