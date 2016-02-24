@@ -52,9 +52,11 @@ if fs.exists("/ReboOSt/configs/main") then
  fs.copy("/ReboOSt/configs/main", "/updattemp/mainconf")
 end
 if fs.exists("/User")
- fs.copy("/User", "/updatetemp/user")
+ fs.copy("/User", "/updattemp/user")
 end
 fs.delete("/ReboOSt")
+fs.delete("/startup")
+fs.delete("/User")
 
 GitHubGet(updatstream)
 fs.delete("/README.md")
