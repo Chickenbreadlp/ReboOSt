@@ -98,7 +98,7 @@ if rosbuildo <= rosbuild then
  fs.delete("/ReboOSt/Temp/updattmp1")
 elseif rosbuildo > rosbuild then
 
-if updatstream == "development"
+if updatstream == "development" then
  rosbuildo = rosbuildo - 1000
 end
 
