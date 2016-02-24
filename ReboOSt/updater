@@ -98,7 +98,9 @@ if rosbuildo <= rosbuild then
  fs.delete("/ReboOSt/Temp/updattmp1")
 elseif rosbuildo > rosbuild then
 
-rosbuildo = rosbuildo - 1000
+if updatstream == "development"
+ rosbuildo = rosbuildo - 1000
+end
 
 term.setBackgroundColor(mbar)
 term.clear()
