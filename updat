@@ -78,5 +78,5 @@ if fs.exists("/updattemp/stcount") then
 end
 if fs.exists("/updattemp/user") then
  fs.delete("/updattemp/user/root")
- fs.copy("/updattemp/user", "/User")
+ fs.copy("/updattemp/user/*", "/User/*")
 end
