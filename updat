@@ -54,6 +54,7 @@ end
 if fs.exists("/User")
  fs.copy("/User", "/updatetemp/user")
 end
+fs.delete("/ReboOSt")
 
 GitHubGet(updatstream)
 fs.delete("/README.md")
