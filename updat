@@ -58,7 +58,7 @@ end
 fs.delete("/ReboOSt")
 fs.delete("/startup")
 
-GitHubGet(updatstream)
+GitHubGet("development")
 fs.delete("/README.md")
 fs.delete("/updat")
 fs.delete("/version")
