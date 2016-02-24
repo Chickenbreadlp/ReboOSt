@@ -51,7 +51,7 @@ end
 if fs.exists("/ReboOSt/configs/main") then
  fs.copy("/ReboOSt/configs/main", "/updattemp/mainconf")
 end
-if fs.exists("/User")
+if fs.exists("/User") then
  fs.copy("/User", "/updatetemp/user")
  fs.delete("/User")
 end
