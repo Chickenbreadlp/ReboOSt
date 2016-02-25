@@ -15,6 +15,10 @@ Clock()
 duration = duration - 1
 end
 
+if rosloging then
+ roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+end
+
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
