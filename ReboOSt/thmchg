@@ -21,15 +21,9 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(36,1)
+term.setCursorPos(38,1)
 term.setTextColor(prog)
 write("Theme Changer ")
-term.setTextColor(buttonRetxt)
-term.setBackgroundColor(buttonReboot)
-write("@")
-term.setTextColor(buttonShtxt)
-term.setBackgroundColor(buttonShut)
-print("X")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("")
@@ -217,16 +211,13 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shut down
-
-if XY == "51,1" and button == 1 then shell.run("/ReboOSt/shut-off") Screen() end
-
- -- reboot
-
-if XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Screen() end
-
  -- Back
-if X >= 1 and X <= 7 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme") break end
+if X >= 1 and X <= 7 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme")
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
+ break
+end
 
  -- tbar
 if XY == "20,4" and button == 1 then tbar = colors.black tbartxt = colors.white prog = colors.gray sndtxt = colors.cyan changes = true Screen() end -- tBar Black
