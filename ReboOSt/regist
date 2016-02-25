@@ -99,14 +99,8 @@ else
  print(" "..devpart.." "..version)
 end
 term.setTextColor(prog)
-term.setCursorPos(37,1)
+term.setCursorPos(39,1)
 write("Registration ")
-term.setBackgroundColor(buttonReboot)
-term.setTextColor(buttonRetxt)
-write("@")
-term.setBackgroundColor(buttonShut)
-term.setTextColor(buttonShtxt)
-print("X")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -136,21 +130,12 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shut down
-
-if XY == "51,1" and button == 1 then
-shell.run("/ReboOSt/shut-off")
-Screen()
-
- -- reboot
-
-elseif XY == "50,1" and button == 1 then
-shell.run("/ReboOSt/reboot")
-Screen()
-
  -- Back
 
-elseif X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
 break
 
  -- Standart
