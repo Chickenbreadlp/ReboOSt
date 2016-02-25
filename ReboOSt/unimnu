@@ -15,7 +15,7 @@ print("Time         ")
 write("Shell       ")
 if admin then print(" ") else print("!") end
 print(" ----------- ")
-print("Logoff       ")
+print("Logout       ")
 print("Reboot       ")
 print("Shutdown     ")
 end
@@ -96,7 +96,7 @@ elseif X >= 1 and X < 14 and Y == 7 then
  term.setBackgroundColor(wico)
  term.setTextColor(wicotxt)
  term.setCursorPos(14,7)
- print("        Logoff        ")
+ print("        Logout        ")
  term.setBackgroundColor(wicotxt)
  term.setTextColor(wico)
  term.setCursorPos(14,8)

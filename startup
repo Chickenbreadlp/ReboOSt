@@ -1,4 +1,4 @@
-term.setBackgroundColor(32768)
+term.setBackgroundColor(colors.gray)
 term.setTextColor(1)
 term.clear()
 term.setCursorPos(1,1)
@@ -14,9 +14,9 @@ print("Setting OStag...")
 OStag = "ReboOSt"
 sleep(0.05)
 print("Setting OS version...")
-devpart = "Alpha in DEV"
+devpart = "Alpha Development"
 version = 1.1
-rosbuild = 0030
+rosbuild = 0031
 sleep(0.05)
 print("Starting Startuproutine...")
 sleep(0.05)
@@ -52,6 +52,7 @@ write("OS")
 term.setTextColor(colors.lightGray)
 print("t Build "..rosbuild)
 print("")
+--[[
 write("    ")
 term.setBackgroundColor(colors.lightGray)
 print("                                           ")
@@ -64,10 +65,11 @@ write("    ")
 term.setBackgroundColor(colors.lightGray)
 print("                                           ")
 term.setBackgroundColor(32768)
-print(" ")
+print(" ")]]
 if rosdebug then
+ term.setCursorPos(1,19)
  term.setTextColor(colors.red)
- print("Debug Mode enabled!")
+ write("Debug Mode enabled!")
 else
  print("")
 end
@@ -80,10 +82,10 @@ else
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end
-paintutils.drawImage(Logo,6,9)
-term.setCursorPos(6,4)
+paintutils.drawImage(Logo,6,6)
+term.setCursorPos(6,13)
 term.setBackgroundColor(colors.cyan)
-textutils.slowPrint("             ", 1000)
+--textutils.slowPrint("             ", 1000)
 if fs.exists("/ReboOSt/APIs/encryption") then
  os.loadAPI("/ReboOSt/APIs/encryption")
 else
@@ -146,8 +148,9 @@ else
 end
 
 if starts == "0" then
- term.setCursorPos(19,4)
- textutils.slowPrint("                          ", 1000)
+ term.setCursorPos(19,13)
+-- textutils.slowPrint("                          ", 1000)
+ sleep(0.5)
  if fs.exists("/ReboOSt/firststart") then
   shell.run("/ReboOSt/firststart")
  else
@@ -156,8 +159,8 @@ if starts == "0" then
  crashscreen = colors.gray
  crashscreentxt = colors.cyan
 else
- term.setCursorPos(19,4)
- textutils.slowPrint("              ", 1000)
+ term.setCursorPos(19,13)
+-- textutils.slowPrint("              ", 1000)
  starts = starts + 1
  if fs.exists("/ReboOSt/configs/stcount") then
   fs.delete("/ReboOSt/configs/stcount")
@@ -165,8 +168,9 @@ else
   file.write(starts)
   file.close()
  end
- term.setCursorPos(33,4)
- textutils.slowPrint("              ", 1000)
+ starts = 1
+ term.setCursorPos(33,13)
+-- textutils.slowPrint("              ", 1000)
  if autoupdate then
   if fs.exists("/ReboOSt/updater") then
    shell.run("/ReboOSt/updater")
@@ -176,6 +180,7 @@ else
    os.shutdown()
   end
  end
+ sleep(0.7)
  if fs.exists("/ReboOSt/welcome") then
   shell.run("/ReboOSt/welcome")
  else

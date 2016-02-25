@@ -31,6 +31,9 @@ while true do
   term.setTextColor(colors.red)
   print("Forbidden Command!")
  elseif linput == "start" or linput == "home" or linput == "exit" or linput == "back" or linput == "close" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+  end
   break
  elseif linput == "reboot" then
   instashut = true
@@ -203,8 +206,6 @@ while true do
    rosdebug = onoff(rosdebug, "Debug Mode")
   elseif input == "pfolder" then
    pfolder = onoff(pfolder, "Programs Folder icon")
-  elseif input == "gfolder" then
-   gfolder = onoff(gfolder, "Games Folder icon")
   elseif input == "rosloging" then
    rosloging = onoff(rosloging, "Logfile")
   elseif input == "termstart" then
@@ -245,11 +246,6 @@ while true do
    file.writeLine("pfolder = true")
   else
    file.writeLine("pfolder = false")
-  end
-  if gfolder then
-   file.writeLine("gfolder = true")
-  else
-   file.writeLine("gfolder = false")
   end
   if termstart then
    file.writeLine("termstart = true")
