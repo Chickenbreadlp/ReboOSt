@@ -15,17 +15,6 @@ local function welcome()
 end
 
 local function FirstDraw()
-
-if rosloging then
- if fs.exists("/ReboOSt/logs/"..starts..".txt") then
-  fs.delete("/ReboOSt/logs/"..starts..".txt")
- end
- roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
-end
-if rosloging then
- roslog.writeLine("startup: Startup successfull. Lauched Login.")
-end
-
 term.setCursorPos(1,1)
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
@@ -110,7 +99,7 @@ local function Login()
   end
   login = true
   if rosloging then
-   roslog.writeLine(shell.getRunningProgram()..": Entered password for User "..UserName.." was correct. Logging in...")
+   roslog.writeLine(shell.getRunningProgram()..": Entered password for User '"..UserName.."' was correct. Logging in...")
   end
   term.setTextColor(tbartxt)
   term.setCursorPos(1,1)
@@ -194,6 +183,16 @@ local function Start()
   FirstDraw()
   Login()
  end
+end
+
+if rosloging then
+ if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+  fs.delete("/ReboOSt/logs/"..starts..".txt")
+ end
+ roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
+end
+if rosloging then
+ roslog.writeLine("startup: Startup successfull. Lauched Login.")
 end
 
 Start()
