@@ -4,8 +4,6 @@ crash = true
 local diskiconactiv = false
 local diskXmin = nil
 local diskXmax = nil
-local gfolXmin = nil
-local gfolXmax = nil
 local pfolXmin = nil
 local pfolXmax = nil
 local dir = nil
@@ -43,6 +41,9 @@ term.setCursorPos(fsX,19)
 write(freeSpace.." KB")
 end
 if termstart then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going into shell")
+ end
  shell.run("/ReboOSt/shell")
  Desk()
 else
@@ -51,8 +52,8 @@ end
 
 while true do
 
-if gfolder then gfolXmin = 2 gfolXmax = 6 diskXmin = 8 diskXmax = 11 else gfolXmin = 0 gfolXmax = 0 diskXmin = 2 diskXmax = 6 end
-if pfolder then pfolXmin = 2 pfolXmax = 6 if gfolder then gfolXmin = 8 gfolXmax = 11 diskXmin = 14 diskXmax = 17 else diskXmin = 8 diskXmax = 11 end else pfolXmin = 0 pfolXmax = 0 gfolXmin = 2 gfolXmax = 5 end
+
+if pfolder then pfolXmin = 2 pfolXmax = 6 diskXmin = 8 diskXmax = 11 else pfolXmin = 0 pfolXmax = 0 diskXmin = 2 diskXmax = 6 end
 
 if disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
  paintutils.drawImage(disklogo,diskXmin,4)
@@ -72,15 +73,6 @@ else
  end
 end
 
-if gfolder then
- paintutils.drawImage(Gamesfolder,gfolXmin,4)
- term.setCursorPos(gfolXmin,8)
- term.setBackgroundColor(mbar)
- term.setTextColor(mbartxt)
- print("Game")
-else
-end
-
 if pfolder then
  paintutils.drawImage(ProgFold,2,4)
  term.setCursorPos(2,8)
@@ -96,10 +88,14 @@ local XY = X..","..Y
 
 if X >= 1 and X <= 7 and Y == 1 then
  if rosloging then
-  roslog.writeLine("mainframe: opening Unimenu")
+  roslog.writeLine(shell.getRunningProgram()..": opening Unimenu")
  end
  shell.run("/ReboOSt/unimnu")
- Desk()
+ if login then
+  Desk()
+ else
+  break
+ end
 
  -- Disk
 
@@ -125,7 +121,7 @@ elseif disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresen
    dir = dir.."/"
   end
   if rosloging then
-   roslog.writeLine("mainframe: executing: '/ReboOSt/fbrws --dir "..dir.."'")
+   roslog.writeLine(shell.getRunningProgram()..": executing: '/ReboOSt/fbrws --dir "..dir.."'")
   end
   shell.run("/ReboOSt/fbrws", "--dir "..dir)
   if rosloging then
@@ -150,23 +146,9 @@ elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 the
 elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
  if pfolder then
   if rosloging then
-   roslog.writeLine("mainframe: executing: '/ReboOSt/fbrws --dir /Programs'")
+   roslog.writeLine(shell.getRunningProgram()..": executing: '/ReboOSt/fbrws --dir /Programs'")
   end
   shell.run("/ReboOSt/fbrws", "--dir /Programs")
-  if rosloging then
-   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
-  end
-  Desk()
- end
-
- -- Games Folder
-
-elseif X >= gfolXmin and X <= gfolXmax and Y >= 4 and Y <= 8 then
- if gfolder then
-  if rosloging then
-   roslog.writeLine("mainframe: executing: /ReboOSt/fbrws --dir /Programs/Games")
-  end
-  shell.run("/ReboOSt/fbrws", "--dir", "/Programs/Games")
   if rosloging then
    roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
   end
