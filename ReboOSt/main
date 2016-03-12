@@ -14,14 +14,15 @@ term.setBackgroundColor(tbar)
 term.clear()
 term.setCursorPos (1,1)
 term.setBackgroundColor(tbar)
-term.setTextColor(tbartxt)
---print("                                                  ")
+print("                                                  ")
 term.setCursorPos(1,1)
+term.setTextColor(sndtxt)
 write(OStag)
 if rosdebug then
  term.setTextColor(colors.red)
  print(" "..devpart.." "..version)
 else
+ term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
 term.setCursorPos(44,1)
@@ -29,7 +30,6 @@ term.setTextColor(prog)
 write("Desktop ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-print("                                                   ")
 paintutils.drawImage(Wallpaper,1,2)
 term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
@@ -38,7 +38,9 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 if termstart then
  if rosloging then
