@@ -28,28 +28,44 @@ local function download(branch, pastecode, sFile)
 end
 
 if login then
- term.setBackgroundColor(wico)
- term.setTextColor(wicotxt)
- term.setCursorPos(14,7)
- print("        Updater        ")
- term.setBackgroundColor(wicotxt)
- term.setTextColor(wico)
- term.setCursorPos(14,8)
- print("                       ")
- term.setCursorPos(14,9)
- print("Cheking for Internet...")
- term.setCursorPos(14,10)
- print("                       ")
- term.setCursorPos(14,11)
- print("                       ")
+ term.setBackgroundColor(mbar)
+ term.clear()
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(tbar)
+ term.setTextColor(tbartxt)
+ print("                                                   ")
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(mbar)
+ term.setTextColor(mbartxt)
+ write(OStag)
+ term.setBackgroundColor(tbar)
+ if rosdebug then
+  term.setTextColor(colors.red)
+  print(" "..devpart.." "..version)
+ else
+  term.setTextColor(tbartxt)
+  print(" "..devpart.." "..version)
+ end
+ term.setCursorPos(44,1)
+ term.setTextColor(prog)
+ print("Updater ")
+ term.setBackgroundColor(mbar)
+ term.setTextColor(tbartxt)
+ print("")
+ local yau = "Looking for an internet Connection"
+ local yaulen = string.len(yau)
+ local yaupos = ( 52 - yaulen ) / 2
+ term.setCursorPos(yaupos,9)
+ print(yau)
+ 
+ local yau = "Please Wait..."
+ local yaulen = string.len(yau)
+ local yaupos = ( 52 - yaulen ) / 2
+ term.setCursorPos(yaupos,11)
+ print(yau)
 end
 local inet = get("release", "README.md")
 if inet then
- if login then
-  term.setCursorPos(21,10)
-  print("Success!")
-  sleep(2.5)
- end
 
 if fs.exists("/ReboOSt/Temp/updattmp1") then
  fs.delete("/ReboOSt/Temp/updattmp1")
@@ -59,8 +75,11 @@ if fs.exists("/ReboOSt/Temp/updattmp1") then
 
 shell.run("/ReboOSt/Temp/updattmp1")
 
+
 if updatstream == "development" then
- rosbuildo = rosbuildo + 1000
+ if rosbuild < 1000 or rosbuild >= 2000 and rosbuild < 3000 or rosbuild >= 4000 and rosbuild < 5000 then
+  rosbuildo = rosbuildo + 1000
+ end
 end
 
 if rosbuildo <= rosbuild then

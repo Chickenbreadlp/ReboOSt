@@ -25,7 +25,7 @@ else
 end
 term.setCursorPos(46,1)
 term.setTextColor(prog)
-write("About ")
+print("About ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -46,7 +46,9 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 Screen()
 

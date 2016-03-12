@@ -281,7 +281,8 @@ while true do
   print([[Use "themes" to modify the current theme.
 Use "settings" to modify current settings.
 Use "files" to open File Browser.
-Use "sketch" to open sketch from anywhere.]])
+Use "sketch" to open sketch from anywhere.
+Use "passwd" to change your and other's passwords.]])
   term.setTextColor(tbartxt)
  elseif linput == "files" then
   shell.run("/ReboOSt/fbrws")
@@ -294,18 +295,97 @@ Use "sketch" to open sketch from anywhere.]])
   clear()
  elseif linput == "clear" then
   clear()
+ elseif linput == "passwd" then
+  print("Do you want to change your own Password or one from another account?")
+  write("Y/N: ")
+  input = read()
+  input = string.lower(input)
+  if input == "y" then
+   write("New Password: ")
+   local npw = read("*")
+   write("Repeat new Password: ")
+   local npwd = read("*")
+   if npw == npwd then
+    npwd = encryption.sha256(npw)
+    local file = fs.open("/User/"..UserName.."/..meta", "r")
+    local metaData = {}
+    local line = file.readLine()
+    repeat
+    table.insert(metaData,line)
+    line = file.readLine()
+    until line == nil
+	file.close()
+    local file = fs.open("/User/"..UserName.."/..meta", "w")
+    file.writeLine(npwd)
+    file.writeLine(metaData[2])
+    file.close()
+	npw = nil
+	npwd = nil
+	metaData = nil
+	print("Changed password sucessfully!")
+   else
+    print("Passwords don't match. Exiting...")
+   end
+  elseif input == "n" then
+   write("Account: ")
+   local apwc = read()
+   if fs.exists("/User/"..apwc) then
+    write("Old Password: ")
+	local opw = read("*")
+	opw = encryption.sha256(opw)
+    local file = fs.open("/User/"..apwc.."/..meta", "r")
+    local metaData = {}
+    local line = file.readLine()
+    repeat
+    table.insert(metaData,line)
+    line = file.readLine()
+    until line == nil
+	file.close()
+	if opw == metaData[1] then
+	 write("New Password: ")
+	 local npw = read("*")
+	 write("Repeat new Password: ")
+	 local npwd = read("*")
+	 if npw == npwd then
+	  npwd = encryption.sha256(npw)
+      local file = fs.open("/User/"..UserName.."/..meta", "w")
+      file.writeLine(npwd)
+      file.writeLine(metaData[2])
+      file.close()
+	  opw = nil
+  	  npw = nil
+	  npwd = nil
+	  metaData = nil
+	 else
+	  print("Passwords don't match! Exiting...")
+	  opw = nil
+  	  npw = nil
+	  npwd = nil
+	  metaData = nil
+	 end
+	else
+	 print("Wrong Password! Exiting...")
+	 opw = nil
+	 metaData = nil
+	end
+   else
+    print("User doesn't exists! Exiting...")
+   end
+  else
+   print(input.." is not a choise! Exiting...")
+  end
  elseif linput == "debug" then
   if rosdebug then
    write("Please enter Mainainance Password: ")
    os.pullEvent = os.pullEventRaw
    input = read("*")
    local inpute = encryption.sha256(input)
-    if inpute == "10a462ec70472bd9367839a857e709f366ff7399f9e0becb9aa5ad70b13a15ea" then
-    print("Warning! This is very experimental and you can break the whole OS with it! Use at own risk! Enter close to get back to normal shell.")
+    if inpute == "990b807552e98a071be5f51d47d7453c8df1770c12d15fdacac1986646db8e9d" then
+    print("Warning! This is very experimental and you can break the whole OS with it! Use at your own risk! Also most of the shell commands don't work here! Enter close to get back to normal shell.")
     local debugshell = true
-    while debugshell do
+    while true do
      term.setTextColor(sndtxt)
-     write(" -> ")
+     write(currdir.." -> ")
      term.setTextColor(tbartxt)
      os.pullEvent = os.pullEventRaw
      input = read()
@@ -314,7 +394,7 @@ Use "sketch" to open sketch from anywhere.]])
      if linput == "cpass" then
       print("What User do you want to edit?")
  	  term.setTextColor(sndtxt)
-      write(" -> ")
+      write("cpass > ")
   	  term.setTextColor(tbartxt)
       os.pullEvent = os.pullEventRaw
       ouser = read()
@@ -323,7 +403,7 @@ Use "sketch" to open sketch from anywhere.]])
       elseif fs.exists("/User/"..ouser) then
        print("Enter new User Name")
 	   term.setTextColor(sndtxt)
-	   write(" -> ")
+	   write("cpass > ")
 	   term.setTextColor(tbartxt)
 	   os.pullEvent = os.pullEventRaw
 	   nuser = read()
@@ -335,7 +415,7 @@ Use "sketch" to open sketch from anywhere.]])
 	    fs.move("/User/"..ouser , "/User/"..nuser)
 	    print("Please enter new Password")
 	    term.setTextColor(sndtxt)
-	    write(" -> ")
+	    write("cpass > ")
 	    term.setTextColor(tbartxt)
 	    os.pullEvent = os.pullEventRaw
 	    local pass = read()
@@ -347,6 +427,7 @@ Use "sketch" to open sketch from anywhere.]])
 	    table.insert(metaData,line)
 	    line = file.readLine()
 	    until line == nil
+		file.close()
 	    local file = fs.open("/User/"..Name.."/..meta", "w")
 	    file.writeLine(passe)
 	    file.writeLine(metaData[2])
@@ -355,9 +436,10 @@ Use "sketch" to open sketch from anywhere.]])
 	    pass = nil
 	   end
       else
-       print("User dosn't exists! Exiting.")
+       print("User doesn't exists! Exiting.")
       end
      elseif linput == "close" then
+	  debugshell = false
       print("Exiting debug shell...")
       break
      else

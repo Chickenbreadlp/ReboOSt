@@ -6,18 +6,23 @@ local deskback = true
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 term.setCursorPos(14,2)
-write("Themes        ")
+write("Appearance ")
+if fs.exists("/ReboOSt/thmchg") then write(" ") else write("!") end
 term.setCursorPos(14,3)
-write("About OS      ")
+write("About OS   ")
+if fs.exists("/ReboOSt/info") then write(" ") else write("!") end
 term.setCursorPos(14,4)
-write("Register     ")
-if admin then print(" ") else print("!") end
+write("Accounts  ")
+if admin then write(" ") else write("X") end
+if fs.exists("/ReboOSt/regist") then write(" ") else write("!") end
 term.setCursorPos(14,5)
-write("Updater      ")
-if admin then print(" ") else print("!") end
+write("Updater   ")
+if admin then write(" ") else write("X") end
+if fs.exists("/ReboOSt/updater") then write(" ") else write("!") end
 term.setCursorPos(14,6)
-write("Control Panel")
-if admin then print(" ") else print("!") end
+write("Settings  ")
+if admin then write(" ") else write("X") end
+if fs.exists("/ReboOSt/ctrlpnl") then write(" ") else write("!") end
 
 local function menuundo()
  if keepmenu == false then

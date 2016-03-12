@@ -21,9 +21,9 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(38,1)
+term.setCursorPos(41,1)
 term.setTextColor(prog)
-write("Theme Changer ")
+print("Appearance ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("")
@@ -174,9 +174,10 @@ if wico == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Close/Reset/Back: [ ")
+write("Wallpaper         [ ")
 term.setTextColor(colors.white)
-if buttonBack == colors.lime then term.setBackgroundColor(colors.lime) write("Uncolor") else term.setBackgroundColor(colors.gray) write("Recolor") end
+term.setBackgroundColor(colors.lime)
+write("Modify")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print(" ]")
@@ -203,7 +204,9 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 Screen()
 
@@ -291,9 +294,12 @@ if XY == "33,7" and button == 1 then wico = colors.lime wicotxt = colors.white c
 if XY == "34,7" and button == 1 then wico = colors.pink wicotxt = colors.white changes = true Screen() end -- wico pink
 if XY == "35,7" and button == 1 then wico = colors.brown wicotxt = colors.white changes = true Screen() end -- wico brown
 
- -- buttons
-if X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lime and button == 1 then buttonBack = colors.lightGray buttonReboot = colors.gray buttonShut = colors.black buttonColor = false changes = true Screen() -- Uncolor
-elseif X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lightGray and button == 1 then buttonBack = colors.lime buttonReboot = colors.orange buttonShut = colors.red buttonColor = true changes = true Screen() end -- Recolor
+ -- wallpaper
+if X >= 21 and X <= 26 and Y == 8 and button == 1 then
+ shell.run("/Programs/sketch", "/User/"..UserName.."/Pictures/wallpaper.nfp")
+ Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
+ Screen()
+ end
 
  -- Save
 if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
