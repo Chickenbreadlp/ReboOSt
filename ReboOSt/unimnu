@@ -9,11 +9,13 @@ term.setCursorPos(1,1)
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 print(OStag)
-print("System      >")
+print("Panels      >")
 print("Programs    >")
-print("Time         ")
-write("Shell       ")
-if admin then print(" ") else print("!") end
+write("Time        ")
+if fs.exists("/ReboOSt/time") then print(" ") else print("!") end
+write("Shell      ")
+if admin then write(" ") else write("X") end
+if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
 print(" ----------- ")
 print("Logout       ")
 print("Reboot       ")
@@ -23,8 +25,9 @@ end
 local function menuundo()
  term.setCursorPos(1,1)
  term.setBackgroundColor(tbar)
- term.setTextColor(tbartxt)
+ term.setTextColor(sndtxt)
  print(OStag)
+ term.setTextColor(tbartxt)
  paintutils.drawImage(Wallpaper,1,2)
  if fs.exists("/disk") then
   paintutils.drawImage(disklogo,2,4)
