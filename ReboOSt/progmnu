@@ -4,15 +4,18 @@ local deskback = true
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 term.setCursorPos(14,3)
-print("File Browser")
+write("File Browser ")
+if fs.exists("/ReboOSt/fbrws") then write(" ") else write("!") end
 term.setCursorPos(14,4)
-print("Snake       ")
+write("Snake         ")
 term.setCursorPos(14,5)
-print("Redirection ")
+write("Redirection   ")
 term.setCursorPos(14,6)
-print("Sketch      ")
+write("Sketch       ")
+if fs.exists("/Programs/sketch") then write(" ") else write("!") end
 term.setCursorPos(14,7)
-print("luaIDE      ")
+write("luaIDE       ")
+if fs.exists("/ReboOSt/luaIDE") then write(" ") else write("!") end
 
 
 local function menuundo()
