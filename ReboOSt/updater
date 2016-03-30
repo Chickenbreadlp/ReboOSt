@@ -28,28 +28,44 @@ local function download(branch, pastecode, sFile)
 end
 
 if login then
- term.setBackgroundColor(wico)
- term.setTextColor(wicotxt)
- term.setCursorPos(14,7)
- print("        Updater        ")
- term.setBackgroundColor(wicotxt)
- term.setTextColor(wico)
- term.setCursorPos(14,8)
- print("                       ")
- term.setCursorPos(14,9)
- print("Cheking for Internet...")
- term.setCursorPos(14,10)
- print("                       ")
- term.setCursorPos(14,11)
- print("                       ")
+ term.setBackgroundColor(mbar)
+ term.clear()
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(tbar)
+ term.setTextColor(tbartxt)
+ print("                                                   ")
+ term.setCursorPos(1,1)
+ term.setBackgroundColor(mbar)
+ term.setTextColor(mbartxt)
+ write(OStag)
+ term.setBackgroundColor(tbar)
+ if rosdebug then
+  term.setTextColor(colors.red)
+  print(" "..devpart.." "..version)
+ else
+  term.setTextColor(tbartxt)
+  print(" "..devpart.." "..version)
+ end
+ term.setCursorPos(44,1)
+ term.setTextColor(prog)
+ print("Updater ")
+ term.setBackgroundColor(mbar)
+ term.setTextColor(tbartxt)
+ print("")
+ local yau = "Looking for an internet Connection"
+ local yaulen = string.len(yau)
+ local yaupos = ( 52 - yaulen ) / 2
+ term.setCursorPos(yaupos,9)
+ print(yau)
+ 
+ local yau = "Please Wait..."
+ local yaulen = string.len(yau)
+ local yaupos = ( 52 - yaulen ) / 2
+ term.setCursorPos(yaupos,11)
+ print(yau)
 end
 local inet = get("release", "README.md")
 if inet then
- if login then
-  term.setCursorPos(21,10)
-  print("Success!")
-  sleep(2.5)
- end
 
 if fs.exists("/ReboOSt/Temp/updattmp1") then
  fs.delete("/ReboOSt/Temp/updattmp1")
@@ -59,8 +75,11 @@ if fs.exists("/ReboOSt/Temp/updattmp1") then
 
 shell.run("/ReboOSt/Temp/updattmp1")
 
+
 if updatstream == "development" then
- rosbuildo = rosbuildo + 1000
+ if rosbuild < 1000 or rosbuild >= 2000 and rosbuild < 3000 or rosbuild >= 4000 and rosbuild < 5000 then
+  rosbuildo = rosbuildo + 1000
+ end
 end
 
 if rosbuildo <= rosbuild then
@@ -94,13 +113,14 @@ if rosbuildo <= rosbuild then
   print(" ")
   print("You will get back to the Desk in any second.")
   sleep(3)
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+  end
  end
  fs.delete("/ReboOSt/Temp/updattmp1")
 elseif rosbuildo > rosbuild then
 
-if updatstream == "development" then
- rosbuildo = rosbuildo - 1000
-end
+rosbuildo = rosbuildo - 1000
 
 term.setBackgroundColor(mbar)
 term.clear()
@@ -226,6 +246,9 @@ if X >=5 and X <= 25 and Y >= 13 and Y <= 15 and button == 1 then
  print("ReboOSt is now on the newest Version.              ")
  print("The system will be rebooting any second.           ")
  sleep(3)
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": Rebooting...")
+  end
  os.reboot()
 break
 end
@@ -253,6 +276,9 @@ if X >= 27 and X <= 47 and Y >= 13 and Y <= 15 and button == 1 then
  print("You want to keep the old Version? Your decision!")
  if login then
   print("You will get back to the Desk in any second.")
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+  end
  else
   print("You will get to the login any second.")
  end
