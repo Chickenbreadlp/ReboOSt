@@ -1,4 +1,4 @@
-# ReboOSt Alpha 1
+# ReboOSt Alpha 2
 ReboOSt is a continuation of something I worked on before, ApfelOS.
 Just to recap: ApfelOS was created when I was still young and childish. It was kinda crappy in it's own ways.
 
