@@ -251,7 +251,6 @@ if X >= 34 and X <= 45 and Y == 15 and button == 1 and changes then
  file.writeLine("tbar = "..tbar)
  file.writeLine("mbar = "..mbar)
  file.writeLine("body = "..body)
- file.writeLine("wico = "..wico)
  file.writeLine("crashscreen = "..tbar)
  file.writeLine("crashscreentxt = "..prog)
  file.writeLine("prog = "..prog)
@@ -264,7 +263,6 @@ if X >= 34 and X <= 45 and Y == 15 and button == 1 and changes then
  file.writeLine("tbartxt = "..tbartxt)
  file.writeLine("mbartxt = "..mbartxt)
  file.writeLine("bodytxt = "..bodytxt)
- file.writeLine("wicotxt = "..wicotxt)
  file.writeLine("sndtxt = "..sndtxt)
  file.close()
  changes = false
