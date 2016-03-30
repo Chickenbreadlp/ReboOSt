@@ -23,22 +23,17 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(44,1)
+term.setCursorPos(46,1)
 term.setTextColor(prog)
-write("About ")
-term.setBackgroundColor(buttonReboot)
-term.setTextColor(buttonRetxt)
-write("@")
-term.setBackgroundColor(buttonShut)
-term.setTextColor(buttonShtxt)
-print("X")
+print("About ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
 paintutils.drawImage(Logo,6,10)
+term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 term.setCursorPos(yaupos,2)
-print("You are using Build "..rosbuild.." from "..OStag)
+print(yau)
 term.setCursorPos(1,4)
 term.setBackgroundColor(tbar)
 term.setTextColor(sndtxt)
@@ -52,7 +47,9 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 Screen()
 
@@ -60,17 +57,14 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shutdown
-
-if XY == "51,1" and button == 1 then shell.run("/ReboOSt/shut-off") Screen()
-
- -- reboot
-
-elseif XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Screen()
-
  -- back
  
-elseif X >= 1 and X <= 7 and Y == 1 and button == 1 then break end
+if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
+ break
+end
 end
 else
  term.setTextColor(16384)

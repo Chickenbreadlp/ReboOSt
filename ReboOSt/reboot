@@ -1,4 +1,10 @@
 local function Reboot()
+ if rosloging then
+  roslog.writeLine("Rebooting...")
+ end
+ if roslog ~= nil then
+  roslog.close()
+ end
  term.setBackgroundColor(colors.gray)
  term.clear()
  term.setCursorPos(1,1)

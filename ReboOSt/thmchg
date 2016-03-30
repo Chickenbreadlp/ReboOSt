@@ -21,15 +21,9 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(36,1)
+term.setCursorPos(41,1)
 term.setTextColor(prog)
-write("Theme Changer ")
-term.setTextColor(buttonRetxt)
-term.setBackgroundColor(buttonReboot)
-write("@")
-term.setTextColor(buttonShtxt)
-term.setBackgroundColor(buttonShut)
-print("X")
+print("Appearance ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("")
@@ -71,7 +65,7 @@ if tbar == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Sub Bars:         [")
+write("Panel Color:      [")
 term.setBackgroundColor(colors.black)
 if mbar == colors.black then write("X") else write(" ") end
 term.setBackgroundColor(colors.gray)
@@ -143,51 +137,14 @@ if body == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Windows           [")
-term.setTextColor(wicotxt)
-term.setBackgroundColor(colors.black)
-if wico == colors.black then write("X") else write(" ") end
-term.setBackgroundColor(colors.gray)
-if wico == colors.gray then write("X") else write(" ") end
-term.setBackgroundColor(colors.lightGray)
-if wico == colors.lightGray then write("X") else write(" ") end
-term.setBackgroundColor(colors.white)
-if wico == colors.white then write("X") else write(" ") end
-term.setBackgroundColor(colors.yellow)
-if wico == colors.yellow then write("X") else write(" ") end
-term.setBackgroundColor(colors.orange)
-if wico == colors.orange then write("X") else write(" ") end
-term.setBackgroundColor(colors.red)
-if wico == colors.red then write("X") else write(" ") end
-term.setBackgroundColor(colors.purple)
-if wico == colors.purple then write("X") else write(" ") end
-term.setBackgroundColor(colors.magenta)
-if wico == colors.magenta then write("X") else write(" ") end
-term.setBackgroundColor(colors.lightBlue)
-if wico == colors.lightBlue then write("X") else write(" ") end
-term.setBackgroundColor(colors.cyan)
-if wico == colors.cyan then write("X") else write(" ") end
-term.setBackgroundColor(colors.blue)
-if wico == colors.blue then write("X") else write(" ") end
-term.setBackgroundColor(colors.green)
-if wico == colors.green then write("X") else write(" ") end
+write("Wallpaper         [")
+term.setTextColor(colors.white)
 term.setBackgroundColor(colors.lime)
-if wico == colors.lime then write("X") else write(" ") end
-term.setBackgroundColor(colors.pink)
-if wico == colors.pink then write("X") else write(" ") end
-term.setBackgroundColor(colors.brown)
-if wico == colors.brown then write("X") else write(" ") end
+write("     Modify     ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Close/Reset/Back: [ ")
-term.setTextColor(colors.white)
-if buttonBack == colors.lime then term.setBackgroundColor(colors.lime) write("Uncolor") else term.setBackgroundColor(colors.gray) write("Recolor") end
-term.setBackgroundColor(mbar)
-term.setTextColor(mbartxt)
-print(" ]")
-print("")
-print("")
+term.setCursorPos(1,15)
 write("     [")
 term.setBackgroundColor(colors.red)
 term.setTextColor(colors.white)
@@ -209,7 +166,9 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 Screen()
 
@@ -217,16 +176,13 @@ while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
- -- shut down
-
-if XY == "51,1" and button == 1 then shell.run("/ReboOSt/shut-off") Screen() end
-
- -- reboot
-
-if XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Screen() end
-
  -- Back
-if X >= 1 and X <= 7 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme") break end
+if X >= 1 and X <= 7 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme")
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+ end
+ break
+end
 
  -- tbar
 if XY == "20,4" and button == 1 then tbar = colors.black tbartxt = colors.white prog = colors.gray sndtxt = colors.cyan changes = true Screen() end -- tBar Black
@@ -282,35 +238,19 @@ if XY == "33,6" and button == 1 then body = colors.lime bodytxt = colors.white c
 if XY == "34,6" and button == 1 then body = colors.pink bodytxt = colors.white changes = true Screen() end -- body pink
 if XY == "35,6" and button == 1 then body = colors.brown bodytxt = colors.white changes = true Screen() end -- body brown
 
- -- wico
-if XY == "20,7" and button == 1 then wico = colors.black wicotxt = colors.white changes = true Screen() end -- wico black
-if XY == "21,7" and button == 1 then wico = colors.gray wicotxt = colors.white changes = true Screen() end -- wico gray
-if XY == "22,7" and button == 1 then wico = colors.lightGray wicotxt = colors.white changes = true Screen() end -- wico light gray
-if XY == "23,7" and button == 1 then wico = colors.white wicotxt = colors.black changes = true Screen() end -- wico white
-if XY == "24,7" and button == 1 then wico = colors.yellow wicotxt = colors.red changes = true Screen() end -- wico yellow
-if XY == "25,7" and button == 1 then wico = colors.orange wicotxt = colors.white changes = true Screen() end -- wico orange
-if XY == "26,7" and button == 1 then wico = colors.red wicotxt = colors.white changes = true Screen() end -- wico red
-if XY == "27,7" and button == 1 then wico = colors.purple wicotxt = colors.white changes = true Screen() end -- wico purple
-if XY == "28,7" and button == 1 then wico = colors.magenta wicotxt = colors.white changes = true Screen() end -- wico magenta
-if XY == "29,7" and button == 1 then wico = colors.lightBlue wicotxt = colors.white changes = true Screen() end -- wico light blue
-if XY == "30,7" and button == 1 then wico = colors.cyan wicotxt = colors.white changes = true Screen() end -- wico cyan
-if XY == "31,7" and button == 1 then wico = colors.blue wicotxt = colors.white changes = true Screen() end -- wico blue
-if XY == "32,7" and button == 1 then wico = colors.green wicotxt = colors.white changes = true Screen() end -- wico green
-if XY == "33,7" and button == 1 then wico = colors.lime wicotxt = colors.white changes = true Screen() end -- wico lime
-if XY == "34,7" and button == 1 then wico = colors.pink wicotxt = colors.white changes = true Screen() end -- wico pink
-if XY == "35,7" and button == 1 then wico = colors.brown wicotxt = colors.white changes = true Screen() end -- wico brown
-
- -- buttons
-if X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lime and button == 1 then buttonBack = colors.lightGray buttonReboot = colors.gray buttonShut = colors.black buttonColor = false changes = true Screen() -- Uncolor
-elseif X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lightGray and button == 1 then buttonBack = colors.lime buttonReboot = colors.orange buttonShut = colors.red buttonColor = true changes = true Screen() end -- Recolor
+ -- wallpaper
+if X >= 20 and X <= 35 and Y == 7 and button == 1 then
+ shell.run("/Programs/sketch", "/User/"..UserName.."/Pictures/wallpaper.nfp")
+ Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
+ Screen()
+ end
 
  -- Save
-if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
+if X >= 34 and X <= 45 and Y == 15 and button == 1 and changes then
  local file = fs.open("/User/"..UserName.."/..colortheme", "w")
  file.writeLine("tbar = "..tbar)
  file.writeLine("mbar = "..mbar)
  file.writeLine("body = "..body)
- file.writeLine("wico = "..wico)
  file.writeLine("crashscreen = "..tbar)
  file.writeLine("crashscreentxt = "..prog)
  file.writeLine("prog = "..prog)
@@ -323,7 +263,6 @@ if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
  file.writeLine("tbartxt = "..tbartxt)
  file.writeLine("mbartxt = "..mbartxt)
  file.writeLine("bodytxt = "..bodytxt)
- file.writeLine("wicotxt = "..wicotxt)
  file.writeLine("sndtxt = "..sndtxt)
  file.close()
  changes = false
@@ -331,7 +270,7 @@ if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
 end
 
  -- Discard
-if X >= 7 and X <= 21 and Y == 11 and button == 1 then shell.run("/User/"..UserName.."/..colortheme") changes = false Screen() end
+if X >= 7 and X <= 21 and Y == 15 and button == 1 then shell.run("/User/"..UserName.."/..colortheme") changes = false Screen() end
 end
 
 else
