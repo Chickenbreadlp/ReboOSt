@@ -1,5 +1,21 @@
 local changes = false
 if login then
+
+local function SwiStat(var)
+ if var then
+  term.setBackgroundColor(colors.green)
+  write(" On")
+  term.setBackgroundColor(colors.red)
+  write(" ")
+ else
+  term.setBackgroundColor(colors.green)
+  write(" ")
+  term.setBackgroundColor(colors.red)
+  write("Off")
+ end
+ term.setBackgroundColor(mbar)
+end
+
 local function Screen()
 term.setBackgroundColor(mbar)
 term.clear()
@@ -19,76 +35,32 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(36,1)
+term.setCursorPos(43,1)
 term.setTextColor(prog)
-write("Control Panel ")
-term.setBackgroundColor(buttonReboot)
-term.setTextColor(buttonRetxt)
-write("@")
-term.setBackgroundColor(buttonShut)
-term.setTextColor(buttonShtxt)
-print("X")
+write("Settings ")
 term.setBackgroundColor(mbar)
 term.setTextColor(tbartxt)
 print("")
 print("")
 write(" Auto Update          ")
-if autoupdate then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(autoupdate)
+print("")
 print("")
 write(" Debug Mode           ")
-if rosdebug then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(rosdebug)
+print("")
 print("")
 write(" Programs Folder      ")
-if pfolder then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- print(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- print("Off")
-end
-term.setBackgroundColor(mbar)
+SwiStat(pfolder)
 print("")
-write(" Games Folder         ")
-if gfolder then
- term.setBackgroundColor(colors.green)
- write(" On")
- term.setBackgroundColor(colors.red)
- write(" ")
-else
- term.setBackgroundColor(colors.green)
- write(" ")
- term.setBackgroundColor(colors.red)
- write("Off")
-end
-term.setBackgroundColor(mbar)
-term.setTextColor(colors.red)
-print("   -- Currently Broken!")
+print("")
+write(" Start to shell       ")
+SwiStat(termstart)
+print("")
+print("")
+write(" Log System Activity  ")
+SwiStat(rosloging)
+
 term.setCursorPos(1,16)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
@@ -111,21 +83,22 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 Screen()
 
 local function changeSwitchGR(YY)
  term.setCursorPos(26,YY)
  term.setBackgroundColor(colors.red)
+ term.setTextColor(colors.white)
  print("f")
  term.setCursorPos(25,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.red)
  print("f")
  term.setCursorPos(24,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.red)
  print("O")
  sleep(0.1)
  term.setCursorPos(23,YY)
@@ -136,14 +109,13 @@ end
 local function changeSwitchRG(YY)
  term.setCursorPos(23,YY)
  term.setBackgroundColor(colors.green)
+ term.setTextColor(colors.white)
  print(" ")
  term.setCursorPos(24,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.green)
  write("O")
  term.setCursorPos(25,YY)
  sleep(0.1)
- term.setBackgroundColor(colors.green)
  write("n")
  sleep(0.1)
  term.setCursorPos(26,YY)
@@ -154,19 +126,24 @@ end
 while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
-
- -- shut down
- if XY == "51,1" and button == 1 then shell.run("/ReboOSt/shut-off") Desk() end
-
- -- reboot
- if XY == "50,1" and button == 1 then shell.run("/ReboOSt/reboot") Desk() end
  
  -- Back
- if X >= 1 and X <= 7 and Y == 1 and button == 1 then shell.run("/ReboOSt/configs/main") break end
+ if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+  if rosloging then
+   if roslog == nil then
+    if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+     fs.delete("/ReboOSt/logs/"..starts..".txt")
+    end
+     roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
+   end
+   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+  end
+  shell.run("/ReboOSt/configs/main")
+  break
 
  -- Logoff
 
- if XY == "51,18" and button == 1 then
+ elseif XY == "51,18" and button == 1 then
   term.setBackgroundColor(wico)
   term.setTextColor(wicotxt)
   term.setCursorPos(14,7)
@@ -182,69 +159,83 @@ local XY = X..","..Y
   sleep(1.2)
   shell.run("/ReboOSt/logoff.adf")
   Desk()
- end
 
  -- Auto update
 
- if X >= 23 and X <= 26 and Y == 4 then
+ elseif X >= 23 and X <= 26 and Y == 3 then
   if autoupdate then
    autoupdate = false
-   changeSwitchGR(4)
+   changeSwitchGR(3)
   else
    autoupdate = true
-   changeSwitchRG(4)
+   changeSwitchRG(3)
   end
   changes = true
   Screen()
- end
 
  -- Debug Mode
 
- if X >= 23 and X <= 26 and Y == 6 then
+ elseif X >= 23 and X <= 26 and Y == 5 then
   if rosdebug then
    rosdebug = false
-   changeSwitchGR(6)
+   changeSwitchGR(5)
   else
    rosdebug = true
-   changeSwitchRG(6)
+   changeSwitchRG(5)
   end
   changes = true
   Screen()
- end
 
- -- programs Folder
+ -- Programs Folder
 
- if X >= 23 and X <= 26 and Y == 8 then
+ elseif X >= 23 and X <= 26 and Y == 7 then
   if pfolder then
    pfolder = false
-   changeSwitchGR(8)
+   changeSwitchGR(7)
   else
    pfolder = true
-   changeSwitchRG(8)
+   changeSwitchRG(7)
   end
   changes = true
   Screen()
- end
 
- -- Games Folder
+ -- Start to shell
 
- if X >= 23 and X <= 26 and Y == 10 then
-  if gfolder then
-   gfolder = false
-   changeSwitchGR(10)
+ elseif X >= 23 and X <= 26 and Y == 9 then
+  if termstart then
+   termstart = false
+   changeSwitchGR(9)
   else
-   gfolder = true
-   changeSwitchRG(10)
+   termstart = true
+   changeSwitchRG(9)
   end
   changes = true
   Screen()
- end
+
+ -- ReboOSt Loging
+
+ elseif X >= 23 and X <= 26 and Y == 11 then
+  if rosloging then
+   rosloging = false
+   changeSwitchGR(11)
+  else
+   rosloging = true
+   if roslog == nil then
+    if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+     fs.delete("/ReboOSt/logs/"..starts..".txt")
+    end
+     roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
+   end
+   changeSwitchRG(11)
+  end
+  changes = true
+  Screen()
  
  -- Discart
- if X >= 3 and X <= 11 and Y == 16 then shell.run("/ReboOSt/configs/main") changes = false Screen() end
+ elseif X >= 3 and X <= 11 and Y == 16 then shell.run("/ReboOSt/configs/main") changes = false Screen()
  
  -- Confirm
- if X >= 40 and X <= 48 and Y == 16 and changes == true then
+ elseif X >= 40 and X <= 48 and Y == 16 and changes == true then
   if fs.exists("/ReboOSt/configs/main") then fs.delete("/ReboOSt/configs/main") end
   local file = fs.open("/ReboOSt/configs/main", "w")
   if autoupdate then
@@ -262,18 +253,28 @@ local XY = X..","..Y
   else
    file.writeLine("pfolder = false")
   end
-  if gfolder then
-   file.writeLine("gfolder = true")
-  else
-   file.writeLine("gfolder = false")
-  end
   if termstart then
    file.writeLine("termstart = true")
   else
    file.writeLine("termstart = false")
   end
+  if rosloging then
+   file.writeLine("rosloging = true")
+  else
+   file.writeLine("rosloging = false")
+  end
   file.writeLine('updatstream = "'..updatstream..'"')
   file.close()
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": saved new settings.")
+   roslog.write(shell.getRunningProgram()..": new settings are:  autoupdate = ")
+   if autoupdate then roslog.write("true ; ") else roslog.write("false ; ") end
+   roslog.write("rosdebug = ") if rosdebug then roslog.write("true ; ") else roslog.write("false ; ") end
+   roslog.write("pfolder = ") if pfolder then roslog.write("true ; ") else roslog.write("false ; ") end
+   roslog.write("termstart = ") if termstart then roslog.write("true ; ") else roslog.write("false ; ") end
+   roslog.write("rosloging = ") if rosloging then roslog.write("true ; ") else roslog.write("false ; ") end
+   roslog.writeLine("updatstream = '"..updatstream.."'")
+  end
   changes = false
   Screen()
  end
