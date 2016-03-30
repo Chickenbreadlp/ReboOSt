@@ -13,5 +13,6 @@ This Build of ReboOSt in perticular contains the following features:
     luaIDE by GravityScore
     edit the wallpaper to your needs; every user has it's own
     a little shell overlay to prevent damaging system files & adding additional systemfeatures
+    ReboOSt can log panel activity, if wished
 
 *all changes apply for every user and can be changed by every user. changes do not apply for 3rd Party Programs
