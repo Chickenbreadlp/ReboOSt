@@ -4,8 +4,6 @@ crash = true
 local diskiconactiv = false
 local diskXmin = nil
 local diskXmax = nil
-local gfolXmin = nil
-local gfolXmax = nil
 local pfolXmin = nil
 local pfolXmax = nil
 local dir = nil
@@ -16,14 +14,15 @@ term.setBackgroundColor(tbar)
 term.clear()
 term.setCursorPos (1,1)
 term.setBackgroundColor(tbar)
-term.setTextColor(tbartxt)
---print("                                                  ")
+print("                                                  ")
 term.setCursorPos(1,1)
+term.setTextColor(sndtxt)
 write(OStag)
 if rosdebug then
  term.setTextColor(colors.red)
  print(" "..devpart.." "..version)
 else
+ term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
 term.setCursorPos(44,1)
@@ -31,7 +30,6 @@ term.setTextColor(prog)
 write("Desktop ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-print("                                                   ")
 paintutils.drawImage(Wallpaper,1,2)
 term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
@@ -40,19 +38,27 @@ write(UserName)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
 term.setCursorPos(fsX,19)
-write(freeSpace.." KB")
+write(freeSpace)
+term.setTextColor(sndtxt)
+write(" KB")
 end
 if termstart then
- shell.run("/ReboOSt/shell")
- Desk()
+ if admin then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": going into shell")
+  end
+  shell.run("/ReboOSt/shell")
+  Desk()
+ else Desk()
+ end
 else
  Desk()
 end
 
 while true do
 
-if gfolder then gfolXmin = 2 gfolXmax = 6 diskXmin = 8 diskXmax = 11 else gfolXmin = 0 gfolXmax = 0 diskXmin = 2 diskXmax = 6 end
-if pfolder then pfolXmin = 2 pfolXmax = 6 if gfolder then gfolXmin = 8 gfolXmax = 11 diskXmin = 14 diskXmax = 17 else diskXmin = 8 diskXmax = 11 end else pfolXmin = 0 pfolXmax = 0 gfolXmin = 2 gfolXmax = 5 end
+
+if pfolder then pfolXmin = 2 pfolXmax = 6 diskXmin = 8 diskXmax = 11 else pfolXmin = 0 pfolXmax = 0 diskXmin = 2 diskXmax = 6 end
 
 if disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresent("top") and not disk.hasAudio("top") or disk.isPresent("right") and not disk.hasAudio("right") or disk.isPresent("left") and not disk.hasAudio("left") or disk.isPresent("back") and not disk.hasAudio("back") or disk.isPresent("front") and not disk.hasAudio("front") then
  paintutils.drawImage(disklogo,diskXmin,4)
@@ -72,15 +78,6 @@ else
  end
 end
 
-if gfolder then
- paintutils.drawImage(Gamesfolder,gfolXmin,4)
- term.setCursorPos(gfolXmin,8)
- term.setBackgroundColor(mbar)
- term.setTextColor(mbartxt)
- print("Game")
-else
-end
-
 if pfolder then
  paintutils.drawImage(ProgFold,2,4)
  term.setCursorPos(2,8)
@@ -95,13 +92,15 @@ local XY = X..","..Y
  -- Unimnu
 
 if X >= 1 and X <= 7 and Y == 1 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": opening Unimenu")
+ end
  shell.run("/ReboOSt/unimnu")
  if login then
   Desk()
  else
   break
  end
- Desk()
 
  -- Disk
 
@@ -126,15 +125,12 @@ elseif disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresen
    dir = disk.getMountPath("front")
    dir = dir.."/"
   end
-  if fs.exists("/Programs/TDI") then
-   if fs.exists(dir.."tictactoe") or fs.exists(dir.."gameoflife") or fs.exists(dir.."maze3d") or fs.exists(dir.."protector") then
-    TDIunist = false
-    shell.run("/Programs/TDI")
-   else
-    shell.run("/ReboOSt/fbrws", "--dir "..dir)
-   end
-  else
-   shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: '/ReboOSt/fbrws --dir "..dir.."'")
+  end
+  shell.run("/ReboOSt/fbrws", "--dir "..dir)
+  if rosloging then
+   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
   end
   dir = nil
   Desk()
@@ -154,15 +150,13 @@ elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 the
 
 elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
  if pfolder then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: '/ReboOSt/fbrws --dir /Programs'")
+  end
   shell.run("/ReboOSt/fbrws", "--dir /Programs")
-  Desk()
- end
-
- -- Games Folder
-
-elseif X >= gfolXmin and X <= gfolXmax and Y >= 4 and Y <= 8 then
- if gfolder then
-  shell.run("/ReboOSt/fbrws", "--dir /Programs/Games")
+  if rosloging then
+   roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
+  end
   Desk()
  end
 end end
