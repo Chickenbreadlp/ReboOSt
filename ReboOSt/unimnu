@@ -9,13 +9,14 @@ term.setCursorPos(1,1)
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 print(OStag)
-print("System      >")
+print("Panels      >")
 print("Programs    >")
-print("Time         ")
+write("Time        ")
+if fs.exists("/ReboOSt/time") then print(" ") else print("!") end
 write("Shell       ")
-if admin then print(" ") else print("!") end
+if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
 print(" ----------- ")
-print("Logoff       ")
+print("Logout       ")
 print("Reboot       ")
 print("Shutdown     ")
 end
@@ -23,8 +24,9 @@ end
 local function menuundo()
  term.setCursorPos(1,1)
  term.setBackgroundColor(tbar)
- term.setTextColor(tbartxt)
+ term.setTextColor(sndtxt)
  print(OStag)
+ term.setTextColor(tbartxt)
  paintutils.drawImage(Wallpaper,1,2)
  if fs.exists("/disk") then
   paintutils.drawImage(disklogo,2,4)
@@ -49,12 +51,18 @@ XY = X..","..Y
  -- System
 
 if X >= 1 and X < 14 and Y == 2 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": opening sys menu")
+ end
  shell.run("/ReboOSt/sysmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
  -- Programs
 
 elseif X >= 1 and X < 14 and Y == 3 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": opening prog menu")
+ end
  shell.run("/ReboOSt/progmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
@@ -62,35 +70,38 @@ elseif X >= 1 and X < 14 and Y == 3 then
 
 elseif X >= 1 and X < 14 and Y == 4 then
  menuundo()
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/time")
+ end
  shell.run("/ReboOSt/time")
  break
 
  -- Shell
 
 elseif X >= 1 and X < 14 and Y == 5 then
- if admin then
-  shell.run("/ReboOSt/shell")
-  menuundo()
-  break
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/shell")
  end
+ shell.run("/ReboOSt/shell")
+ menuundo()
+ break
 
  -- Logoff
 
 elseif X >= 1 and X < 14 and Y == 7 then
  menuundo()
- term.setBackgroundColor(wico)
- term.setTextColor(wicotxt)
- term.setCursorPos(14,7)
- print("        Logoff        ")
- term.setBackgroundColor(wicotxt)
- term.setTextColor(wico)
- term.setCursorPos(14,8)
- print("                      ")
- term.setCursorPos(14,9)
- print("    Logging off...    ")
- term.setCursorPos(14,10)
- print("                      ")
- sleep(1.2)
+ if rosloging then
+  roslog.writeLine("Loging "..UserName.." off")
+ end
+ term.setBackgroundColor(tbar)
+ term.setTextColor(sndtxt)
+ term.setCursorPos(1,8)
+ print("                                                   ")
+ term.setCursorPos(1,9)
+ print("                    Logging off                    ")
+ term.setCursorPos(1,10)
+ print("                                                   ")
+ sleep(0.5)
  login = false
  break
 
@@ -111,6 +122,9 @@ elseif X >= 1 and X < 14 and Y == 9 then
  -- Go back
 
 else
+if rosloging then
+ roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
+end
 break
 end end
 else
