@@ -290,7 +290,7 @@ local XY = X..","..Y
 
  -- reboot
 
-if XY == "51,1" and button == 1 then
+if X == 51 and Y == 1 and button == 1 then
  Save()
  login = true
  instashut = true
