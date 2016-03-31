@@ -230,43 +230,6 @@ if body == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Windows           [")
-term.setTextColor(wicotxt)
-term.setBackgroundColor(colors.black)
-if wico == colors.black then write("X") else write(" ") end
-term.setBackgroundColor(colors.gray)
-if wico == colors.gray then write("X") else write(" ") end
-term.setBackgroundColor(colors.lightGray)
-if wico == colors.lightGray then write("X") else write(" ") end
-term.setBackgroundColor(colors.white)
-if wico == colors.white then write("X") else write(" ") end
-term.setBackgroundColor(colors.yellow)
-if wico == colors.yellow then write("X") else write(" ") end
-term.setBackgroundColor(colors.orange)
-if wico == colors.orange then write("X") else write(" ") end
-term.setBackgroundColor(colors.red)
-if wico == colors.red then write("X") else write(" ") end
-term.setBackgroundColor(colors.purple)
-if wico == colors.purple then write("X") else write(" ") end
-term.setBackgroundColor(colors.magenta)
-if wico == colors.magenta then write("X") else write(" ") end
-term.setBackgroundColor(colors.lightBlue)
-if wico == colors.lightBlue then write("X") else write(" ") end
-term.setBackgroundColor(colors.cyan)
-if wico == colors.cyan then write("X") else write(" ") end
-term.setBackgroundColor(colors.blue)
-if wico == colors.blue then write("X") else write(" ") end
-term.setBackgroundColor(colors.green)
-if wico == colors.green then write("X") else write(" ") end
-term.setBackgroundColor(colors.lime)
-if wico == colors.lime then write("X") else write(" ") end
-term.setBackgroundColor(colors.pink)
-if wico == colors.pink then write("X") else write(" ") end
-term.setBackgroundColor(colors.brown)
-if wico == colors.brown then write("X") else write(" ") end
-term.setBackgroundColor(mbar)
-term.setTextColor(mbartxt)
-print("]")
 write("Close/Reset/Back: [ ")
 term.setTextColor(colors.white)
 if buttonBack == colors.lime then term.setBackgroundColor(colors.lime) write("Uncolor") else term.setBackgroundColor(colors.gray) write("Recolor") end
@@ -276,7 +239,7 @@ print(" ]")
 print("")
 print("")
 write("     [")
-term.setBackgroundColor(colors.red)
+term.setBackgroundColor(colors.gray)
 term.setTextColor(colors.white)
 write("Discard Changes")
 term.setBackgroundColor(mbar)
@@ -391,30 +354,12 @@ if XY == "33,6" and button == 1 then body = colors.lime bodytxt = colors.white c
 if XY == "34,6" and button == 1 then body = colors.pink bodytxt = colors.white changes = true thmchg() end -- body pink
 if XY == "35,6" and button == 1 then body = colors.brown bodytxt = colors.white changes = true thmchg() end -- body brown
 
- -- wico
-if XY == "20,7" and button == 1 then wico = colors.black wicotxt = colors.white changes = true thmchg() end -- wico black
-if XY == "21,7" and button == 1 then wico = colors.gray wicotxt = colors.white changes = true thmchg() end -- wico gray
-if XY == "22,7" and button == 1 then wico = colors.lightGray wicotxt = colors.white changes = true thmchg() end -- wico light gray
-if XY == "23,7" and button == 1 then wico = colors.white wicotxt = colors.black changes = true thmchg() end -- wico white
-if XY == "24,7" and button == 1 then wico = colors.yellow wicotxt = colors.red changes = true thmchg() end -- wico yellow
-if XY == "25,7" and button == 1 then wico = colors.orange wicotxt = colors.white changes = true thmchg() end -- wico orange
-if XY == "26,7" and button == 1 then wico = colors.red wicotxt = colors.white changes = true thmchg() end -- wico red
-if XY == "27,7" and button == 1 then wico = colors.purple wicotxt = colors.white changes = true thmchg() end -- wico purple
-if XY == "28,7" and button == 1 then wico = colors.magenta wicotxt = colors.white changes = true thmchg() end -- wico magenta
-if XY == "29,7" and button == 1 then wico = colors.lightBlue wicotxt = colors.white changes = true thmchg() end -- wico light blue
-if XY == "30,7" and button == 1 then wico = colors.cyan wicotxt = colors.white changes = true thmchg() end -- wico cyan
-if XY == "31,7" and button == 1 then wico = colors.blue wicotxt = colors.white changes = true thmchg() end -- wico blue
-if XY == "32,7" and button == 1 then wico = colors.green wicotxt = colors.white changes = true thmchg() end -- wico green
-if XY == "33,7" and button == 1 then wico = colors.lime wicotxt = colors.white changes = true thmchg() end -- wico lime
-if XY == "34,7" and button == 1 then wico = colors.pink wicotxt = colors.white changes = true thmchg() end -- wico pink
-if XY == "35,7" and button == 1 then wico = colors.brown wicotxt = colors.white changes = true thmchg() end -- wico brown
-
  -- buttons
-if X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lime and button == 1 then buttonBack = colors.lightGray buttonReboot = colors.gray buttonShut = colors.black buttonColor = false changes = true thmchg() -- Uncolor
-elseif X >= 21 and X <= 27 and Y == 8 and buttonBack == colors.lightGray and button == 1 then buttonBack = colors.lime buttonReboot = colors.orange buttonShut = colors.red buttonColor = true changes = true thmchg() end -- Recolor
+if X >= 21 and X <= 27 and Y == 7 and buttonBack == colors.lime and button == 1 then buttonBack = colors.lightGray buttonReboot = colors.gray buttonShut = colors.black buttonColor = false changes = true thmchg() -- Uncolor
+elseif X >= 21 and X <= 27 and Y == 7 and buttonBack == colors.lightGray and button == 1 then buttonBack = colors.lime buttonReboot = colors.orange buttonShut = colors.red buttonColor = true changes = true thmchg() end -- Recolor
 
  -- Save
-if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes then
+if X >= 34 and X <= 45 and Y == 10 and button == 1 and changes then
  Save()
  thmchg()
 end end
