@@ -2,5 +2,5 @@ autoupdate = true
 rosdebug = false
 pfolder = false
 termstart = false
-rosloging = true
+rosloging = false
 updatstream = "release"
