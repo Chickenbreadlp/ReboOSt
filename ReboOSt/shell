@@ -83,20 +83,13 @@ while true do
   print("tbar = "..tbar)
   print("mbar = "..mbar)
   print("body = "..body)
-  print("wico = "..wico)
+  print("bodyd = "..bodyd)
   print("crashscreen = "..crashscreen)
   print("crashscreentxt = "..crashscreentxt)
   print("prog = "..prog)
-  print("buttonBack = "..buttonBack)
-  print("buttonBatxt = "..buttonBatxt)
-  print("buttonReboot = "..buttonReboot)
-  print("buttonRetxt = "..buttonRetxt)
-  print("buttonShut = "..buttonShut)
-  print("buttonShtxt = "..buttonShtxt)
   print("tbartxt = "..tbartxt)
   print("mbartxt = "..mbartxt)
   print("bodytxt = "..bodytxt)
-  print("wicotxt = "..wicotxt)
   print("sndtxt = "..sndtxt)
   term.setTextColor(tbartxt)
  elseif linput == "themes -modify:all" then
@@ -147,14 +140,7 @@ while true do
   elseif input == "mbartxt" then mbartxt = onoff(mbartxt, "Panel text")
   elseif input == "body" then body = onoff(body, "Menu BG")
   elseif input == "bodytxt" then bodytxt = onoff(bodytxt, "Menu text")
-  elseif input == "wico" then wico = onoff(wico, "Window Header & Text")
-  elseif input == "wicotxt" then wicotxt = onoff(wicotxt, "Window BG & Header text")
-  elseif input == "buttonBack" then buttonBack = onoff(buttonBack, "Back button")
-  elseif input == "buttonBatxt" then buttonBatxt = onoff(buttonBatxt, "Back button text")
-  elseif input == "buttonReboot" then buttonReboot = onoff(buttonReboot, "Reboot button")
-  elseif input == "buttonRetxt" then buttonRetxt = onoff(buttonRetxt, "Reboot button text")
-  elseif input == "buttonShut" then buttonShut = onoff(buttonShut, "Shutdown button")
-  elseif input == "buttonShtxt" then buttonShtxt = onoff(buttonShtxt, "Shutdown button text")
+  elseif input == "bodyd" then bodyd = onoff(bodyd, "Darker Menu Color")
   elseif input == "crashscreen" then crashscreen = onoff(crashscreen, "Crashscreen BG")
   elseif input == "crashscreentxt" then bodytxt = onoff(bodytxt, "Crashscreen text")
   elseif input == "prog" then prog = onoff(prog, "Program indicator text")
@@ -168,20 +154,13 @@ while true do
   file.writeLine("tbar = "..tbar)
   file.writeLine("mbar = "..mbar)
   file.writeLine("body = "..body)
-  file.writeLine("wico = "..wico)
+  file.writeLine("bodyd = "..bodyd)
   file.writeLine("crashscreen = "..tbar)
   file.writeLine("crashscreentxt = "..prog)
   file.writeLine("prog = "..prog)
-  file.writeLine("buttonBack = "..buttonBack)
-  file.writeLine("buttonBatxt = "..buttonBatxt)
-  file.writeLine("buttonReboot = "..buttonReboot)
-  file.writeLine("buttonRetxt = "..buttonRetxt)
-  file.writeLine("buttonShut = "..buttonShut)
-  file.writeLine("buttonShtxt = "..buttonShtxt)
   file.writeLine("tbartxt = "..tbartxt)
   file.writeLine("mbartxt = "..mbartxt)
   file.writeLine("bodytxt = "..bodytxt)
-  file.writeLine("wicotxt = "..wicotxt)
   file.writeLine("sndtxt = "..sndtxt)
   file.close()
   term.setTextColor(sndtxt)
@@ -288,6 +267,8 @@ while true do
    rosloging = onoff(rosloging, "Logfile")
   elseif input == "termstart" then
    termstart = onoff(termstart, "Shell after login")
+  elseif input == "timeformat" then
+   timeformat = onoff(timeformat, "24 hour clock")
   elseif input == "updatstream" then
    print("Turn Dev-Update-Stream on or off?")
    write("   > ")
@@ -336,6 +317,7 @@ while true do
     roslog.write("pfolder = ") if pfolder then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.write("termstart = ") if termstart then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.write("rosloging = ") if rosloging then roslog.write("true ; ") else roslog.write("false ; ") end
+	roslog.write("timeformat = ") if timeformat then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.writeLine("updatstream = '"..updatstream.."'")
    end
    local file = fs.open("/ReboOSt/configs/main", "w")
@@ -358,6 +340,11 @@ while true do
     file.writeLine("termstart = true")
    else
     file.writeLine("termstart = false")
+   end
+   if timeformat then
+    file.writeLine("timeformat = true")
+   else
+    file.writeLine("timeformat = false")
    end
    if rosloging then
     file.writeLine("rosloging = true")
@@ -382,6 +369,7 @@ while true do
    write("pfolder = ") if pfolder then print("true") else print("false") end
    write("gfolder = ") if gfolder then print("true") else print("false") end
    write("termstart = ") if tempstart then print("true") else print("false") end
+   write("timeformat = ") if timeformat then print("true") else print("false") end
    print("updatstream = "..updatstream)
    term.setTextColor(tbartxt)
   else
