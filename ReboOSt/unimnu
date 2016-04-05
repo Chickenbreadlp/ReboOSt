@@ -4,23 +4,50 @@ local diskiconactiv = false
 keepmenu = false
 local deskback = true
 
-function DrawMenu()
+local function DrawMenu()
 term.setCursorPos(1,1)
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 print(OStag)
-print("Panels      >")
-print("Programs    >")
-write("Time        ")
-if fs.exists("/ReboOSt/time") then print(" ") else print("!") end
-write("Shell      ")
-if admin then write(" ") else write("X") end
+print("Panels        >")
+print("Programs      >")
+write("Shell         ")
 if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
-print(" ----------- ")
-print("Logout       ")
-print("Reboot       ")
-print("Shutdown     ")
+print("---------------")
+term.setBackgroundColor(colors.lime)
+term.setTextColor(colors.white)
+write("Logo")
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+write("|")
+term.setBackgroundColor(colors.orange)
+term.setTextColor(colors.white)
+write("Reboo")
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+write("|")
+term.setBackgroundColor(colors.red)
+term.setTextColor(colors.white)
+write("Shut")
 end
+
+local function DrawMenuC()
+term.setCursorPos(1,1)
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+print(OStag)
+term.setBackgroundColor(bodyd)
+term.setTextColor(bodytxt)
+print(">")
+print(">")
+write("")
+if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
+print("-")
+term.setBackgroundColor(colors.red)
+term.setTextColor(colors.white)
+write("t")
+end
+ 
 
 local function menuundo()
  term.setCursorPos(1,1)
@@ -51,78 +78,64 @@ XY = X..","..Y
 
  -- System
 
-if X >= 1 and X < 14 and Y == 2 then
+if X >= 1 and X < 15 and Y == 2 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": opening sys menu")
  end
+ DrawMenuC()
  shell.run("/ReboOSt/sysmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
  -- Programs
 
-elseif X >= 1 and X < 14 and Y == 3 then
+elseif X >= 1 and X < 15 and Y == 3 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": opening prog menu")
  end
+ DrawMenuC()
  shell.run("/ReboOSt/progmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
- -- Time
-
-elseif X >= 1 and X < 14 and Y == 4 then
- menuundo()
- if rosloging then
-  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/time")
- end
- shell.run("/ReboOSt/time")
- break
-
  -- Shell
 
-elseif X >= 1 and X < 14 and Y == 5 then
- if admin then
-  if rosloging then
-   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/shell")
-  end
-  shell.run("/ReboOSt/shell")
-  menuundo()
-  break
+elseif X >= 1 and X < 15 and Y == 4 then
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/shell")
  end
+ shell.run("/ReboOSt/shell")
+ menuundo()
+ break
 
  -- Logoff
 
-elseif X >= 1 and X < 14 and Y == 7 then
- menuundo()
+elseif X >= 1 and X <= 4 and Y == 6 then
+-- menuundo()
  if rosloging then
   roslog.writeLine("Loging "..UserName.." off")
  end
- term.setBackgroundColor(wico)
- term.setTextColor(wicotxt)
- term.setCursorPos(14,7)
- print("        Logout        ")
- term.setBackgroundColor(wicotxt)
- term.setTextColor(wico)
- term.setCursorPos(14,8)
- print("                      ")
- term.setCursorPos(14,9)
- print("    Logging off...    ")
- term.setCursorPos(14,10)
- print("                      ")
- sleep(1.2)
+ term.setBackgroundColor(tbar)
+ term.setTextColor(sndtxt)
+ term.setCursorPos(1,8)
+ print("                                                   ")
+ term.setCursorPos(1,9)
+ print("                    Logging out                    ")
+ term.setCursorPos(1,10)
+ print("                                                   ")
+ sleep(0.5)
  login = false
  break
 
  -- Reboot
 
-elseif X >= 1 and X < 14 and Y == 8 then
- menuundo()
+elseif X >= 6 and X <= 10 and Y == 6 then
+-- menuundo()
  shell.run("/ReboOSt/reboot")
  break
 
  -- Shutdown
 
-elseif X >= 1 and X < 14 and Y == 9 then
- menuundo()
+elseif X >= 12 and X <= 15 and Y == 6 then
+-- menuundo()
  shell.run("/ReboOSt/shut-off")
  break
 
