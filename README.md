@@ -4,7 +4,7 @@ Development on ReboOSt started, when I just wanted to look back on what I did wi
 
 This Build of ReboOSt in perticular contains the following features:
 
-    A very secure login (SHA-256) with unlimited accounts and 2 Stage user rights and SecurOS (A securety feature which constantly checks if the current user can be verified.)
+    A very secure login (SHA-256) with unlimited accounts, 2 Stage user rights and SecurOS (A securety feature which constantly checks if the current user can be verified.)
     Change the colors from the OS as much as you want, your free from restrictions
     Mouse File Browser by BigSHinyToys
     Sketch by oeed
