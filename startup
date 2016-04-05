@@ -3,9 +3,9 @@ if fs.exists("/ReboOSt/Temp") then
 end
 crash = true
 OStag = "ReboOSt"
-devpart = "Alpha"
-version = 2
-rosbuild = 1033
+devpart = "DEV_Beta"
+version = 1
+rosbuild = 2034
 
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
