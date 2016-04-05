@@ -2,6 +2,7 @@ local inet = nil
 local changes = false
 
 if login then
+
 function Screen()
 term.setBackgroundColor(mbar)
 term.clear()
@@ -12,7 +13,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Appearence")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -21,9 +22,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(41,1)
-term.setTextColor(prog)
-print("Appearance ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("")
@@ -160,6 +158,7 @@ term.setTextColor(mbartxt)
 write("]")
 term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
+term.setTextColor(tbartxt)
 write("                                                   ")
 term.setCursorPos(1,19)
 write(UserName)
@@ -177,7 +176,7 @@ local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
  -- Back
-if X >= 1 and X <= 7 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme")
+if X >= 1 and X <= 10 and Y == 1 then shell.run("/User/"..UserName.."/..colortheme")
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
@@ -221,22 +220,22 @@ if XY == "34,5" and button == 1 then mbar = colors.pink mbartxt = colors.white c
 if XY == "35,5" and button == 1 then mbar = colors.brown mbartxt = colors.white changes = true Screen() end -- mbar brown
 
  -- body
-if XY == "20,6" and button == 1 then body = colors.black bodytxt = colors.white changes = true Screen() end -- body black
-if XY == "21,6" and button == 1 then body = colors.gray bodytxt = colors.white changes = true Screen() end -- body gray
-if XY == "22,6" and button == 1 then body = colors.lightGray bodytxt = colors.white changes = true Screen() end -- body light gray
-if XY == "23,6" and button == 1 then body = colors.white bodytxt = colors.black changes = true Screen() end -- body white
-if XY == "24,6" and button == 1 then body = colors.yellow bodytxt = colors.black changes = true Screen() end -- body yellow
-if XY == "25,6" and button == 1 then body = colors.orange bodytxt = colors.white changes = true Screen() end -- body orange
-if XY == "26,6" and button == 1 then body = colors.red bodytxt = colors.white changes = true Screen() end -- body red
-if XY == "27,6" and button == 1 then body = colors.purple bodytxt = colors.white changes = true Screen() end -- body purple
-if XY == "28,6" and button == 1 then body = colors.magenta bodytxt = colors.white changes = true Screen() end -- body magenta
-if XY == "29,6" and button == 1 then body = colors.lightBlue bodytxt = colors.white changes = true Screen() end -- body light blue
-if XY == "30,6" and button == 1 then body = colors.cyan bodytxt = colors.white changes = true Screen() end -- body cyan
-if XY == "31,6" and button == 1 then body = colors.blue bodytxt = colors.white changes = true Screen() end -- body blue
-if XY == "32,6" and button == 1 then body = colors.green bodytxt = colors.white changes = true Screen() end -- body green
-if XY == "33,6" and button == 1 then body = colors.lime bodytxt = colors.white changes = true Screen() end -- body lime
-if XY == "34,6" and button == 1 then body = colors.pink bodytxt = colors.white changes = true Screen() end -- body pink
-if XY == "35,6" and button == 1 then body = colors.brown bodytxt = colors.white changes = true Screen() end -- body brown
+if XY == "20,6" and button == 1 then body = colors.black     bodytxt = colors.white  bodyd = colors.gray      changes = true Screen() end -- body black
+if XY == "21,6" and button == 1 then body = colors.gray      bodytxt = colors.white  bodyd = colors.black     changes = true Screen() end -- body gray
+if XY == "22,6" and button == 1 then body = colors.lightGray bodytxt = colors.white  bodyd = colors.gray      changes = true Screen() end -- body light gray
+if XY == "23,6" and button == 1 then body = colors.white     bodytxt = colors.black  bodyd = colors.lightGray changes = true Screen() end -- body white
+if XY == "24,6" and button == 1 then body = colors.yellow    bodytxt = colors.black  bodyd = colors.orange    changes = true Screen() end -- body yellow
+if XY == "25,6" and button == 1 then body = colors.orange    bodytxt = colors.white  bodyd = colors.red       changes = true Screen() end -- body orange
+if XY == "26,6" and button == 1 then body = colors.red       bodytxt = colors.white  bodyd = colors.orange    changes = true Screen() end -- body red
+if XY == "27,6" and button == 1 then body = colors.purple    bodytxt = colors.white  bodyd = colors.magenta   changes = true Screen() end -- body purple
+if XY == "28,6" and button == 1 then body = colors.magenta   bodytxt = colors.white  bodyd = colors.purple    changes = true Screen() end -- body magenta
+if XY == "29,6" and button == 1 then body = colors.lightBlue bodytxt = colors.white  bodyd = colors.cyan      changes = true Screen() end -- body light blue
+if XY == "30,6" and button == 1 then body = colors.cyan      bodytxt = colors.white  bodyd = colors.blue      changes = true Screen() end -- body cyan
+if XY == "31,6" and button == 1 then body = colors.blue      bodytxt = colors.white  bodyd = colors.cyan      changes = true Screen() end -- body blue
+if XY == "32,6" and button == 1 then body = colors.green     bodytxt = colors.white  bodyd = colors.lime      changes = true Screen() end -- body green
+if XY == "33,6" and button == 1 then body = colors.lime      bodytxt = colors.white  bodyd = colors.green     changes = true Screen() end -- body lime
+if XY == "34,6" and button == 1 then body = colors.pink      bodytxt = colors.white  bodyd = colors.magenta   changes = true Screen() end -- body pink
+if XY == "35,6" and button == 1 then body = colors.brown     bodytxt = colors.white  bodyd = colors.red       changes = true Screen() end -- body brown
 
  -- wallpaper
 if X >= 20 and X <= 35 and Y == 7 and button == 1 then
@@ -251,15 +250,10 @@ if X >= 34 and X <= 45 and Y == 15 and button == 1 and changes then
  file.writeLine("tbar = "..tbar)
  file.writeLine("mbar = "..mbar)
  file.writeLine("body = "..body)
+ file.writeLine("bodyd = "..bodyd)
  file.writeLine("crashscreen = "..tbar)
  file.writeLine("crashscreentxt = "..prog)
  file.writeLine("prog = "..prog)
- file.writeLine("buttonBack = "..buttonBack)
- file.writeLine("buttonBatxt = colors.white")
- file.writeLine("buttonReboot = "..buttonReboot)
- file.writeLine("buttonRetxt = colors.white")
- file.writeLine("buttonShut = "..buttonShut)
- file.writeLine("buttonShtxt = colors.white")
  file.writeLine("tbartxt = "..tbartxt)
  file.writeLine("mbartxt = "..mbartxt)
  file.writeLine("bodytxt = "..bodytxt)
