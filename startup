@@ -1,25 +1,11 @@
-term.setBackgroundColor(colors.gray)
-term.setTextColor(1)
-term.clear()
-term.setCursorPos(1,1)
 if fs.exists("/ReboOSt/Temp") then
  fs.delete("/ReboOSt/Temp")
 end
 crash = true
-term.clear()
-term.setCursorPos(1,1)
-print("Checking CraftOS Version...")
-sleep(0.1)
-print("Setting OStag...")
 OStag = "ReboOSt"
-sleep(0.05)
-print("Setting OS version...")
-devpart = "DEV_Alpha"
-version = 2
-rosbuild = 0032
-sleep(0.05)
-print("Starting Startuproutine...")
-sleep(0.05)
+devpart = "DEV_Beta"
+version = 1
+rosbuild = 2034
 
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
@@ -40,6 +26,7 @@ else
  os.shutdown()
 end
 
+term.setBackgroundColor(colors.gray)
 term.clear()
 term.setCursorPos(1,1)
 term.setTextColor(colors.lightGray)
@@ -52,20 +39,6 @@ write("OS")
 term.setTextColor(colors.lightGray)
 print("t Build "..rosbuild)
 print("")
---[[
-write("    ")
-term.setBackgroundColor(colors.lightGray)
-print("                                           ")
-term.setBackgroundColor(32768)
-write("    ")
-term.setBackgroundColor(colors.lightGray)
-print("                                           ")
-term.setBackgroundColor(32768)
-write("    ")
-term.setBackgroundColor(colors.lightGray)
-print("                                           ")
-term.setBackgroundColor(32768)
-print(" ")]]
 if rosdebug then
  term.setCursorPos(1,19)
  term.setTextColor(colors.red)
@@ -73,6 +46,7 @@ if rosdebug then
 else
  print("")
 end
+
 if fs.exists("/ReboOSt/Logo.nfp") then
  Logo = paintutils.loadImage("/ReboOSt/Logo.nfp")
 else
@@ -83,9 +57,6 @@ else
  os.shutdown()
 end
 paintutils.drawImage(Logo,6,6)
-term.setCursorPos(6,13)
-term.setBackgroundColor(colors.cyan)
---textutils.slowPrint("             ", 1000)
 if fs.exists("/ReboOSt/APIs/encryption") then
  os.loadAPI("/ReboOSt/APIs/encryption")
 else
@@ -113,15 +84,6 @@ else
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end
-if fs.exists("/ReboOSt/Games.nfp") then
- Gamesfolder = paintutils.loadImage("/ReboOSt/Games.nfp")
-else
- crashcause = "Games.nfp not found!"
- crashscreen = colors.gray
- crashscreentxt = colors.cyan
- shell.run("/ReboOSt/crash")
- os.shutdown()
-end
 if fs.exists("/ReboOSt/Progs.nfp") then
  ProgFold = paintutils.loadImage("/ReboOSt/Progs.nfp")
 else
@@ -134,7 +96,6 @@ end
 fs.makeDir("/ReboOSt/Temp")
 freeSpace = fs.getFreeSpace("/")
 freeSpace = freeSpace/1024
-term.setBackgroundColor(colors.cyan)
 start = true
 
 if fs.exists("/ReboOSt/configs/colortheme") then
@@ -148,8 +109,6 @@ else
 end
 
 if starts == "0" then
- term.setCursorPos(19,13)
--- textutils.slowPrint("                          ", 1000)
  sleep(0.5)
  if fs.exists("/ReboOSt/firststart") then
   shell.run("/ReboOSt/firststart")
@@ -159,8 +118,6 @@ if starts == "0" then
  crashscreen = colors.gray
  crashscreentxt = colors.cyan
 else
- term.setCursorPos(19,13)
--- textutils.slowPrint("              ", 1000)
  starts = starts + 1
  if fs.exists("/ReboOSt/configs/stcount") then
   fs.delete("/ReboOSt/configs/stcount")
@@ -168,9 +125,7 @@ else
   file.write(starts)
   file.close()
  end
- starts = 1
- term.setCursorPos(33,13)
--- textutils.slowPrint("              ", 1000)
+ 
  if autoupdate then
   if fs.exists("/ReboOSt/updater") then
    shell.run("/ReboOSt/updater")
@@ -180,7 +135,7 @@ else
    os.shutdown()
   end
  end
- sleep(0.7)
+ sleep(0.4)
  if fs.exists("/ReboOSt/welcome") then
   shell.run("/ReboOSt/welcome")
  else
