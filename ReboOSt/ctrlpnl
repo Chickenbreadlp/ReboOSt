@@ -26,7 +26,7 @@ print("                                                   ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Settings")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -35,12 +35,9 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(43,1)
-term.setTextColor(prog)
-write("Settings ")
 term.setBackgroundColor(mbar)
-term.setTextColor(tbartxt)
-print("")
+term.setTextColor(mbartxt)
+-- print("")
 print("")
 write(" Auto Update          ")
 SwiStat(autoupdate)
@@ -60,6 +57,10 @@ print("")
 print("")
 write(" Log System Activity  ")
 SwiStat(rosloging)
+print("")
+print("")
+write(" 24 Hour clock        ")
+SwiStat(timeformat)
 
 term.setCursorPos(1,16)
 term.setBackgroundColor(mbar)
@@ -128,7 +129,7 @@ local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
  
  -- Back
- if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+ if X >= 1 and X <= 8 and Y == 1 and button == 1 then
   if rosloging then
    if roslog == nil then
     if fs.exists("/ReboOSt/logs/"..starts..".txt") then
@@ -220,7 +221,26 @@ local XY = X..","..Y
    changeSwitchGR(11)
   else
    rosloging = true
+   if roslog == nil then
+    if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+     fs.delete("/ReboOSt/logs/"..starts..".txt")
+    end
+     roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "w")
+   end
    changeSwitchRG(11)
+  end
+  changes = true
+  Screen()
+  
+ -- Time Format
+ 
+ elseif X >= 23 and X <= 26 and Y == 13 then
+  if timeformat then
+   timeformat = false
+   changeSwitchGR(13)
+  else
+   changeSwitchRG(13)
+   timeformat = true
   end
   changes = true
   Screen()
@@ -256,6 +276,11 @@ local XY = X..","..Y
    file.writeLine("rosloging = true")
   else
    file.writeLine("rosloging = false")
+  end
+  if timeformat then
+   file.writeLine("timeformat = true")
+  else
+   file.writeLine("timeformat = false")
   end
   file.writeLine('updatstream = "'..updatstream..'"')
   file.close()
