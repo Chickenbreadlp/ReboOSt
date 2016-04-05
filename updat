@@ -51,9 +51,6 @@ end
 if fs.exists("/ReboOSt/configs/main") then
  fs.copy("/ReboOSt/configs/main", "/updattemp/mainconf")
 end
-if fs.exists("/ReboOSt/configs/stcount") then
- fs.copy("/ReboOSt/configs/stcount", "/updattemp/stcount")
-end
 if fs.exists("/User") then
  fs.copy("/User", "/updattemp/user")
  fs.delete("/User")
@@ -73,12 +70,7 @@ if fs.exists("/updattemp/mainconf") then
  fs.delete("/ReboOSt/configs/main")
  fs.copy("/updattemp/mainconf", "/ReboOSt/configs/main")
 end
-if fs.exists("/updattemp/stcount") then
- fs.copy("/updattemp/stcount", "/ReboOSt/configs/stcount")
-end
 if fs.exists("/updattemp/user") then
  fs.delete("/updattemp/user/root")
- fs.copy("/User/root", "/updattemp/user/root")
- fs.delete("/User")
  fs.copy("/updattemp/user", "/User")
 end
