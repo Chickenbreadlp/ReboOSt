@@ -1,14 +1,42 @@
 local oldpe = os.pullEvent
 local Name = ""
+
+local function writeHere(message, X, Y, Bcol, Tcol)
+ local Xold, Yold = term.getCursorPos()
+ local Bcolo = term.getBackgroundColor()
+ local Tcolo = term.getTextColor()
+ term.setCursorPos(X,Y)
+ term.setBackgroundColor(Bcol)
+ term.setTextColor(Tcol)
+ write(message)
+ term.setCursorPos(Xold,Yold)
+ term.setBackgroundColor(Bcolo)
+ term.setTextColor(Tcolo)
+end
+
+local function Clock()
+ while(true) do
+  timetext = textutils.formatTime(os.time(), timeformat)
+  timeX = string.len(timetext)
+  if shell.getRunningProgram() == "ReboOSt/fbrws" then
+   timeX = 51 - timeX
+  else
+   timeX = 52 - timeX
+  end
+  writeHere(timetext, timeX, 1, tbar, prog)
+  sleep(0.01)
+ end
+end
+
 function Regist()
 term.setBackgroundColor(tbar)
 term.clear()
 term.setCursorPos(1,1)
-print("                                                  ")
+print("                                                   ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("First Start")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -17,9 +45,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(40,1)
-print("First Start ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("                                                   ")
@@ -47,7 +72,7 @@ if Name == "" then
  print("Please enter in a Username!")
  sleep(1.5)
  Regist()
-elseif Name == "Reboot" or Name == "Shutdown" or Name == "root" then
+elseif Name == "Reboot" or Name == "Shutdown" then
  term.setCursorPos(18,10)
  print("Forbidden Username")
  sleep(1.5)
@@ -81,7 +106,7 @@ else
   file.writeLine(pass)
   file.writeLine("admin")
   file.close()
-  fs.copy("/User/root/Pictures", "/User/"..Name.."/Pictures")
+  fs.copy("/ReboOSt/wallpaper.nfp", "/User/"..Name.."/Pictures/wallpaper.nfp")
   fs.copy("/ReboOSt/configs/colortheme", "/User/"..Name.."/..colortheme")
   term.setCursorPos(18,10)
   print("Registration was successfull!")
@@ -89,7 +114,6 @@ else
  end
 end
 end
-Regist()
 
 
 function thmchg()
@@ -98,11 +122,11 @@ term.clear()
 term.setCursorPos (1,1)
 term.setBackgroundColor(tbar)
 term.setTextColor(tbartxt)
-print("                                                  ")
+print("                                                   ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("First Start")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -111,12 +135,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(39,1)
-write("First Start ")
-term.setTextColor(buttonRetxt)
-term.setBackgroundColor(buttonReboot)
-print("@")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("")
@@ -158,7 +176,7 @@ if tbar == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Sub Bars:         [")
+write("Panels:           [")
 term.setBackgroundColor(colors.black)
 if mbar == colors.black then write("X") else write(" ") end
 term.setBackgroundColor(colors.gray)
@@ -230,21 +248,14 @@ if body == colors.brown then write("X") else write(" ") end
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print("]")
-write("Close/Reset/Back: [ ")
-term.setTextColor(colors.white)
-if buttonBack == colors.lime then term.setBackgroundColor(colors.lime) write("Uncolor") else term.setBackgroundColor(colors.gray) write("Recolor") end
-term.setBackgroundColor(mbar)
-term.setTextColor(mbartxt)
-print(" ]")
-print("")
-print("")
+term.setCursorPos(1,15)
 write("     [")
-term.setBackgroundColor(colors.gray)
+term.setBackgroundColor(colors.orange)
 term.setTextColor(colors.white)
-write("Discard Changes")
+write("Reboot")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write("]          [")
+write("]                   [")
 if changes then term.setBackgroundColor(colors.lime) else term.setBackgroundColor(colors.lightGray) end
 term.setTextColor(colors.white)
 write("Save Changes")
@@ -255,6 +266,7 @@ term.setCursorPos(1,19)
 term.setBackgroundColor(tbar)
 write("                                                   ")
 term.setCursorPos(1,19)
+term.setTextColor(tbartxt)
 write(Name)
 local fslen = string.len(freeSpace)
 local fsX = 49 - fslen
@@ -267,15 +279,10 @@ local function Save()
  file.writeLine("tbar = "..tbar)
  file.writeLine("mbar = "..mbar)
  file.writeLine("body = "..body)
+ file.writeLine("bodyd = "..bodyd)
  file.writeLine("crashscreen = "..tbar)
  file.writeLine("crashscreentxt = "..prog)
  file.writeLine("prog = "..prog)
- file.writeLine("buttonBack = "..buttonBack)
- file.writeLine("buttonBatxt = colors.white")
- file.writeLine("buttonReboot = "..buttonReboot)
- file.writeLine("buttonRetxt = colors.white")
- file.writeLine("buttonShut = "..buttonShut)
- file.writeLine("buttonShtxt = colors.white")
  file.writeLine("tbartxt = "..tbartxt)
  file.writeLine("mbartxt = "..mbartxt)
  file.writeLine("bodytxt = "..bodytxt)
@@ -284,13 +291,12 @@ local function Save()
  changes = false
 end
 
-while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
 
  -- reboot
 
-if X == 51 and Y == 1 and button == 1 then
+if X >= 7 and X <= 12 and Y == 15 and button == 1 then
  Save()
  login = true
  instashut = true
@@ -299,67 +305,75 @@ if X == 51 and Y == 1 and button == 1 then
 end
 
  -- tbar
-if XY == "20,4" and button == 1 then tbar = colors.black tbartxt = colors.white prog = colors.gray sndtxt = colors.cyan changes = true thmchg() end -- tBar Black
-if XY == "21,4" and button == 1 then tbar = colors.gray tbartxt = colors.white prog = colors.lightGray sndtxt = colors.cyan changes = true thmchg() end -- tbar Gray
-if XY == "22,4" and button == 1 then tbar = colors.lightGray tbartxt = colors.white prog = colors.white sndtxt = colors.cyan changes = true thmchg() end -- tbar lightGray
-if XY == "23,4" and button == 1 then tbar = colors.white tbartxt = colors.black prog = colors.lightGray sndtxt = colors.cyan changes = true thmchg() end -- tbar White
-if XY == "24,4" and button == 1 then tbar = colors.yellow tbartxt = colors.black prog = colors.red sndtxt = colors.cyan changes = true thmchg() end -- tbar Yellow
-if XY == "25,4" and button == 1 then tbar = colors.orange tbartxt = colors.white prog = colors.red sndtxt = colors.cyan changes = true thmchg() end -- tbar Orange
-if XY == "26,4" and button == 1 then tbar = colors.red tbartxt = colors.white prog = colors.orange sndtxt = colors.lime changes = true thmchg() end -- tbar Red
-if XY == "27,4" and button == 1 then tbar = colors.purple tbartxt = colors.white prog = colors.magenta sndtxt = colors.lime changes = true thmchg() end -- tbar Purple
-if XY == "28,4" and button == 1 then tbar = colors.magenta tbartxt = colors.white prog = colors.pink sndtxt = colors.cyan changes = true thmchg() end -- tbar Magenta
-if XY == "29,4" and button == 1 then tbar = colors.lightBlue tbartxt = colors.white prog = colors.cyan sndtxt = colors.gray changes = true thmchg() end -- tbar light blue
-if XY == "30,4" and button == 1 then tbar = colors.cyan tbartxt = colors.white prog = colors.blue sndtxt = colors.blue changes = true thmchg() end -- tbar Cyan
-if XY == "31,4" and button == 1 then tbar = colors.blue tbartxt = colors.white prog = colors.lightBlue sndtxt = colors.cyan changes = true thmchg() end -- tbar Blue
-if XY == "32,4" and button == 1 then tbar = colors.green tbartxt = colors.white prog = colors.lime sndtxt = colors.lime changes = true thmchg() end -- tbar green
-if XY == "33,4" and button == 1 then tbar = colors.lime tbartxt = colors.white prog = colors.green sndtxt = colors.cyan changes = true thmchg() end -- tbar lime
-if XY == "34,4" and button == 1 then tbar = colors.pink tbartxt = colors.white prog = colors.magenta sndtxt = colors.magenta changes = true thmchg() end -- tbar pink
-if XY == "35,4" and button == 1 then tbar = colors.brown tbartxt = colors.white prog = colors.red sndtxt = colors.red changes = true thmchg() end -- tbar brown
+if XY == "20,4" and button == 1 then tbar = colors.black     tbartxt = colors.white  prog = colors.gray      sndtxt = colors.cyan    changes = true thmchg() end -- tBar Black
+if XY == "21,4" and button == 1 then tbar = colors.gray      tbartxt = colors.white  prog = colors.lightGray sndtxt = colors.cyan    changes = true thmchg() end -- tbar Gray
+if XY == "22,4" and button == 1 then tbar = colors.lightGray tbartxt = colors.white  prog = colors.white     sndtxt = colors.cyan    changes = true thmchg() end -- tbar lightGray
+if XY == "23,4" and button == 1 then tbar = colors.white     tbartxt = colors.black  prog = colors.lightGray sndtxt = colors.cyan    changes = true thmchg() end -- tbar White
+if XY == "24,4" and button == 1 then tbar = colors.yellow    tbartxt = colors.black  prog = colors.red       sndtxt = colors.cyan    changes = true thmchg() end -- tbar Yellow
+if XY == "25,4" and button == 1 then tbar = colors.orange    tbartxt = colors.white  prog = colors.red       sndtxt = colors.cyan    changes = true thmchg() end -- tbar Orange
+if XY == "26,4" and button == 1 then tbar = colors.red       tbartxt = colors.white  prog = colors.orange    sndtxt = colors.lime    changes = true thmchg() end -- tbar Red
+if XY == "27,4" and button == 1 then tbar = colors.purple    tbartxt = colors.white  prog = colors.magenta   sndtxt = colors.lime    changes = true thmchg() end -- tbar Purple
+if XY == "28,4" and button == 1 then tbar = colors.magenta   tbartxt = colors.white  prog = colors.pink      sndtxt = colors.cyan    changes = true thmchg() end -- tbar Magenta
+if XY == "29,4" and button == 1 then tbar = colors.lightBlue tbartxt = colors.white  prog = colors.cyan      sndtxt = colors.gray    changes = true thmchg() end -- tbar light blue
+if XY == "30,4" and button == 1 then tbar = colors.cyan      tbartxt = colors.white  prog = colors.blue      sndtxt = colors.blue    changes = true thmchg() end -- tbar Cyan
+if XY == "31,4" and button == 1 then tbar = colors.blue      tbartxt = colors.white  prog = colors.lightBlue sndtxt = colors.cyan    changes = true thmchg() end -- tbar Blue
+if XY == "32,4" and button == 1 then tbar = colors.green     tbartxt = colors.white  prog = colors.lime      sndtxt = colors.lime    changes = true thmchg() end -- tbar green
+if XY == "33,4" and button == 1 then tbar = colors.lime      tbartxt = colors.white  prog = colors.green     sndtxt = colors.cyan    changes = true thmchg() end -- tbar lime
+if XY == "34,4" and button == 1 then tbar = colors.pink      tbartxt = colors.white  prog = colors.magenta   sndtxt = colors.magenta changes = true thmchg() end -- tbar pink
+if XY == "35,4" and button == 1 then tbar = colors.brown     tbartxt = colors.white  prog = colors.red       sndtxt = colors.red     changes = true thmchg() end -- tbar brown
 
  -- mbar
-if XY == "20,5" and button == 1 then mbar = colors.black mbartxt = colors.white changes = true thmchg() end -- mbar black
-if XY == "21,5" and button == 1 then mbar = colors.gray mbartxt = colors.white changes = true thmchg() end -- mbar gray
-if XY == "22,5" and button == 1 then mbar = colors.lightGray mbartxt = colors.white changes = true thmchg() end -- mbar light gray
-if XY == "23,5" and button == 1 then mbar = colors.white mbartxt = colors.black changes = true thmchg() end -- mbar white
-if XY == "24,5" and button == 1 then mbar = colors.yellow mbartxt = colors.black changes = true thmchg() end -- mbar yellow
-if XY == "25,5" and button == 1 then mbar = colors.orange mbartxt = colors.white changes = true thmchg() end -- mbar orange
-if XY == "26,5" and button == 1 then mbar = colors.red mbartxt = colors.white changes = true thmchg() end -- mbar red
-if XY == "27,5" and button == 1 then mbar = colors.purple mbartxt = colors.white changes = true thmchg() end -- mbar purple
-if XY == "28,5" and button == 1 then mbar = colors.magenta mbartxt = colors.white changes = true thmchg() end -- mbar magenta
-if XY == "29,5" and button == 1 then mbar = colors.lightBlue mbartxt = colors.white changes = true thmchg() end -- mbar light blue
-if XY == "30,5" and button == 1 then mbar = colors.cyan mbartxt = colors.white changes = true thmchg() end -- mbar cyan
-if XY == "31,5" and button == 1 then mbar = colors.blue mbartxt = colors.white changes = true thmchg() end -- mbar blue
-if XY == "32,5" and button == 1 then mbar = colors.green mbartxt = colors.white changes = true thmchg() end -- mbar green
-if XY == "33,5" and button == 1 then mbar = colors.lime mbartxt = colors.white changes = true thmchg() end -- mbar lime
-if XY == "34,5" and button == 1 then mbar = colors.pink mbartxt = colors.white changes = true thmchg() end -- mbar pink
-if XY == "35,5" and button == 1 then mbar = colors.brown mbartxt = colors.white changes = true thmchg() end -- mbar brown
+if XY == "20,5" and button == 1 then mbar = colors.black     mbartxt = colors.white  changes = true thmchg() end -- mbar black
+if XY == "21,5" and button == 1 then mbar = colors.gray      mbartxt = colors.white  changes = true thmchg() end -- mbar gray
+if XY == "22,5" and button == 1 then mbar = colors.lightGray mbartxt = colors.white  changes = true thmchg() end -- mbar light gray
+if XY == "23,5" and button == 1 then mbar = colors.white     mbartxt = colors.black  changes = true thmchg() end -- mbar white
+if XY == "24,5" and button == 1 then mbar = colors.yellow    mbartxt = colors.black  changes = true thmchg() end -- mbar yellow
+if XY == "25,5" and button == 1 then mbar = colors.orange    mbartxt = colors.white  changes = true thmchg() end -- mbar orange
+if XY == "26,5" and button == 1 then mbar = colors.red       mbartxt = colors.white  changes = true thmchg() end -- mbar red
+if XY == "27,5" and button == 1 then mbar = colors.purple    mbartxt = colors.white  changes = true thmchg() end -- mbar purple
+if XY == "28,5" and button == 1 then mbar = colors.magenta   mbartxt = colors.white  changes = true thmchg() end -- mbar magenta
+if XY == "29,5" and button == 1 then mbar = colors.lightBlue mbartxt = colors.white  changes = true thmchg() end -- mbar light blue
+if XY == "30,5" and button == 1 then mbar = colors.cyan      mbartxt = colors.white  changes = true thmchg() end -- mbar cyan
+if XY == "31,5" and button == 1 then mbar = colors.blue      mbartxt = colors.white  changes = true thmchg() end -- mbar blue
+if XY == "32,5" and button == 1 then mbar = colors.green     mbartxt = colors.white  changes = true thmchg() end -- mbar green
+if XY == "33,5" and button == 1 then mbar = colors.lime      mbartxt = colors.white  changes = true thmchg() end -- mbar lime
+if XY == "34,5" and button == 1 then mbar = colors.pink      mbartxt = colors.white  changes = true thmchg() end -- mbar pink
+if XY == "35,5" and button == 1 then mbar = colors.brown     mbartxt = colors.white  changes = true thmchg() end -- mbar brown
 
  -- body
-if XY == "20,6" and button == 1 then body = colors.black bodytxt = colors.white changes = true thmchg() end -- body black
-if XY == "21,6" and button == 1 then body = colors.gray bodytxt = colors.white changes = true thmchg() end -- body gray
-if XY == "22,6" and button == 1 then body = colors.lightGray bodytxt = colors.white changes = true thmchg() end -- body light gray
-if XY == "23,6" and button == 1 then body = colors.white bodytxt = colors.black changes = true thmchg() end -- body white
-if XY == "24,6" and button == 1 then body = colors.yellow bodytxt = colors.black changes = true thmchg() end -- body yellow
-if XY == "25,6" and button == 1 then body = colors.orange bodytxt = colors.white changes = true thmchg() end -- body orange
-if XY == "26,6" and button == 1 then body = colors.red bodytxt = colors.white changes = true thmchg() end -- body red
-if XY == "27,6" and button == 1 then body = colors.purple bodytxt = colors.white changes = true thmchg() end -- body purple
-if XY == "28,6" and button == 1 then body = colors.magenta bodytxt = colors.white changes = true thmchg() end -- body magenta
-if XY == "29,6" and button == 1 then body = colors.lightBlue bodytxt = colors.white changes = true thmchg() end -- body light blue
-if XY == "30,6" and button == 1 then body = colors.cyan bodytxt = colors.white changes = true thmchg() end -- body cyan
-if XY == "31,6" and button == 1 then body = colors.blue bodytxt = colors.white changes = true thmchg() end -- body blue
-if XY == "32,6" and button == 1 then body = colors.green bodytxt = colors.white changes = true thmchg() end -- body green
-if XY == "33,6" and button == 1 then body = colors.lime bodytxt = colors.white changes = true thmchg() end -- body lime
-if XY == "34,6" and button == 1 then body = colors.pink bodytxt = colors.white changes = true thmchg() end -- body pink
-if XY == "35,6" and button == 1 then body = colors.brown bodytxt = colors.white changes = true thmchg() end -- body brown
-
- -- buttons
-if X >= 21 and X <= 27 and Y == 7 and buttonBack == colors.lime and button == 1 then buttonBack = colors.lightGray buttonReboot = colors.gray buttonShut = colors.black buttonColor = false changes = true thmchg() -- Uncolor
-elseif X >= 21 and X <= 27 and Y == 7 and buttonBack == colors.lightGray and button == 1 then buttonBack = colors.lime buttonReboot = colors.orange buttonShut = colors.red buttonColor = true changes = true thmchg() end -- Recolor
+if XY == "20,6" and button == 1 then body = colors.black     bodytxt = colors.white  bodyd = colors.gray      changes = true thmchg() end -- body black
+if XY == "21,6" and button == 1 then body = colors.gray      bodytxt = colors.white  bodyd = colors.black     changes = true thmchg() end -- body gray
+if XY == "22,6" and button == 1 then body = colors.lightGray bodytxt = colors.white  bodyd = colors.gray      changes = true thmchg() end -- body light gray
+if XY == "23,6" and button == 1 then body = colors.white     bodytxt = colors.black  bodyd = colors.lightGray changes = true thmchg() end -- body white
+if XY == "24,6" and button == 1 then body = colors.yellow    bodytxt = colors.black  bodyd = colors.orange    changes = true thmchg() end -- body yellow
+if XY == "25,6" and button == 1 then body = colors.orange    bodytxt = colors.white  bodyd = colors.red       changes = true thmchg() end -- body orange
+if XY == "26,6" and button == 1 then body = colors.red       bodytxt = colors.white  bodyd = colors.orange    changes = true thmchg() end -- body red
+if XY == "27,6" and button == 1 then body = colors.purple    bodytxt = colors.white  bodyd = colors.magenta   changes = true thmchg() end -- body purple
+if XY == "28,6" and button == 1 then body = colors.magenta   bodytxt = colors.white  bodyd = colors.purple    changes = true thmchg() end -- body magenta
+if XY == "29,6" and button == 1 then body = colors.lightBlue bodytxt = colors.white  bodyd = colors.cyan      changes = true thmchg() end -- body light blue
+if XY == "30,6" and button == 1 then body = colors.cyan      bodytxt = colors.white  bodyd = colors.blue      changes = true thmchg() end -- body cyan
+if XY == "31,6" and button == 1 then body = colors.blue      bodytxt = colors.white  bodyd = colors.cyan      changes = true thmchg() end -- body blue
+if XY == "32,6" and button == 1 then body = colors.green     bodytxt = colors.white  bodyd = colors.lime      changes = true thmchg() end -- body green
+if XY == "33,6" and button == 1 then body = colors.lime      bodytxt = colors.white  bodyd = colors.green     changes = true thmchg() end -- body lime
+if XY == "34,6" and button == 1 then body = colors.pink      bodytxt = colors.white  bodyd = colors.magenta   changes = true thmchg() end -- body pink
+if XY == "35,6" and button == 1 then body = colors.brown     bodytxt = colors.white  bodyd = colors.red       changes = true thmchg() end -- body brown
 
  -- Save
-if X >= 34 and X <= 45 and Y == 10 and button == 1 and changes then
+if X >= 34 and X <= 45 and Y == 11 and button == 1 and changes == true then
  Save()
  thmchg()
-end end
 end
-thmchg()
+end
+
+local Z = 0
+
+local function firststart()
+ while(true) do
+  if Z == 0 then
+   Regist()
+   Z = 1
+  end
+  thmchg()
+ end
+end
+parallel.waitForAny(Clock, firststart)
