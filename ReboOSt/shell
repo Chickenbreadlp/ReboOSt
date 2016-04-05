@@ -1,10 +1,16 @@
 local oldpe = os.pullEvent
+local yau = "Enter Home, Exit, Back or Start to go back"
+local yaulen = string.len(yau)
+local yaupos = (52 - yaulen) / 2
 
 local function clear()
-term.setBackgroundColor(tbar)
+term.setBackgroundColor(colors.black)
 term.setTextColor(sndtxt)
 term.clear()
+term.setBackgroundColor(tbar)
 term.setCursorPos(1,1)
+print("                                                   ")
+term.setCursorPos(yaupos,1)
 write("Enter ")
 term.setTextColor(prog)
 write("Home, Exit, Back")
@@ -14,8 +20,9 @@ term.setTextColor(prog)
 write("Start")
 term.setTextColor(sndtxt)
 print(" to go back")
-print(OStag.." Shell")
+term.setBackgroundColor(colors.black)
 print("")
+
 term.setTextColor(tbartxt)
 end
 clear()
@@ -54,36 +61,41 @@ while true do
        -gui         --opens Graphical Interface]])
   term.setTextColor(tbartxt)
  elseif linput == "themes -gui" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing '/ReboOSt/thmchg'")
+  end
   shell.run("/ReboOSt/thmchg")
   clear()
  elseif linput == "themes -discard" then
+  if rosloging then
+   roslog.writeLine("ReboOSt/thmchg -nogui: reloading current theme")
+  end
   shell.run("/User/"..UserName.."/..colortheme")
   clear()
   term.setTextColor(sndtxt)
   print("Discarded current theme!")
   term.setTextColor(tbartxt)
  elseif linput == "themes -view" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": opening colortheme")
+  end
   term.setTextColor(sndtxt)
   print("tbar = "..tbar)
   print("mbar = "..mbar)
   print("body = "..body)
-  print("wico = "..wico)
+  print("bodyd = "..bodyd)
   print("crashscreen = "..crashscreen)
   print("crashscreentxt = "..crashscreentxt)
   print("prog = "..prog)
-  print("buttonBack = "..buttonBack)
-  print("buttonBatxt = "..buttonBatxt)
-  print("buttonReboot = "..buttonReboot)
-  print("buttonRetxt = "..buttonRetxt)
-  print("buttonShut = "..buttonShut)
-  print("buttonShtxt = "..buttonShtxt)
   print("tbartxt = "..tbartxt)
   print("mbartxt = "..mbartxt)
   print("bodytxt = "..bodytxt)
-  print("wicotxt = "..wicotxt)
   print("sndtxt = "..sndtxt)
   term.setTextColor(tbartxt)
  elseif linput == "themes -modify:all" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": opening colortheme with luaIDE")
+  end
   shell.run("/ReboOSt/luaIDE", "/User/"..UserName.."/..colortheme")
   clear()
  elseif linput == "themes -modify" then
@@ -114,6 +126,9 @@ while true do
    elseif input == "lime" then var = colors.lime print(vars.." was changed to "..input)
    elseif input == "pink" then var = colors.pink print(vars.." was changed to "..input)
    elseif input == "brown" then var = colors.brown print(vars.." was changed to "..input)
+   if rosloging then
+    roslog.writeLine("ReboOSt/thmchg -nogui: changed "..vars.." to "..input)
+   end
    else
     print("Not a Color! Exiting...")
    end
@@ -125,59 +140,95 @@ while true do
   elseif input == "mbartxt" then mbartxt = onoff(mbartxt, "Panel text")
   elseif input == "body" then body = onoff(body, "Menu BG")
   elseif input == "bodytxt" then bodytxt = onoff(bodytxt, "Menu text")
-  elseif input == "wico" then wico = onoff(wico, "Window Header & Text")
-  elseif input == "wicotxt" then wicotxt = onoff(wicotxt, "Window BG & Header text")
-  elseif input == "buttonBack" then buttonBack = onoff(buttonBack, "Back button")
-  elseif input == "buttonBatxt" then buttonBatxt = onoff(buttonBatxt, "Back button text")
-  elseif input == "buttonReboot" then buttonReboot = onoff(buttonReboot, "Reboot button")
-  elseif input == "buttonRetxt" then buttonRetxt = onoff(buttonRetxt, "Reboot button text")
-  elseif input == "buttonShut" then buttonShut = onoff(buttonShut, "Shutdown button")
-  elseif input == "buttonShtxt" then buttonShtxt = onoff(buttonShtxt, "Shutdown button text")
+  elseif input == "bodyd" then bodyd = onoff(bodyd, "Darker Menu Color")
   elseif input == "crashscreen" then crashscreen = onoff(crashscreen, "Crashscreen BG")
   elseif input == "crashscreentxt" then bodytxt = onoff(bodytxt, "Crashscreen text")
   elseif input == "prog" then prog = onoff(prog, "Program indicator text")
   elseif input == "sndtxt" then sndtxt = onoff(sndtxt, "Second text Color")
   else print("Not a Variable! Exiting...") end
  elseif linput == "themes -save" then
+  if rosloging then
+   roslog.writeLine("ReboOSt/thmchg -nogui: saving theme settings")
+  end
   local file = fs.open("/User/"..UserName.."/..colortheme", "w")
   file.writeLine("tbar = "..tbar)
   file.writeLine("mbar = "..mbar)
   file.writeLine("body = "..body)
-  file.writeLine("wico = "..wico)
+  file.writeLine("bodyd = "..bodyd)
   file.writeLine("crashscreen = "..tbar)
   file.writeLine("crashscreentxt = "..prog)
   file.writeLine("prog = "..prog)
-  file.writeLine("buttonBack = "..buttonBack)
-  file.writeLine("buttonBatxt = "..buttonBatxt)
-  file.writeLine("buttonReboot = "..buttonReboot)
-  file.writeLine("buttonRetxt = "..buttonRetxt)
-  file.writeLine("buttonShut = "..buttonShut)
-  file.writeLine("buttonShtxt = "..buttonShtxt)
   file.writeLine("tbartxt = "..tbartxt)
   file.writeLine("mbartxt = "..mbartxt)
   file.writeLine("bodytxt = "..bodytxt)
-  file.writeLine("wicotxt = "..wicotxt)
   file.writeLine("sndtxt = "..sndtxt)
   file.close()
   term.setTextColor(sndtxt)
   print("Theme saved!")
   term.setTextColor(tbartxt)
+ elseif linput == "logcat" then
+  if admin then
+   if rosloging then
+    roslog.writeLine(shell.getRunningProgram()..": executing 'sys/logcat'")
+    roslog.close()
+    if fs.exists("/ReboOSt/logs/"..starts..".txt") then
+     local logcat = fs.open("/ReboOSt/logs/"..starts..".txt", "r")
+     local logData = {}
+     local line = logcat.readLine()
+     repeat
+     table.insert(logData,line)
+     line = logcat.readLine()
+     until line == nil
+   	 logcat.close()
+	 local k = #logData
+	 for i=1, k, 1 do print(logData[i]) end
+    end
+    roslog = fs.open("/ReboOSt/logs/"..starts..".txt", "a")
+   else
+    print("This Command is only available, if you have logging enabled")
+   end
+  else
+  term.setTextColor(colors.red)
+  print("Forbidden Command!")
+  end
  elseif linput == "settings" then
-  term.setTextColor(sndtxt)
-  print([[Usage: -view        --shows current config 
+  if admin then
+   term.setTextColor(sndtxt)
+   print([[Usage: -view        --shows current config 
        -modify      --changes config
        -modify:all  --changes config in luaIDE
        -save        --saves current config
        -discard     --returns to old config
        -gui         --opens Graphical Interface]])
-  term.setTextColor(tbartxt)
+   term.setTextColor(tbartxt)
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "settings -gui" then
-  shell.run("/ReboOSt/ctrlpnl")
-  clear()
+  if admin then
+   if rosloging then
+    roslog.writeLine(shell.getRunningProgram()..": executing '/ReboOSt/ctrlpnl'")
+   end
+   shell.run("/ReboOSt/ctrlpnl")
+   clear()
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "settings -modify:all" then
-  shell.run("/ReboOSt/luaIDE", "/ReboOSt/configs/main")
-  clear()
+  if admin then
+   if rosloging then
+    roslog.writeLine(shell.getRunningProgram()..": opening setting/main with luaIDE")
+   end
+   shell.run("/ReboOSt/luaIDE", "/ReboOSt/configs/main")
+   clear()
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "settings -modify" then
+  if admin then
   print("Please specify the setting you want to change. (Variable Name)")
   write("   > ")
   os.pullEvent = os.pullEventRaw
@@ -192,9 +243,15 @@ while true do
    if input == "on" then
     var = true
 	print(vars.." was changed to true.")
+    if rosloging then
+     roslog.writeLine("ReboOSt/ctrlpnl -nogui: changed "..vars.." to true")
+    end
    elseif input == "off" then
     var = false
 	print(vars.." was changed to false.")
+    if rosloging then
+     roslog.writeLine("ReboOSt/ctrlpnl -nogui: changed "..vars.." to false")
+    end
    else
     print("Exiting...")
    end
@@ -210,6 +267,8 @@ while true do
    rosloging = onoff(rosloging, "Logfile")
   elseif input == "termstart" then
    termstart = onoff(termstart, "Shell after login")
+  elseif input == "timeformat" then
+   timeformat = onoff(timeformat, "24 hour clock")
   elseif input == "updatstream" then
    print("Turn Dev-Update-Stream on or off?")
    write("   > ")
@@ -219,56 +278,104 @@ while true do
    if input == "on" then
 	print("You'll now get Updates from the Development-Stream")
 	updatstream = "development"
+    if rosloging then
+     roslog.writeLine("ReboOSt/ctrlpnl -nogui: changed updatstream to development")
+    end
    elseif input == "off" then
 	print("You'll now get Updates from the Release-Stream")
 	updatstream = "release"
+    if rosloging then
+     roslog.writeLine("ReboOSt/ctrlpnl -nogui: changed updatstream to release")
+    end
    else
     print("Exiting...")
    end
   else
    print("Not a setting! Exiting...")
   end
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "settings -discard" then
-  shell.run("/ReboOSt/configs/main")
+  if admin then
+   if rosloging then
+    roslog.writeLine("ReboOSt/ctrlpnl: reloading main config")
+   end
+   shell.run("/ReboOSt/configs/main")
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "settings -save" then
-  local file = fs.open("/ReboOSt/configs/main", "w")
-  if autoupdate then
-   file.writeLine("autoupdate = true")
+  if admin then
+   if rosloging then
+    roslog.writeLine(shell.getRunningProgram()..": saved new settings.")
+    roslog.write(shell.getRunningProgram()..": new settings are:  autoupdate = ")
+    if autoupdate then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.write("rosdebug = ") if rosdebug then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.write("pfolder = ") if pfolder then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.write("termstart = ") if termstart then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.write("rosloging = ") if rosloging then roslog.write("true ; ") else roslog.write("false ; ") end
+	roslog.write("timeformat = ") if timeformat then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.writeLine("updatstream = '"..updatstream.."'")
+   end
+   local file = fs.open("/ReboOSt/configs/main", "w")
+   if autoupdate then
+    file.writeLine("autoupdate = true")
+   else
+    file.writeLine("autoupdate = false")
+   end
+   if rosdebug then
+    file.writeLine("rosdebug = true")
+   else
+    file.writeLine("rosdebug = false")
+   end
+   if pfolder then
+    file.writeLine("pfolder = true")
+   else
+    file.writeLine("pfolder = false")
+   end
+   if termstart then
+    file.writeLine("termstart = true")
+   else
+    file.writeLine("termstart = false")
+   end
+   if timeformat then
+    file.writeLine("timeformat = true")
+   else
+    file.writeLine("timeformat = false")
+   end
+   if rosloging then
+    file.writeLine("rosloging = true")
+   else
+    file.writeLine("rosloging = false")
+   end
+   file.writeLine('updatstream = "'..updatstream..'"')
+   file.close()
+   print("Settings Saved!")
   else
-   file.writeLine("autoupdate = false")
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
   end
-  if rosdebug then
-   file.writeLine("rosdebug = true")
-  else
-   file.writeLine("rosdebug = false")
-  end
-  if pfolder then
-   file.writeLine("pfolder = true")
-  else
-   file.writeLine("pfolder = false")
-  end
-  if termstart then
-   file.writeLine("termstart = true")
-  else
-   file.writeLine("termstart = false")
-  end
-  if rosloging then
-   file.writeLine("rosloging = true")
-  else
-   file.writeLine("rosloging = false")
-  end
-  file.writeLine('updatstream = "'..updatstream..'"')
-  file.close()
-  print("Settings Saved!")
  elseif linput == "settings -view" then
-  term.setTextColor(sndtxt)
-  write("autoupdate = ") if autoupdate then print("true") else print("false") end
-  write("rosdebug = ") if rosdebug then print("true") else print("false") end
-  write("pfolder = ") if pfolder then print("true") else print("false") end
-  write("gfolder = ") if gfolder then print("true") else print("false") end
-  write("termstart = ") if tempstart then print("true") else print("false") end
-  print("updatstream = "..updatstream)
-  term.setTextColor(tbartxt)
+  if admin then
+   if rosloging then
+    roslog.writeLine(shell.getRunningProgram()..": opening main config")
+   end
+   term.setTextColor(sndtxt)
+   write("autoupdate = ") if autoupdate then print("true") else print("false") end
+   write("rosdebug = ") if rosdebug then print("true") else print("false") end
+   write("pfolder = ") if pfolder then print("true") else print("false") end
+   write("gfolder = ") if gfolder then print("true") else print("false") end
+   write("termstart = ") if tempstart then print("true") else print("false") end
+   write("timeformat = ") if timeformat then print("true") else print("false") end
+   print("updatstream = "..updatstream)
+   term.setTextColor(tbartxt)
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
+  end
  elseif linput == "shell" then
   term.setTextColor(sndtxt)
   write("This is ReboOSt Shell. Basicly it is just another GUI for ReboOSt. Use ")
@@ -278,11 +385,15 @@ while true do
   print(" for extra ReboOSt commands.")
  elseif linput == "shell -?" or linput == "shell -help" then
   term.setTextColor(sndtxt)
-  print([[Use "themes" to modify the current theme.
-Use "settings" to modify current settings.
+  print([[-- These Commands can be used by a standart user --
+Use "themes" to modify the current theme.
 Use "files" to open File Browser.
 Use "sketch" to open sketch from anywhere.
-Use "passwd" to change your and other's passwords.]])
+
+--      These commands require admin rights      --
+Use "settings" to modify current settings.
+Use "passwd" to change your and other's passwords.
+Use "logcat" to view current log, if loging is enabled.]])
   term.setTextColor(tbartxt)
  elseif linput == "files" then
   shell.run("/ReboOSt/fbrws")
@@ -296,10 +407,14 @@ Use "passwd" to change your and other's passwords.]])
  elseif linput == "clear" then
   clear()
  elseif linput == "passwd" then
-  print("Do you want to change your own Password or one from another account?")
-  write("Y/N: ")
-  input = read()
-  input = string.lower(input)
+  if admin then
+   print("Do you want to change your own Password or one from another account?")
+   write("Y/N: ")
+   input = read()
+   input = string.lower(input)
+  else
+   input = "y"
+  end
   if input == "y" then
    write("New Password: ")
    local npw = read("*")
@@ -322,6 +437,9 @@ Use "passwd" to change your and other's passwords.]])
 	npw = nil
 	npwd = nil
 	metaData = nil
+    if rosloging then
+     roslog.writeLine("ReboOSt/regist: chenged Password from "..UserName.."sucessfull")
+    end
 	print("Changed password sucessfully!")
    else
     print("Passwords don't match. Exiting...")
@@ -348,7 +466,7 @@ Use "passwd" to change your and other's passwords.]])
 	 local npwd = read("*")
 	 if npw == npwd then
 	  npwd = encryption.sha256(npw)
-      local file = fs.open("/User/"..UserName.."/..meta", "w")
+      local file = fs.open("/User/"..apwc.."/..meta", "w")
       file.writeLine(npwd)
       file.writeLine(metaData[2])
       file.close()
@@ -356,6 +474,9 @@ Use "passwd" to change your and other's passwords.]])
   	  npw = nil
 	  npwd = nil
 	  metaData = nil
+     if rosloging then
+      roslog.writeLine("ReboOSt/regist -nogui: changed Password from "..apwc.." successfull")
+     end
 	 else
 	  print("Passwords don't match! Exiting...")
 	  opw = nil
@@ -375,6 +496,7 @@ Use "passwd" to change your and other's passwords.]])
    print(input.." is not a choise! Exiting...")
   end
  elseif linput == "debug" then
+  if admin then
   if rosdebug then
    write("Please enter Mainainance Password: ")
    os.pullEvent = os.pullEventRaw
@@ -438,7 +560,7 @@ Use "passwd" to change your and other's passwords.]])
       else
        print("User doesn't exists! Exiting.")
       end
-     elseif linput == "close" then
+     elseif linput == "close" or linput == "exit" then
 	  debugshell = false
       print("Exiting debug shell...")
       break
@@ -451,6 +573,10 @@ Use "passwd" to change your and other's passwords.]])
     end
   else
   print("Debug Mode must be enabled!")
+  end
+  else
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
   end
  else
   shell.run(input)
