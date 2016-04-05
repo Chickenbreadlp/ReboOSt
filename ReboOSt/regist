@@ -8,8 +8,6 @@ local function NewAcc()
 local function Regist()
 term.setBackgroundColor(tbar)
 term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setTextColor(sndtxt)
 term.setCursorPos(15,5)
 write("                      ")
@@ -35,7 +33,7 @@ if Name == "" then
  print("Please enter in a Username!")
  sleep(2.5)
  Regist()
-elseif Name == "Reboot" or Name == "Shutdown" or Name == "root" then
+elseif Name == "Reboot" or Name == "Shutdown" then
  term.setCursorPos(18,10)
  print("Forbidden Username")
  sleep(2.5)
@@ -75,7 +73,7 @@ else
   file.writeLine(pass)
   file.writeLine(acc)
   file.close()
-  fs.copy("/User/root/Pictures", "/User/"..Name.."/Pictures")
+  fs.copy("/ReboOSt/wallpaper.nfp", "/User/"..Name.."/Pictures/wallpaper.nfp")
   fs.copy("/ReboOSt/configs/colortheme", "/User/"..Name.."/..colortheme")
   term.setCursorPos(18,10)
   print("Registration was successfull!")
@@ -92,7 +90,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -101,9 +99,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -137,7 +132,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
@@ -260,7 +255,7 @@ if terminate == false then
  print("                                                   ")
  term.setBackgroundColor(colors.white)
  term.setCursorPos(18,9)
- local Password = read("*")
+ local pass = read("*")
 
  if Password == "" then
   term.setCursorPos(18,10)
@@ -276,11 +271,14 @@ if terminate == false then
   line = file.readLine()
   until line == nil
   file.close()
-  local pass = encryption.sha256(Password)
+  pass = encryption.sha256(pass)
   local file = fs.open("/User/"..Name.."/..meta", "w")
   file.writeLine(pass)
   file.writeLine(metaData[2])
   file.close()
+  if Acc == "own" then
+   UserPass = pass
+  end
   term.setCursorPos(18,10)
   print("Password was successfully changed!")
   terminate = true
@@ -298,7 +296,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -307,9 +305,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -343,7 +338,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
@@ -380,7 +375,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -389,9 +384,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -425,7 +417,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
