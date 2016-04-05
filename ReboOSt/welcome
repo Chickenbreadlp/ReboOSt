@@ -79,7 +79,7 @@ local function Login()
  term.setBackgroundColor(colors.white)
  write("                                   ")
  term.setCursorPos(18,9)
- local UserPass = read("*")
+ UserPass = read("*")
  
  if UserPass == "" then
   Login()
@@ -95,8 +95,8 @@ local function Login()
  ruserpass = fileData[1]
  acctype = fileData[2]
  file.close()
- userpasse = encryption.sha256(UserPass)
- if userpasse == ruserpass then
+ UserPass = encryption.sha256(UserPass)
+ if UserPass == ruserpass then
   if acctype == "admin" then
    admin = true
   else
@@ -137,7 +137,7 @@ local function Login()
   if fs.exists("/User/"..UserName.."/Pictures/wallpaper.nfp") then
    Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
   else
-   fs.copy("/User/root/Pictures/wallpaper.nfp", "/User/"..UserName.."/Pictures/wallpaper.nfp")
+   fs.copy("/ReboOSt/wallpaper.nfp", "/User/"..UserName.."/Pictures/wallpaper.nfp")
    Wallpaper = paintutils.loadImage("/User/"..UserName.."/Pictures/wallpaper.nfp")
   end
   if fs.exists("/User/"..UserName.."/..colortheme") then
@@ -157,6 +157,7 @@ local function Login()
   
   welcome()
   shell.run("/ReboOSt/main")
+  UserPass = nil
   if login == false then
    shell.run("/ReboOSt/configs/colortheme")
    FirstDraw()
@@ -183,10 +184,8 @@ local function Start()
  if login then
   term.setCursorBlink(false)
   shell.run("/ReboOSt/main")
-  if shellacc then
-  else
-   Start()
-  end
+  UserPass = nil
+  Start()
  else
   term.setCursorBlink(false)
   shell.run("/ReboOSt/configs/colortheme")
