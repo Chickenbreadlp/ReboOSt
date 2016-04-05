@@ -8,7 +8,84 @@ local pfolXmin = nil
 local pfolXmax = nil
 local dir = nil
 
-local function Desk()
+local function writeHere(message, X, Y, Bcol, Tcol)
+ local Xold, Yold = term.getCursorPos()
+ local Bcolo = term.getBackgroundColor()
+ local Tcolo = term.getTextColor()
+ term.setCursorPos(X,Y)
+ term.setBackgroundColor(Bcol)
+ term.setTextColor(Tcol)
+ write(message)
+ term.setCursorPos(Xold,Yold)
+ term.setBackgroundColor(Bcolo)
+ term.setTextColor(Tcolo)
+end
+
+local function Clock()
+ while(true) do
+  timetext = textutils.formatTime(os.time(), timeformat)
+  timeX = string.len(timetext)
+  if shell.getRunningProgram() == "ReboOSt/fbrws" then
+   timeX = 51 - timeX
+  else
+   timeX = 52 - timeX
+  end
+  local runprog = shell.getRunningProgram()
+  if runprog == "ReboOSt/main" or runprog == "ReboOSt/ctrlpnl" or runprog == "ReboOSt/info" or runprog == "ReboOSt/cntxmnudi" or runprog == "ReboOSt/progmnu" or runprog == "ReboOSt/reboot" or runprog == "ReboOSt/regist" or runprog == "ReboOSt/shut-off" or runprog == "ReboOSt/sysmnu" or runprog == "ReboOSt/thmchg" or runprog == "ReboOSt/unimnu" or runprog == "ReboOSt/updater" or runprog == "ReboOSt/Temp/updattmp2" then
+   writeHere(timetext, timeX, 1, tbar, prog)
+  else
+  end
+  sleep(0.01)
+ end
+end
+
+local function SecureROS()
+ while(true) do
+  sleep(5)
+  if not fs.exists("/User/"..UserName.."/..meta") then
+   crashcause = "User could not be verified!"
+   shell.run("/ReboOSt/crash")
+   os.shutdown()
+  end
+  if crashcause ~= nil then
+   crashcause = "Computer should have already crashed! "..crashcause
+   shell.run("/ReboOSt/crash")
+   os.shutdown()
+  end
+  local file = fs.open("/User/"..UserName.."/..meta", "r")
+  local fileData = {}
+  local line = file.readLine()
+  repeat
+  table.insert(fileData, line)
+  line = file.readLine()
+  until line == nil
+  if UserPass ~= fileData[1] then
+   crashcause = "User could not be verified!"
+   shell.run("/ReboOSt/crash")
+   os.shutdown()
+  end
+  if admin == true then
+   if fileData[2] ~= "admin" then
+    crashcause = "User could not be verified!"
+	shell.run("/ReboOSt/crash")
+	os.shutdown()
+   end
+  else
+   if fileData[2] ~= "stand" then
+    crashcause = "User could not be verified!"
+	shell.run("/ReboOSt/crash")
+	os.shutdown()
+   end
+  end
+  if fileData[3] ~= nil then
+   crashcause = "User was closed of securety reasons!"
+   shell.run("/ReboOSt/crash")
+   os.shutdown()
+  end
+ end
+end
+
+local function drawScreen()
 term.setCursorBlink(false)
 term.setBackgroundColor(tbar)
 term.clear()
@@ -25,9 +102,7 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(44,1)
-term.setTextColor(prog)
-write("Desktop ")
+-- Clock()
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 paintutils.drawImage(Wallpaper,1,2)
@@ -48,15 +123,15 @@ if termstart then
    roslog.writeLine(shell.getRunningProgram()..": going into shell")
   end
   shell.run("/ReboOSt/shell")
-  Desk()
- else Desk()
+  drawScreen()
+ else drawScreen()
  end
 else
- Desk()
+ drawScreen()
 end
 
-while true do
-
+local function Desk()
+while(true) do
 
 if pfolder then pfolXmin = 2 pfolXmax = 6 diskXmin = 8 diskXmax = 11 else pfolXmin = 0 pfolXmax = 0 diskXmin = 2 diskXmax = 6 end
 
@@ -88,6 +163,7 @@ end
 
 local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
+-- Clock()
 
  -- Unimnu
 
@@ -97,7 +173,7 @@ if X >= 1 and X <= 7 and Y == 1 then
  end
  shell.run("/ReboOSt/unimnu")
  if login then
-  Desk()
+  drawScreen()
  else
   break
  end
@@ -133,7 +209,7 @@ elseif disk.isPresent("bottom") and not disk.hasAudio("bottom") or disk.isPresen
    roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
   end
   dir = nil
-  Desk()
+  drawScreen()
  end
 
 elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 then
@@ -143,7 +219,7 @@ elseif X >= diskXmin and X <= diskXmax and Y >= 4 and Y <= 8 and button == 2 the
  shell.run("/ReboOSt/cntxmnudi")
  rightclickdiskX = nil
  rightclickdiskY = nil
- Desk()
+ drawScreen()
  end
 
  -- Program Folder
@@ -157,9 +233,13 @@ elseif X >= pfolXmin and X <= pfolXmax and Y >= 4 and Y <= 8 then
   if rosloging then
    roslog.writeLine("ReboOSt/fbrws: going back to mainframe")
   end
-  Desk()
+  drawScreen()
  end
-end end
+end end end
+
+drawScreen()
+parallel.waitForAny(SecureROS, Desk, Clock)
+
 else
  term.setTextColor(16384)
  term.setBackgroundColor(32768)
