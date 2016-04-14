@@ -1,5 +1,5 @@
-autoupdate = true
-rosdebug = false
+autoupdate = false
+loaditup = false
 pfolder = false
 termstart = false
 timeformat = false
