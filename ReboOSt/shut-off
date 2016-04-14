@@ -19,7 +19,6 @@ local function Shutdown()
  paintutils.drawImage(Logo,6,9)
  fs.delete("/ReboOSt/Temp")
  os.unloadAPI("encryption")
- sleep(0.7)
  os.shutdown()
 end
 

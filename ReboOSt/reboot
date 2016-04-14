@@ -25,7 +25,6 @@ local function Reboot()
   file.write(starts)
   file.close()
  end
- sleep(0.7)
  os.reboot()
 end
 

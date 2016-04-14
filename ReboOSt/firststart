@@ -66,13 +66,14 @@ term.setBackgroundColor(colors.white)
 print("                                   ")
 term.setCursorPos(18,9)
 Name = read()
+local name = string.lower(Name)
 
 if Name == "" then
  term.setCursorPos(18,10)
  print("Please enter in a Username!")
  sleep(1.5)
  Regist()
-elseif Name == "Reboot" or Name == "Shutdown" then
+elseif name == "reboot" or name == "shutdown" or name == "end" then
  term.setCursorPos(18,10)
  print("Forbidden Username")
  sleep(1.5)
@@ -101,10 +102,10 @@ else
  else
 
   fs.makeDir("/User/"..Name)
-  local pass = encryption.sha256(Password)
+  Password = encryption.sha256(Password)
+  local pass = encryption.sha256(Password.."admin")
   local file = fs.open("/User/"..Name.."/..meta", "w")
   file.writeLine(pass)
-  file.writeLine("admin")
   file.close()
   fs.copy("/ReboOSt/wallpaper.nfp", "/User/"..Name.."/Pictures/wallpaper.nfp")
   fs.copy("/ReboOSt/configs/colortheme", "/User/"..Name.."/..colortheme")
@@ -298,6 +299,13 @@ local XY = X..","..Y
 
 if X >= 7 and X <= 12 and Y == 15 and button == 1 then
  Save()
+ starts = 1
+ if fs.exists("/ReboOSt/configs/stcount") then
+  fs.delete("/ReboOSt/configs/stcount")
+  local file = fs.open("/ReboOSt/configs/stcount", "w")
+  file.write(starts)
+  file.close()
+ end
  login = true
  instashut = true
  shell.run("/ReboOSt/reboot")

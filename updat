@@ -51,9 +51,15 @@ end
 if fs.exists("/ReboOSt/configs/main") then
  fs.copy("/ReboOSt/configs/main", "/updattemp/mainconf")
 end
+
 if fs.exists("/User") then
- fs.copy("/User", "/updattemp/user")
- fs.delete("/User")
+ if rosbuild < 2035 then
+  fs.copy("/User", "/User_old")
+  fs.delete("/User")
+ else
+  fs.copy("/User", "/updattemp/user")
+  fs.delete("/User")
+ end
 end
 fs.delete("/ReboOSt")
 fs.delete("/startup")

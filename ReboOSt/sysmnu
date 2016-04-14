@@ -6,7 +6,8 @@ local deskback = true
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 term.setCursorPos(2,2)
-write("Appearance   ")
+write("Appearance  ")
+if rosbootmode == "Safe" then write("X") else write(" ") end
 if fs.exists("/ReboOSt/thmchg") then write(" ") else write("!") end
 term.setCursorPos(2,3)
 write("About OS     ")
@@ -54,12 +55,14 @@ XY = X..","..Y
  -- Themes
 
 if X >= 2 and X <= 14 and Y == 2 then
- if rosloging then
-  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/thmchg")
+ if rosbootmode == "Normal" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/thmchg")
+  end
+  shell.run("/ReboOSt/thmchg")
+  keepmenu = false
+  break
  end
- shell.run("/ReboOSt/thmchg")
- keepmenu = false
-break
 
  -- About OS
 

@@ -1,11 +1,24 @@
 if fs.exists("/ReboOSt/Temp") then
  fs.delete("/ReboOSt/Temp")
 end
-crash = true
+
+if fs.exists("/ReboOSt/configs/main") then
+ shell.run("/ReboOSt/configs/main")
+else
+ loaditup = true
+end
+
+if loaditup then
+ shell.run("/ReboOSt/bootload")
+else
+ rosbootmode = "Normal"
+end
+
+crash = false
 OStag = "ReboOSt"
 devpart = "DEV_Beta"
 version = 1
-rosbuild = 2034
+rosbuild = 2035
 
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
@@ -25,6 +38,9 @@ else
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end
+if rosbootmode == "Safe" then
+ rosdebug = true
+end
 
 term.setBackgroundColor(colors.gray)
 term.clear()
@@ -42,7 +58,7 @@ print("")
 if rosdebug then
  term.setCursorPos(1,19)
  term.setTextColor(colors.red)
- write("Debug Mode enabled!")
+ write("ReboOSt is starting into Safe Mode")
 else
  print("")
 end
@@ -96,7 +112,6 @@ end
 fs.makeDir("/ReboOSt/Temp")
 freeSpace = fs.getFreeSpace("/")
 freeSpace = freeSpace/1024
-start = true
 
 if fs.exists("/ReboOSt/configs/colortheme") then
  shell.run("/ReboOSt/configs/colortheme")
@@ -108,7 +123,9 @@ else
  os.shutdown()
 end
 
-if starts == "0" then
+start = true
+
+if starts == "0" or rosbootmode == "firststart" then
  sleep(0.5)
  if fs.exists("/ReboOSt/firststart") then
   shell.run("/ReboOSt/firststart")
@@ -142,7 +159,7 @@ else
   crashcause = "Login files not found!"
  end
 end
-if crash and not rosdebug then
+if not rosdebug then
  shell.run("/ReboOSt/crash")
  os.shutdown()
 end
