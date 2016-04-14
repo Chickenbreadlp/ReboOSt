@@ -43,8 +43,8 @@ write(" Auto Update          ")
 SwiStat(autoupdate)
 print("")
 print("")
-write(" Debug Mode           ")
-SwiStat(rosdebug)
+write(" Load'ItUp            ")
+SwiStat(loaditup)
 print("")
 print("")
 write(" Programs Folder      ")
@@ -177,11 +177,11 @@ local XY = X..","..Y
  -- Debug Mode
 
  elseif X >= 23 and X <= 26 and Y == 5 then
-  if rosdebug then
-   rosdebug = false
+  if loaditup then
+   loaditup = false
    changeSwitchGR(5)
   else
-   rosdebug = true
+   loaditup = true
    changeSwitchRG(5)
   end
   changes = true
@@ -257,10 +257,10 @@ local XY = X..","..Y
   else
    file.writeLine("autoupdate = false")
   end
-  if rosdebug then
-   file.writeLine("rosdebug = true")
+  if loaditup then
+   file.writeLine("loaditup = true")
   else
-   file.writeLine("rosdebug = false")
+   file.writeLine("loaditup = false")
   end
   if pfolder then
    file.writeLine("pfolder = true")
