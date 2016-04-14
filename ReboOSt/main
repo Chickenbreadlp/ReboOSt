@@ -1,6 +1,5 @@
 if login then
 
-crash = true
 local diskiconactiv = false
 local diskXmin = nil
 local diskXmax = nil
@@ -23,7 +22,7 @@ end
 
 local function Clock()
  while(true) do
-  timetext = textutils.formatTime(os.time(), timeformat)
+  timetext = " "..textutils.formatTime(os.time(), timeformat)
   timeX = string.len(timetext)
   if shell.getRunningProgram() == "ReboOSt/fbrws" then
    timeX = 51 - timeX
@@ -41,14 +40,12 @@ end
 
 local function SecureROS()
  while(true) do
-  sleep(5)
   if not fs.exists("/User/"..UserName.."/..meta") then
    crashcause = "User could not be verified!"
    shell.run("/ReboOSt/crash")
    os.shutdown()
   end
   if crashcause ~= nil then
-   crashcause = "Computer should have already crashed! "..crashcause
    shell.run("/ReboOSt/crash")
    os.shutdown()
   end
@@ -59,29 +56,32 @@ local function SecureROS()
   table.insert(fileData, line)
   line = file.readLine()
   until line == nil
-  if UserPass ~= fileData[1] then
-   crashcause = "User could not be verified!"
-   shell.run("/ReboOSt/crash")
-   os.shutdown()
-  end
-  if admin == true then
-   if fileData[2] ~= "admin" then
+  file.close()
+  if admin then
+   if encryption.sha256(UserPass.."admin") ~= fileData[1] then
+    local file = fs.open("/User/"..UserName.."/..meta", "a")
+	file.writeLine("closed")
+	file.close()
     crashcause = "User could not be verified!"
-	shell.run("/ReboOSt/crash")
-	os.shutdown()
+    shell.run("/ReboOSt/crash")
+    os.shutdown()
    end
   else
-   if fileData[2] ~= "stand" then
+   if encryption.sha256(UserPass.."stand") ~= fileData[1] then
+    local file = fs.open("/User/"..UserName.."/..meta", "a")
+	file.writeLine("closed")
+	file.close()
     crashcause = "User could not be verified!"
-	shell.run("/ReboOSt/crash")
-	os.shutdown()
+    shell.run("/ReboOSt/crash")
+    os.shutdown()
    end
   end
-  if fileData[3] ~= nil then
-   crashcause = "User was closed of securety reasons!"
+  if fileData[2] ~= nil then
+   crashcause = "User was closed because of securety reasons!"
    shell.run("/ReboOSt/crash")
    os.shutdown()
   end
+  sleep(2)
  end
 end
 
@@ -102,7 +102,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
--- Clock()
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 paintutils.drawImage(Wallpaper,1,2)
