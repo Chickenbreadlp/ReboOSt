@@ -5,24 +5,23 @@ local deskback = true
 
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
-term.setCursorPos(14,2)
-write("Appearance ")
-if admin then write("") else write ("      ") end
+term.setCursorPos(2,2)
+write("Appearance  ")
+if rosbootmode == "Safe" then write("X") else write(" ") end
 if fs.exists("/ReboOSt/thmchg") then write(" ") else write("!") end
-term.setCursorPos(14,3)
-write("About OS   ")
-if admin then write("") else write ("      ") end
+term.setCursorPos(2,3)
+write("About OS     ")
 if fs.exists("/ReboOSt/info") then write(" ") else write("!") end
-term.setCursorPos(14,4)
-if admin then write("Accounts   ") else write("Change Password  ") end
+term.setCursorPos(2,4)
+write("Accounts     ")
 if fs.exists("/ReboOSt/regist") then write(" ") else write("!") end
-term.setCursorPos(14,5)
-write("Updater   ")
-if admin then write(" ") else write("      X") end
+term.setCursorPos(2,5)
+write("Updater     ")
+if admin then write(" ") else write("X") end
 if fs.exists("/ReboOSt/updater") then write(" ") else write("!") end
-term.setCursorPos(14,6)
-write("Settings  ")
-if admin then write(" ") else write("      X") end
+term.setCursorPos(2,6)
+write("Settings    ")
+if admin then write(" ") else write("X") end
 if fs.exists("/ReboOSt/ctrlpnl") then write(" ") else write("!") end
 
 local function menuundo()
@@ -55,17 +54,19 @@ XY = X..","..Y
 
  -- Themes
 
-if X >= 14 and X <= 27 and Y == 2 then
- if rosloging then
-  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/thmchg")
+if X >= 2 and X <= 14 and Y == 2 then
+ if rosbootmode == "Normal" then
+  if rosloging then
+   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/thmchg")
+  end
+  shell.run("/ReboOSt/thmchg")
+  keepmenu = false
+  break
  end
- shell.run("/ReboOSt/thmchg")
- keepmenu = false
-break
 
  -- About OS
 
-elseif X >= 14 and X < 27 and Y == 3 then
+elseif X >= 2 and X < 14 and Y == 3 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/info")
  end
@@ -75,7 +76,7 @@ break
 
  -- Register
 
-elseif X >= 14 and X < 27 and Y == 4 then
+elseif X >= 2 and X < 14 and Y == 4 then
  keepmenu = false
  menuundo()
  if rosloging then
@@ -86,7 +87,7 @@ elseif X >= 14 and X < 27 and Y == 4 then
 
  -- Updater
 
-elseif X >= 14 and X < 27 and Y == 5 then
+elseif X >= 2 and X < 14 and Y == 5 then
  if admin then
   keepmenu = false
   menuundo()
@@ -99,7 +100,7 @@ elseif X >= 14 and X < 27 and Y == 5 then
 
  -- Control Panel
 
-elseif X >= 14 and X < 27 and Y == 6 then
+elseif X >= 2 and X < 14 and Y == 6 then
  if admin then
   if rosloging then
    roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/ctrlpnl")
@@ -111,7 +112,7 @@ elseif X >= 14 and X < 27 and Y == 6 then
 
  -- Go back
 
-elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+elseif X == 1 and Y >= 2 and Y <= 6 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to Unimenu")
  end
