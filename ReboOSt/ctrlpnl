@@ -26,7 +26,7 @@ print("                                                   ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Settings")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -35,19 +35,16 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(43,1)
-term.setTextColor(prog)
-write("Settings ")
 term.setBackgroundColor(mbar)
-term.setTextColor(tbartxt)
-print("")
+term.setTextColor(mbartxt)
+-- print("")
 print("")
 write(" Auto Update          ")
 SwiStat(autoupdate)
 print("")
 print("")
-write(" Debug Mode           ")
-SwiStat(rosdebug)
+write(" Load'ItUp            ")
+SwiStat(loaditup)
 print("")
 print("")
 write(" Programs Folder      ")
@@ -60,8 +57,16 @@ print("")
 print("")
 write(" Log System Activity  ")
 SwiStat(rosloging)
+print("")
+print("")
+write(" 24 Hour clock        ")
+SwiStat(timeformat)
+print("")
+print("")
+write(" CC 1.74 Compatibilty ")
+SwiStat(roscomp)
 
-term.setCursorPos(1,16)
+term.setCursorPos(1,17)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 write("  [")
@@ -128,7 +133,7 @@ local event, button, X, Y = os.pullEvent("mouse_click")
 local XY = X..","..Y
  
  -- Back
- if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+ if X >= 1 and X <= 8 and Y == 1 and button == 1 then
   if rosloging then
    if roslog == nil then
     if fs.exists("/ReboOSt/logs/"..starts..".txt") then
@@ -176,11 +181,11 @@ local XY = X..","..Y
  -- Debug Mode
 
  elseif X >= 23 and X <= 26 and Y == 5 then
-  if rosdebug then
-   rosdebug = false
+  if loaditup then
+   loaditup = false
    changeSwitchGR(5)
   else
-   rosdebug = true
+   loaditup = true
    changeSwitchRG(5)
   end
   changes = true
@@ -230,23 +235,51 @@ local XY = X..","..Y
   end
   changes = true
   Screen()
+  
+ -- Time Format
+ 
+ elseif X >= 23 and X <= 26 and Y == 13 then
+  if timeformat then
+   timeformat = false
+   changeSwitchGR(13)
+  else
+   changeSwitchRG(13)
+   timeformat = true
+  end
+  changes = true
+  Screen()
+  
+ -- CC 1.75 Compatibilty
+ 
+ elseif X >= 23 and X <= 26 and Y == 15 then
+  if roscomp then
+   roscomp = false
+   changeSwitchGR(15)
+  else
+   roscomp = true
+   changeSwitchRG(15)
+  end
+  changes = true
+  Screen()
  
  -- Discart
- elseif X >= 3 and X <= 11 and Y == 16 then shell.run("/ReboOSt/configs/main") changes = false Screen()
+ elseif X >= 3 and X <= 11 and Y == 17 then
+  shell.run("/ReboOSt/configs/main")
+  changes = false
+  Screen()
  
  -- Confirm
- elseif X >= 40 and X <= 48 and Y == 16 and changes == true then
-  if fs.exists("/ReboOSt/configs/main") then fs.delete("/ReboOSt/configs/main") end
+ elseif X >= 40 and X <= 48 and Y == 17 and changes == true then
   local file = fs.open("/ReboOSt/configs/main", "w")
   if autoupdate then
    file.writeLine("autoupdate = true")
   else
    file.writeLine("autoupdate = false")
   end
-  if rosdebug then
-   file.writeLine("rosdebug = true")
+  if loaditup then
+   file.writeLine("loaditup = true")
   else
-   file.writeLine("rosdebug = false")
+   file.writeLine("loaditup = false")
   end
   if pfolder then
    file.writeLine("pfolder = true")
@@ -262,6 +295,16 @@ local XY = X..","..Y
    file.writeLine("rosloging = true")
   else
    file.writeLine("rosloging = false")
+  end
+  if timeformat then
+   file.writeLine("timeformat = true")
+  else
+   file.writeLine("timeformat = false")
+  end
+  if roscomp then
+   file.writeLine("roscomp = true")
+  else
+   file.writeLine("roscomp = false")
   end
   file.writeLine('updatstream = "'..updatstream..'"')
   file.close()
