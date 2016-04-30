@@ -4,22 +4,52 @@ local diskiconactiv = false
 keepmenu = false
 local deskback = true
 
-function DrawMenu()
+local function DrawMenu(open)
 term.setCursorPos(1,1)
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
 print(OStag)
-print("Panels      >")
-print("Programs    >")
-write("Time        ")
-if fs.exists("/ReboOSt/time") then print(" ") else print("!") end
-write("Shell       ")
+if open then sleep(0.05) end
+print("Panels        >")
+if open then sleep(0.05) end
+print("Programs      >")
+if open then sleep(0.05) end
+write("Shell         ")
 if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
-print(" ----------- ")
-print("Logout       ")
-print("Reboot       ")
-print("Shutdown     ")
+if open then sleep(0.05) end
+print("---------------")
+if open then sleep(0.05) end
+term.setBackgroundColor(colors.lime)
+term.setTextColor(colors.white)
+write("Logo")
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+write("|")
+term.setBackgroundColor(colors.orange)
+term.setTextColor(colors.white)
+write("Reboo")
+term.setBackgroundColor(body)
+term.setTextColor(bodytxt)
+write("|")
+term.setBackgroundColor(colors.red)
+term.setTextColor(colors.white)
+write("Shut")
 end
+
+local function DrawMenuC()
+term.setCursorPos(1,2)
+term.setBackgroundColor(bodyd)
+term.setTextColor(bodytxt)
+print(">")
+print(">")
+write("")
+if fs.exists("/ReboOSt/shell") then print(" ") else print("!") end
+print("-")
+term.setBackgroundColor(colors.red)
+term.setTextColor(colors.white)
+write("t")
+end
+ 
 
 local function menuundo()
  term.setCursorPos(1,1)
@@ -42,7 +72,7 @@ local function menuundo()
  end
 end
 
-DrawMenu()
+DrawMenu(true)
 
 while true do
 local event, button, X, Y = os.pullEvent("mouse_click")
@@ -50,35 +80,27 @@ XY = X..","..Y
 
  -- System
 
-if X >= 1 and X < 14 and Y == 2 then
+if X >= 1 and X < 15 and Y == 2 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": opening sys menu")
  end
+ DrawMenuC()
  shell.run("/ReboOSt/sysmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
  -- Programs
 
-elseif X >= 1 and X < 14 and Y == 3 then
+elseif X >= 1 and X < 15 and Y == 3 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": opening prog menu")
  end
+ DrawMenuC()
  shell.run("/ReboOSt/progmnu")
  if keepmenu == true then DrawMenu() else menuundo() break end
 
- -- Time
-
-elseif X >= 1 and X < 14 and Y == 4 then
- menuundo()
- if rosloging then
-  roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/time")
- end
- shell.run("/ReboOSt/time")
- break
-
  -- Shell
 
-elseif X >= 1 and X < 14 and Y == 5 then
+elseif X >= 1 and X < 15 and Y == 4 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/shell")
  end
@@ -88,8 +110,8 @@ elseif X >= 1 and X < 14 and Y == 5 then
 
  -- Logoff
 
-elseif X >= 1 and X < 14 and Y == 7 then
- menuundo()
+elseif X >= 1 and X <= 4 and Y == 6 then
+-- menuundo()
  if rosloging then
   roslog.writeLine("Loging "..UserName.." off")
  end
@@ -98,7 +120,7 @@ elseif X >= 1 and X < 14 and Y == 7 then
  term.setCursorPos(1,8)
  print("                                                   ")
  term.setCursorPos(1,9)
- print("                    Logging off                    ")
+ print("                    Logging out                    ")
  term.setCursorPos(1,10)
  print("                                                   ")
  sleep(0.5)
@@ -107,15 +129,15 @@ elseif X >= 1 and X < 14 and Y == 7 then
 
  -- Reboot
 
-elseif X >= 1 and X < 14 and Y == 8 then
- menuundo()
+elseif X >= 6 and X <= 10 and Y == 6 then
+-- menuundo()
  shell.run("/ReboOSt/reboot")
  break
 
  -- Shutdown
 
-elseif X >= 1 and X < 14 and Y == 9 then
- menuundo()
+elseif X >= 12 and X <= 15 and Y == 6 then
+-- menuundo()
  shell.run("/ReboOSt/shut-off")
  break
 
