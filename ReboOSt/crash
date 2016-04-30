@@ -1,8 +1,10 @@
-local x = 0
 local CCver = os.version()
 
 if login then
  login = false
+end
+if start then
+ start = false
 end
 if crashcause == nil then
  crashcause = "The mainframe was quited unexpectedly"
@@ -16,7 +18,7 @@ table.insert(fileData,line)
 file.close()
 local starts = fileData[1]
 
-local loop = "on"
+local function drawScreen()
 term.setBackgroundColor(crashscreen)
 term.clear()
 term.setTextColor(crashscreen)
@@ -25,28 +27,21 @@ term.setCursorPos(22,4)
 print(" Error ")
 term.setBackgroundColor(crashscreen)
 term.setTextColor(crashscreentxt)
-print(" ")
+print("")
 print("     An Error has occured and ReboOSt has been     ")
-print("   shutdown. To power off your PC press CTRL + S.  ")
+print("            shutdown to prevent damage.            ")
+print("      Press CTRL + R to Reboot your Computer.      ")
 print("")
 print("")
-print("")
-write("OStag: ")
-print(OStag)
-write("OS Version: ")
-print(devpart.." "..version..", Build "..rosbuild)
-write("OS Starts: ")
-print(starts)
-write("Shell Version: ")
-print(CCver)
-if crashcause ~= nil then
- write("Crash Cause: ")
- print(crashcause)
+print("OStag: "..OStag)
+print("OS Version: "..devpart.." "..version..", Build "..rosbuild)
+print("OS Starts: "..starts)
+print("Shell Version: "..CCver)
+print("Crash Cause: "..crashcause)
 end
-while loop == "on" do
-local event, button, X, Y = os.pullEvent("mouse_click")
- if X == 51 and Y == 1 then
-  loop = "off"
-  os.reboot()
- end
+
+while true do
+ drawScreen()
+ local event = os.pullEventRaw("terminate")
+ sleep(0.1)
 end
