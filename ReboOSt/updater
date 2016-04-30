@@ -4,7 +4,7 @@ local function get(branch, paste)
     local response = http.get(
         "https://raw.githubusercontent.com/Chickenbreadlp/ReboOSt/"..branch.."/"..textutils.urlEncode( paste )
     )
-        
+
     if response then
         local sResponse = response.readAll()
         response.close()
@@ -17,10 +17,10 @@ local function download(branch, pastecode, sFile)
     if fs.exists( sPath ) then
         return
     end
-    
+
     -- GET the contents from pastebin
     local res = get(branch, pastecode)
-    if res then        
+    if res then
         local file = fs.open( sPath, "w" )
         file.write( res )
         file.close()
@@ -28,6 +28,9 @@ local function download(branch, pastecode, sFile)
 end
 
 if login then
+ if not fs.exists("/ReboOSt/Temp") then
+  fs.makeDir("/ReboOSt/Temp")
+ end
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -37,7 +40,7 @@ if login then
  term.setCursorPos(1,1)
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
- write(OStag)
+ write("Updater")
  term.setBackgroundColor(tbar)
  if rosdebug then
   term.setTextColor(colors.red)
@@ -46,9 +49,6 @@ if login then
   term.setTextColor(tbartxt)
   print(" "..devpart.." "..version)
  end
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
  term.setBackgroundColor(mbar)
  term.setTextColor(tbartxt)
  print("")
@@ -57,7 +57,7 @@ if login then
  local yaupos = ( 52 - yaulen ) / 2
  term.setCursorPos(yaupos,9)
  print(yau)
- 
+
  local yau = "Please Wait..."
  local yaulen = string.len(yau)
  local yaupos = ( 52 - yaulen ) / 2
@@ -77,7 +77,7 @@ shell.run("/ReboOSt/Temp/updattmp1")
 
 
 if updatstream == "development" then
- if rosbuild < 1000 or rosbuild >= 2000 and rosbuild < 3000 or rosbuild >= 4000 and rosbuild < 5000 then
+ if rosbuildo < 1000 or ( rosbuildo >= 2000 and rosbuildo < 3000 ) or ( rosbuildo >= 4000 and rosbuildo < 5000 ) then
   rosbuildo = rosbuildo + 1000
  end
 end
@@ -94,7 +94,7 @@ if rosbuildo <= rosbuild then
   term.setCursorPos(1,1)
   term.setBackgroundColor(mbar)
   term.setTextColor(mbartxt)
-  write(OStag)
+  write("Updater")
   term.setBackgroundColor(tbar)
   if rosdebug then
    term.setTextColor(colors.red)
@@ -103,9 +103,6 @@ if rosbuildo <= rosbuild then
    term.setTextColor(tbartxt)
    print(" "..devpart.." "..version)
   end
-  term.setCursorPos(44,1)
-  term.setTextColor(prog)
-  print("Updater ")
   term.setBackgroundColor(mbar)
   term.setTextColor(mbartxt)
   print(" ")
@@ -131,7 +128,7 @@ print("                                                   ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Updater")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -140,9 +137,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(44,1)
-term.setTextColor(prog)
-print("Updater ")
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
 print(" ")
@@ -180,13 +174,10 @@ if X >=5 and X <= 25 and Y >= 13 and Y <= 15 and button == 1 then
  term.setCursorPos(1,1)
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
- write(OStag)
+ write("Updater")
  term.setBackgroundColor(tbar)
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
  print(" ")
@@ -207,23 +198,19 @@ if X >=5 and X <= 25 and Y >= 13 and Y <= 15 and button == 1 then
  term.setCursorPos(1,1)
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
- write(OStag)
+ write("Updater")
  term.setBackgroundColor(tbar)
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
  print(" ")
  print("ReboOSt is now updating.                           ")
  print(" ")
  print("Downloading OS...")
- 
+
  shell.run("/ReboOSt/Temp/updattmp2")
  fs.delete("/ReboOSt/Temp/updattmp2")
- 
  term.setBackgroundColor(mbar)
  term.clear()
  term.setCursorPos(1,1)
@@ -233,22 +220,19 @@ if X >=5 and X <= 25 and Y >= 13 and Y <= 15 and button == 1 then
  term.setCursorPos(1,1)
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
- write(OStag)
+ write("Updater")
  term.setBackgroundColor(tbar)
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
  print(" ")
  print("ReboOSt is now on the newest Version.              ")
  print("The system will be rebooting any second.           ")
  sleep(3)
-  if rosloging then
-   roslog.writeLine(shell.getRunningProgram()..": Rebooting...")
-  end
+ if rosloging then
+  roslog.writeLine(shell.getRunningProgram()..": Rebooting...")
+ end
  os.reboot()
 break
 end
@@ -263,13 +247,10 @@ if X >= 27 and X <= 47 and Y >= 13 and Y <= 15 and button == 1 then
  term.setCursorPos(1,1)
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
- write(OStag)
+ write("Updater")
  term.setBackgroundColor(tbar)
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
- term.setCursorPos(44,1)
- term.setTextColor(prog)
- print("Updater ")
  term.setBackgroundColor(mbar)
  term.setTextColor(mbartxt)
  print(" ")
