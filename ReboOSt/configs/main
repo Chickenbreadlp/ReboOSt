@@ -1,6 +1,8 @@
 autoupdate = true
-rosdebug = false
+loaditup = false
 pfolder = false
 termstart = false
 rosloging = false
+timeformat = false
+roscomp = false
 updatstream = "release"
