@@ -3,17 +3,17 @@ local deskback = true
 
 term.setBackgroundColor(body)
 term.setTextColor(bodytxt)
-term.setCursorPos(14,3)
+term.setCursorPos(2,2)
 write("File Browser ")
 if fs.exists("/ReboOSt/fbrws") then write(" ") else write("!") end
-term.setCursorPos(14,4)
+term.setCursorPos(2,3)
 write("Snake         ")
-term.setCursorPos(14,5)
+term.setCursorPos(2,4)
 write("Redirection   ")
-term.setCursorPos(14,6)
+term.setCursorPos(2,5)
 write("Sketch       ")
 if fs.exists("/Programs/sketch") then write(" ") else write("!") end
-term.setCursorPos(14,7)
+term.setCursorPos(2,6)
 write("luaIDE       ")
 if fs.exists("/ReboOSt/luaIDE") then write(" ") else write("!") end
 
@@ -41,7 +41,7 @@ local XY = X..","..Y
 
  -- browser
 
-if X >= 14 and X <= 24 and Y == 3 then
+if X >= 2 and X <= 12 and Y == 2 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/fbrws")
  end
@@ -51,7 +51,7 @@ break
 
  -- Snake
 
-elseif X >= 14 and X <= 24 and Y == 4 then
+elseif X >= 2 and X <= 12 and Y == 3 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /worm")
  end
@@ -63,7 +63,7 @@ break
 
  -- Redirection
 
-elseif X >= 14 and X <= 24 and Y == 5 then
+elseif X >= 2 and X <= 12 and Y == 4 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /redirection")
  end
@@ -73,7 +73,7 @@ break
 
  -- Sketch
 
-elseif X >= 14 and X <= 24 and Y == 6 then
+elseif X >= 2 and X <= 12 and Y == 5 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /Programs/sketch")
  end
@@ -83,7 +83,7 @@ break
 
  -- luaIDE
 
-elseif X >= 14 and X <= 24 and Y == 7 then
+elseif X >= 2 and X <= 12 and Y == 6 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": executing: /ReboOSt/luaIDE")
  end
@@ -93,7 +93,7 @@ break
 
  -- Go back
 
-elseif X >= 1 and X <= 13 and Y >= 2 and Y <= 9 then
+elseif X == 1 and Y >= 2 and Y <= 6 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to Unimenu")
  end
