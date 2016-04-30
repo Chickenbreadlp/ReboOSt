@@ -107,3 +107,6 @@ if fs.exists("/updattemp/user") then
  fs.delete("/User")
  fs.copy("/updattemp/user", "/User")
 end
+local file = fs.open("/ReboOSt/configs/stcount", "w")
+file.writeLine(starts)
+file.close()
