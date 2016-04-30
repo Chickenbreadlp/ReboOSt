@@ -55,18 +55,18 @@ while true do
   term.setTextColor(sndtxt)
   print([[Usage: -view        --shows current theme setting
        -modify      --changes theme settings
-       -modify:all  --changes theme in luaIDE
        -save        --saves current config
        -discard     --returns to old config
-       -gui         --opens Graphical Interface]])
+       -gui         --opens Graphical Interface
+Warning: OS needs to be run in Normal Mode for this]])
   term.setTextColor(tbartxt)
- elseif linput == "themes -gui" then
+ elseif linput == "themes -gui" and rosbootmode == "Normal" then
   if rosloging then
    roslog.writeLine(shell.getRunningProgram()..": executing '/ReboOSt/thmchg'")
   end
   shell.run("/ReboOSt/thmchg")
   clear()
- elseif linput == "themes -discard" then
+ elseif linput == "themes -discard" and rosbootmode == "Normal" then
   if rosloging then
    roslog.writeLine("ReboOSt/thmchg -nogui: reloading current theme")
   end
@@ -75,7 +75,7 @@ while true do
   term.setTextColor(sndtxt)
   print("Discarded current theme!")
   term.setTextColor(tbartxt)
- elseif linput == "themes -view" then
+ elseif linput == "themes -view" and rosbootmode == "Normal" then
   if rosloging then
    roslog.writeLine(shell.getRunningProgram()..": opening colortheme")
   end
@@ -83,29 +83,16 @@ while true do
   print("tbar = "..tbar)
   print("mbar = "..mbar)
   print("body = "..body)
-  print("wico = "..wico)
+  print("bodyd = "..bodyd)
   print("crashscreen = "..crashscreen)
   print("crashscreentxt = "..crashscreentxt)
   print("prog = "..prog)
-  print("buttonBack = "..buttonBack)
-  print("buttonBatxt = "..buttonBatxt)
-  print("buttonReboot = "..buttonReboot)
-  print("buttonRetxt = "..buttonRetxt)
-  print("buttonShut = "..buttonShut)
-  print("buttonShtxt = "..buttonShtxt)
   print("tbartxt = "..tbartxt)
   print("mbartxt = "..mbartxt)
   print("bodytxt = "..bodytxt)
-  print("wicotxt = "..wicotxt)
   print("sndtxt = "..sndtxt)
   term.setTextColor(tbartxt)
- elseif linput == "themes -modify:all" then
-  if rosloging then
-   roslog.writeLine(shell.getRunningProgram()..": opening colortheme with luaIDE")
-  end
-  shell.run("/ReboOSt/luaIDE", "/User/"..UserName.."/..colortheme")
-  clear()
- elseif linput == "themes -modify" then
+ elseif linput == "themes -modify" and rosbootmode == "Normal" then
   print("Please specify the setting you want to change. (Variable Name)")
   write("   > ")
   os.pullEvent = os.pullEventRaw
@@ -147,14 +134,7 @@ while true do
   elseif input == "mbartxt" then mbartxt = onoff(mbartxt, "Panel text")
   elseif input == "body" then body = onoff(body, "Menu BG")
   elseif input == "bodytxt" then bodytxt = onoff(bodytxt, "Menu text")
-  elseif input == "wico" then wico = onoff(wico, "Window Header & Text")
-  elseif input == "wicotxt" then wicotxt = onoff(wicotxt, "Window BG & Header text")
-  elseif input == "buttonBack" then buttonBack = onoff(buttonBack, "Back button")
-  elseif input == "buttonBatxt" then buttonBatxt = onoff(buttonBatxt, "Back button text")
-  elseif input == "buttonReboot" then buttonReboot = onoff(buttonReboot, "Reboot button")
-  elseif input == "buttonRetxt" then buttonRetxt = onoff(buttonRetxt, "Reboot button text")
-  elseif input == "buttonShut" then buttonShut = onoff(buttonShut, "Shutdown button")
-  elseif input == "buttonShtxt" then buttonShtxt = onoff(buttonShtxt, "Shutdown button text")
+  elseif input == "bodyd" then bodyd = onoff(bodyd, "Darker Menu Color")
   elseif input == "crashscreen" then crashscreen = onoff(crashscreen, "Crashscreen BG")
   elseif input == "crashscreentxt" then bodytxt = onoff(bodytxt, "Crashscreen text")
   elseif input == "prog" then prog = onoff(prog, "Program indicator text")
@@ -168,20 +148,13 @@ while true do
   file.writeLine("tbar = "..tbar)
   file.writeLine("mbar = "..mbar)
   file.writeLine("body = "..body)
-  file.writeLine("wico = "..wico)
+  file.writeLine("bodyd = "..bodyd)
   file.writeLine("crashscreen = "..tbar)
   file.writeLine("crashscreentxt = "..prog)
   file.writeLine("prog = "..prog)
-  file.writeLine("buttonBack = "..buttonBack)
-  file.writeLine("buttonBatxt = "..buttonBatxt)
-  file.writeLine("buttonReboot = "..buttonReboot)
-  file.writeLine("buttonRetxt = "..buttonRetxt)
-  file.writeLine("buttonShut = "..buttonShut)
-  file.writeLine("buttonShtxt = "..buttonShtxt)
   file.writeLine("tbartxt = "..tbartxt)
   file.writeLine("mbartxt = "..mbartxt)
   file.writeLine("bodytxt = "..bodytxt)
-  file.writeLine("wicotxt = "..wicotxt)
   file.writeLine("sndtxt = "..sndtxt)
   file.close()
   term.setTextColor(sndtxt)
@@ -209,8 +182,8 @@ while true do
     print("This Command is only available, if you have logging enabled")
    end
   else
-  term.setTextColor(colors.red)
-  print("Forbidden Command!")
+   term.setTextColor(colors.red)
+   print("Forbidden Command!")
   end
  elseif linput == "settings" then
   if admin then
@@ -280,14 +253,18 @@ while true do
   end
   if input == "autoupdate" then
    autoupdate = onoff(autoupdate, "Auto Update")
-  elseif input == "rosdebug" then
-   rosdebug = onoff(rosdebug, "Debug Mode")
+  elseif input == "loaditup" then
+   rosdebug = onoff(loaditup, "Load'ItUp")
   elseif input == "pfolder" then
    pfolder = onoff(pfolder, "Programs Folder icon")
   elseif input == "rosloging" then
    rosloging = onoff(rosloging, "Logfile")
   elseif input == "termstart" then
    termstart = onoff(termstart, "Shell after login")
+  elseif input == "timeformat" then
+   timeformat = onoff(timeformat, "24 hour clock")
+  elseif input == "roscomp" then
+   roscomp = onoff(roscomp, "CC1.74 Compatibility Mode")
   elseif input == "updatstream" then
    print("Turn Dev-Update-Stream on or off?")
    write("   > ")
@@ -332,10 +309,11 @@ while true do
     roslog.writeLine(shell.getRunningProgram()..": saved new settings.")
     roslog.write(shell.getRunningProgram()..": new settings are:  autoupdate = ")
     if autoupdate then roslog.write("true ; ") else roslog.write("false ; ") end
-    roslog.write("rosdebug = ") if rosdebug then roslog.write("true ; ") else roslog.write("false ; ") end
+    roslog.write("loaditup = ") if rosdebug then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.write("pfolder = ") if pfolder then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.write("termstart = ") if termstart then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.write("rosloging = ") if rosloging then roslog.write("true ; ") else roslog.write("false ; ") end
+	roslog.write("timeformat = ") if timeformat then roslog.write("true ; ") else roslog.write("false ; ") end
     roslog.writeLine("updatstream = '"..updatstream.."'")
    end
    local file = fs.open("/ReboOSt/configs/main", "w")
@@ -344,10 +322,10 @@ while true do
    else
     file.writeLine("autoupdate = false")
    end
-   if rosdebug then
-    file.writeLine("rosdebug = true")
+   if loaditup then
+    file.writeLine("loaditup = true")
    else
-    file.writeLine("rosdebug = false")
+    file.writeLine("loaditup = false")
    end
    if pfolder then
     file.writeLine("pfolder = true")
@@ -364,6 +342,16 @@ while true do
    else
     file.writeLine("rosloging = false")
    end
+   if timeformat then
+    file.writeLine("timeformat = true")
+   else
+    file.writeLine("timeformat = false")
+   end
+   if roscomp then
+    file.writeLine("roscomp = true")
+   else
+    file.writeLine("roscomp = false")
+   end
    file.writeLine('updatstream = "'..updatstream..'"')
    file.close()
    print("Settings Saved!")
@@ -378,10 +366,12 @@ while true do
    end
    term.setTextColor(sndtxt)
    write("autoupdate = ") if autoupdate then print("true") else print("false") end
-   write("rosdebug = ") if rosdebug then print("true") else print("false") end
+   write("loaditup = ") if loaditup then print("true") else print("false") end
    write("pfolder = ") if pfolder then print("true") else print("false") end
    write("gfolder = ") if gfolder then print("true") else print("false") end
    write("termstart = ") if tempstart then print("true") else print("false") end
+   write("timeformat = ") if timeformat then print("true") else print("false") end
+   write("roscomp = ") if roscomp then print("true") else print("false") end
    print("updatstream = "..updatstream)
    term.setTextColor(tbartxt)
   else
@@ -434,6 +424,7 @@ Use "logcat" to view current log, if loging is enabled.]])
    local npwd = read("*")
    if npw == npwd then
     npwd = encryption.sha256(npw)
+	if admin then npwd = encryption.sha256(npwd.."admin") else encryption.sha256(npwd.."stand") end
     local file = fs.open("/User/"..UserName.."/..meta", "r")
     local metaData = {}
     local line = file.readLine()
@@ -444,7 +435,6 @@ Use "logcat" to view current log, if loging is enabled.]])
 	file.close()
     local file = fs.open("/User/"..UserName.."/..meta", "w")
     file.writeLine(npwd)
-    file.writeLine(metaData[2])
     file.close()
 	npw = nil
 	npwd = nil
@@ -471,16 +461,20 @@ Use "logcat" to view current log, if loging is enabled.]])
     line = file.readLine()
     until line == nil
 	file.close()
-	if opw == metaData[1] then
+	if encryption.sha256(opw.."admin") == metaData[1] or encryption.sha256(opw.."stand") == metaData[1] then
 	 write("New Password: ")
 	 local npw = read("*")
 	 write("Repeat new Password: ")
 	 local npwd = read("*")
 	 if npw == npwd then
-	  npwd = encryption.sha256(npw)
+	  npw = encryption.sha256(npw)
+	  if encryption.sha256(opw.."admin") == metaData[1] then
+	   npwd = encryption.sha256(npw.."admin")
+	  elseif encryption.sha256(opw.."stand") == metaData[1] then
+	   npwd = encryption.sha256(npw.."stand")
+	  end
       local file = fs.open("/User/"..apwc.."/..meta", "w")
       file.writeLine(npwd)
-      file.writeLine(metaData[2])
       file.close()
 	  opw = nil
   	  npw = nil
@@ -510,7 +504,7 @@ Use "logcat" to view current log, if loging is enabled.]])
  elseif linput == "debug" then
   if admin then
   if rosdebug then
-   write("Please enter Mainainance Password: ")
+   write("Please enter Maintainance Password: ")
    os.pullEvent = os.pullEventRaw
    input = read("*")
    local inpute = encryption.sha256(input)
@@ -543,7 +537,7 @@ Use "logcat" to view current log, if loging is enabled.]])
 	   nuser = read()
 	   lnuser = string.lower(input)
 	   os.pullEvent = oldpe
-	   if nuser == "" or lnuser == "root" or lnuser == "reboot" or lnuser == "shutdown" then
+	   if nuser == "" or lnuser == "root" or lnuser == "reboot" or lnuser == "shutdown" or lnuser == "end" then
 	    print("Forbidden Username! Exiting.")
 	   else
 	    fs.move("/User/"..ouser , "/User/"..nuser)
@@ -554,19 +548,16 @@ Use "logcat" to view current log, if loging is enabled.]])
 	    os.pullEvent = os.pullEventRaw
 	    local pass = read()
 	    local passe = encryption.sha256(pass)
-	    local file = fs.open("/User/"..nuser.."/..meta", "r")
-	    local metaData = {}
-	    local line = file.readLine()
-	    repeat
-	    table.insert(metaData,line)
-	    line = file.readLine()
-	    until line == nil
-		file.close()
-	    local file = fs.open("/User/"..Name.."/..meta", "w")
-	    file.writeLine(passe)
-	    file.writeLine(metaData[2])
-	    file.close()
-	    passe = nil
+		print("Admin or standart account?")
+		write("cpass > ")
+		local newaccadm = string.lower(read())
+		if newaccadm == "admin" or newaccadm == "stand" then
+	     local file = fs.open("/User/"..Name.."/..meta", "w")
+	     file.writeLine(encryption.sha256(pass..newaccadm))
+	     file.close()
+		else
+		 print("Not an option! Exiting...")
+		end
 	    pass = nil
 	   end
       else
@@ -584,7 +575,7 @@ Use "logcat" to view current log, if loging is enabled.]])
      print("Wrong Password! Exiting...")
     end
   else
-  print("Debug Mode must be enabled!")
+  print("OS must be in Safe Mode!")
   end
   else
    term.setTextColor(colors.red)

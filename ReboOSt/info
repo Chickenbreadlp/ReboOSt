@@ -1,9 +1,10 @@
-CCver = os.version()
+local CCver = os.version()
 local yau = "You are using Build "..rosbuild.." from "..OStag
 local yaulen = string.len(yau)
 local yaupos = 52 - yaulen
 
 if login then
+
 function Screen()
 term.setBackgroundColor(tbar)
 term.clear()
@@ -14,7 +15,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("About OS")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -23,9 +24,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setCursorPos(46,1)
-term.setTextColor(prog)
-print("About ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -59,7 +57,7 @@ local XY = X..","..Y
 
  -- back
  
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end

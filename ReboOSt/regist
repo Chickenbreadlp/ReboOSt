@@ -8,8 +8,6 @@ local function NewAcc()
 local function Regist()
 term.setBackgroundColor(tbar)
 term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setTextColor(sndtxt)
 term.setCursorPos(15,5)
 write("                      ")
@@ -29,23 +27,24 @@ print("                                                   ")
 term.setBackgroundColor(colors.white)
 term.setCursorPos(18,9)
 local Name = read()
+local name = string.lower(Name)
 
 if Name == "" then
  term.setCursorPos(18,10)
  print("Please enter in a Username!")
  sleep(2.5)
  Regist()
-elseif Name == "Reboot" or Name == "Shutdown" or Name == "root" then
+elseif name == "reboot" or name == "shutdown" then
  term.setCursorPos(18,10)
  print("Forbidden Username")
  sleep(2.5)
  Regist()
+elseif name == "end" then
 elseif string.len(Name) >= 34 then
  term.setCursorPos(18,10)
  print("Username is too long!")
  sleep(2.5)
  Regist()
-elseif Name == "END" then
 elseif fs.exists("/User/"..Name) then
  term.setCursorPos(18,10)
  print("Username is already in use!")
@@ -70,12 +69,12 @@ else
  else
 
   fs.makeDir("/User/"..Name)
-  local pass = encryption.sha256(Password)
+  Password = encryption.sha256(Password)
+  local pass = encryption.sha256(Password..acc)
   local file = fs.open("/User/"..Name.."/..meta", "w")
   file.writeLine(pass)
-  file.writeLine(acc)
   file.close()
-  fs.copy("/User/root/Pictures", "/User/"..Name.."/Pictures")
+  fs.copy("/ReboOSt/wallpapers", "/User/"..Name.."/wallpapers")
   fs.copy("/ReboOSt/configs/colortheme", "/User/"..Name.."/..colortheme")
   term.setCursorPos(18,10)
   print("Registration was successfull!")
@@ -92,7 +91,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -101,9 +100,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -114,7 +110,7 @@ write("Which type of Account?")
 term.setBackgroundColor(colors.white)
 term.setCursorPos(1,8)
 print("                                                   ")
-print("             Standart Account        X             ")
+print("             Standard Account        X             ")
 print("                                                   ")
 print("             Admin Account           X             ")
 print("                                                   ")
@@ -137,7 +133,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
@@ -160,6 +156,7 @@ end end end
 
 local function PassChg(bypass)
 local function Passwd(Acc)
+local aplus = nil
 if Acc == "other" then
 term.setBackgroundColor(tbar)
 term.setTextColor(prog)
@@ -190,6 +187,11 @@ if Name == "" then
  print("Please enter in a Username!")
  sleep(2.5)
  Passwd(Acc)
+elseif Name == UserName then
+ term.setCursorPos(18,10)
+ print("Forbidden!")
+ sleep(2.5)
+ Passwd(Acc)
 elseif Name == "END" then
  terminate = true
 elseif fs.exists("/User/"..Name) then
@@ -212,7 +214,6 @@ elseif fs.exists("/User/"..Name) then
   sleep(2.5)
   Passwd(Acc)
  else
-  Password = encryption.sha256(Password)
   local file = fs.open("/User/"..Name.."/..meta", "r")
   local fileData = {}
   local line = file.readLine()
@@ -221,7 +222,11 @@ elseif fs.exists("/User/"..Name) then
   line = file.readLine()
   until line == nil
   file.close()
-  if Password == fileData[1] then
+  Password = encryption.sha256(Password)
+  if fileData[1] == encryption.sha256(Password.."admin") then
+   aplus = "admin"
+  elseif fileData[1] == encryption.sha256(Password.."stand") then
+   aplus = "stand"
   else
    term.setCursorPos(18,10)
    print("Password wrong!")
@@ -237,6 +242,11 @@ else
 end
 elseif Acc == "own" then
  Name = UserName
+ if admin then
+  aplus = "admin"
+ else
+  aplus = "stand"
+ end
 end
 if terminate == false then
  term.setCursorPos(17,7)
@@ -260,27 +270,22 @@ if terminate == false then
  print("                                                   ")
  term.setBackgroundColor(colors.white)
  term.setCursorPos(18,9)
- local Password = read("*")
+ local pass = read("*")
 
- if Password == "" then
+ if pass == "" then
   term.setCursorPos(18,10)
   print("Please enter in a Password!")
   sleep(2.5)
   Passwd(Acc)
  else
-  local file = fs.open("/User/"..Name.."/..meta", "r")
-  local metaData = {}
-  local line = file.readLine()
-  repeat
-  table.insert(metaData,line)
-  line = file.readLine()
-  until line == nil
-  file.close()
-  local pass = encryption.sha256(Password)
+  pass = encryption.sha256(pass)
+  local Password = encryption.sha256(pass..aplus)
   local file = fs.open("/User/"..Name.."/..meta", "w")
-  file.writeLine(pass)
-  file.writeLine(metaData[2])
+  file.writeLine(Password)
   file.close()
+  if Acc == "own" or Name == UserName then
+   UserPass = pass
+  end
   term.setCursorPos(18,10)
   print("Password was successfully changed!")
   terminate = true
@@ -298,7 +303,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -307,9 +312,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -343,7 +345,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
@@ -380,7 +382,7 @@ print("                                                  ")
 term.setCursorPos(1,1)
 term.setBackgroundColor(mbar)
 term.setTextColor(mbartxt)
-write(OStag)
+write("Accounts")
 term.setBackgroundColor(tbar)
 if rosdebug then
  term.setTextColor(colors.red)
@@ -389,9 +391,6 @@ else
  term.setTextColor(tbartxt)
  print(" "..devpart.." "..version)
 end
-term.setTextColor(prog)
-term.setCursorPos(43,1)
-print("Accounts ")
 term.setBackgroundColor(mbar)
 print("                                                   ")
 print("                                                   ")
@@ -425,7 +424,7 @@ local XY = X..","..Y
 
  -- Back
 
-if X >= 1 and X <= 7 and Y == 1 and button == 1 then
+if X >= 1 and X <= 8 and Y == 1 and button == 1 then
  if rosloging then
   roslog.writeLine(shell.getRunningProgram()..": going back to mainframe")
  end
