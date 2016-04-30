@@ -67,10 +67,43 @@ if fs.exists("/updattemp/brwsconf") then
  fs.copy("/updattemp/brwsconf", "/ReboOSt/configs/browser")
 end
 if fs.exists("/updattemp/mainconf") then
- fs.delete("/ReboOSt/configs/main")
- fs.copy("/updattemp/mainconf", "/ReboOSt/configs/main")
+ local file = fs.open("/updattemp/mainconf", "r")
+ local fileData = {}
+ local fileLine = file.readLine()
+ repeat
+ table.insert(fileData, fileLine)
+ fileLine = file.readLine()
+ until fileLine == nil
+ file.close()
+ local file = fs.open("/ReboOSt/configs/main", "a")
+ file.writeLine("")
+ for i=1,#fileData do
+  file.writeLine(fileData[i])
+ end
+ file.close()
 end
 if fs.exists("/updattemp/user") then
- fs.delete("/updattemp/user/root")
+ if fs.exists("/updattemp/user/root") then
+  fs.delete("/updattemp/user/root")
+ end
+ local userlist = fs.list("/updattemp/user")
+ for _, file in ipairs(userlist) do
+  file = "/updattemp/user/"..file
+  if fs.isDir(file) then
+   if rosbuild < 2000 then
+    local user = fs.open(file.."/..meta", "r")
+    local userpass = user.readLine()
+    local acctype = user.readLine()
+    user.close()
+    if acctype ~= nil then
+     userpass = encryption.sha256(userpass..acctype)
+    end
+    local user = fs.open(file.."/..meta", "w")
+    user.writeLine(userpass)
+    user.close()
+   end
+  end
+ end
+ fs.delete("/User")
  fs.copy("/updattemp/user", "/User")
 end
