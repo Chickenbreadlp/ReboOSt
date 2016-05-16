@@ -18,7 +18,6 @@ local function Reboot()
  print("                   is rebooting                    ")
  paintutils.drawImage(Logo,6,9)
  fs.delete("/ReboOSt/Temp")
- os.unloadAPI("encryption")
  if not fs.exists("/ReboOSt/configs/stcount") then
   starts = 1
   local file = fs.open("/ReboOSt/configs/stcount", "w")

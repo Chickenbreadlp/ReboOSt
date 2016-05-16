@@ -14,7 +14,7 @@ crash = false
 OStag = "ReboOSt"
 devpart = "Beta"
 version = 1
-rosbuild = 3036
+rosbuild = 3036.1
 
 if fs.exists("/ReboOSt/configs/stcount") then
  local file = fs.open("/ReboOSt/configs/stcount", "r")
