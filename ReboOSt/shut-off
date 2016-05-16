@@ -18,7 +18,6 @@ local function Shutdown()
  print("                  is shuting down                  ")
  paintutils.drawImage(Logo,6,9)
  fs.delete("/ReboOSt/Temp")
- os.unloadAPI("encryption")
  os.shutdown()
 end
 
