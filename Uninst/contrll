@@ -27,11 +27,11 @@ XY = X..","..Y
 
 if X >= 1 and X <= 51 and Y >= 5 and Y <= 7 and button == 1 then
  shell.run("/Uninst/uninst")
- DrawScreen()
+ break
 
 elseif X >= 1 and X <= 51 and Y >= 9 and Y <= 11 and button == 1 then
  shell.run("/Uninst/repr")
- DrawScreen()
+ break
 
 elseif Y >= 13 and Y <= 15 and button == 1 then
  term.setBackgroundColor(colors.black)
