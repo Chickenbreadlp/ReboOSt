@@ -82,7 +82,7 @@ if fs.exists("/ReboOSt/configs/main") then
 end
 if fs.exists("/ReboOSt/configs/browser") then
  fs.makeDir("/Uninst/Backup")
- fs.copy("/ReboOSt/configs/brwoser", "/Uninst/Backup/brwsconf")
+ fs.copy("/ReboOSt/configs/browser", "/Uninst/Backup/brwsconf")
 end
 if fs.exists("/ReboOSt/configs/stcount") then
  fs.makeDir("/Uninst/Backup")
