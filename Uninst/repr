@@ -84,6 +84,10 @@ if fs.exists("/ReboOSt/configs/browser") then
  fs.makeDir("/Uninst/Backup")
  fs.copy("/ReboOSt/configs/brwoser", "/Uninst/Backup/brwsconf")
 end
+if fs.exists("/ReboOSt/configs/stcount") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/ReboOSt/configs/stcount", "/Uninst/Backup/stcount")
+end
 if fs.exists("startup") then
  fs.delete("startup")
 end
@@ -110,6 +114,9 @@ end
 if fs.exists("/Uninst/Backup/colortheme") then
  fs.delete("/ReboOSt/configs/colortheme")
  fs.copy("/Uninst/Backup/colortheme", "/ReboOSt/configs/colortheme")
+end
+if fs.exists("/Uninst/Backup/stcount") and fs.exists("/User") then
+ fs.copy("/Uninst/Backup/stcount", "/ReboOSt/configs/stcount")
 end
 if fs.exists("/Uninst/Backup") then
  fs.delete("/Uninst/Backup")
