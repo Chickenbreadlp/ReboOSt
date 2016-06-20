@@ -97,6 +97,9 @@ end
 if fs.exists("/ReboOSt") then
  fs.delete("/ReboOSt")
 end
+if fs.exists("/User") then
+ fs.delete("/User")
+end
 GitHubGet(nil)
 fs.delete("/README.md")
 fs.delete("/version")
