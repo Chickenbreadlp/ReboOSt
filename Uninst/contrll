@@ -34,5 +34,9 @@ elseif X >= 1 and X <= 51 and Y >= 9 and Y <= 11 and button == 1 then
  DrawScreen()
 
 elseif Y >= 13 and Y <= 15 and button == 1 then
- shell.run("/Uninst/shut-off")
+ term.setBackgroundColor(colors.black)
+ term.setTextColor(colors.white)
+ term.clear()
+ term.setCursorPos(1,1)
+ break
 end end
