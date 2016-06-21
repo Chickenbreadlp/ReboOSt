@@ -26,6 +26,7 @@ if Y >= 6 and Y <= 8 and button == 1 then
  break
 
 elseif Y >= 10 and Y <= 12 and button == 1 then
+ fs.delete("/Setup")
  term.setBackgroundColor(colors.black)
  term.setTextColor(1)
  term.clear()
