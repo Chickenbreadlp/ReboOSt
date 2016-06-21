@@ -162,6 +162,9 @@ term.setTextColor(1)
 print("ReboOSt Installation")
 term.setTextColor(colors.cyan)
 print(" ")
-print("ReboOSt is now ready to go!                        ")
-sleep(2.5)
+print("ReboOSt is now installed!                          ")
+sleep(1)
+if fs.exists("/Setup") then
+ fs.delete("/Setup")
+end
 os.reboot()
