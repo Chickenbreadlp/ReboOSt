@@ -12,7 +12,7 @@ print("                      Install                      ")
 print("                                                   ")
 term.setCursorPos(1,10)
 print("                                                   ")
-print("                     Shutdown                      ")
+print("                       Exit                        ")
 print("                                                   ")
 end
 DrawScreen()
@@ -23,9 +23,13 @@ XY = X..","..Y
 
 if Y >= 6 and Y <= 8 and button == 1 then
  shell.run("Setup/instos")
- DrawScreen()
-end
+ break
 
-if Y >= 10 and Y <= 12 and button == 1 then
- shell.run("Setup/shut-off")
+elseif Y >= 10 and Y <= 12 and button == 1 then
+ fs.delete("/Setup")
+ term.setBackgroundColor(colors.black)
+ term.setTextColor(1)
+ term.clear()
+ term.setCursorPos(1,1)
+ break
 end end

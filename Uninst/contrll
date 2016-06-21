@@ -12,11 +12,11 @@ print("                     Uninstall                     ")
 print("                                                   ")
 term.setCursorPos(1,9)
 print("                                                   ")
-print("                     Shutdown                      ")
+print("                      Repair                       ")
 print("                                                   ")
 term.setCursorPos(1,13)
 print("                                                   ")
-print("                      Repair                       ")
+print("                       Exit                        ")
 print("                                                   ")
 end
 DrawScreen()
@@ -27,14 +27,17 @@ XY = X..","..Y
 
 if X >= 1 and X <= 51 and Y >= 5 and Y <= 7 and button == 1 then
  shell.run("/Uninst/uninst")
- DrawScreen()
-end
+ break
 
-if Y >= 9 and Y <= 11 and button == 1 then
- shell.run("/Uninst/shut-off")
-end end
-
-if X >= 1 and X <= 51 and Y >= 13 and Y <= 15 and button == 1 then
+elseif X >= 1 and X <= 51 and Y >= 9 and Y <= 11 and button == 1 then
  shell.run("/Uninst/repr")
- DrawScreen()
-end
+ break
+
+elseif Y >= 13 and Y <= 15 and button == 1 then
+ fs.delete("/Uninst")
+ term.setBackgroundColor(colors.black)
+ term.setTextColor(colors.white)
+ term.clear()
+ term.setCursorPos(1,1)
+ break
+end end

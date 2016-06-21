@@ -50,130 +50,89 @@ term.setCursorPos(1,1)
 term.setTextColor(1)
 print("ReboOSt Installation")
 term.setTextColor(colors.cyan)
-print(" ")
+print("")
 print("You want to repair ReboOSt. This deletes any custom")
 print(" mod which you have installed.                     ")
-print(" ")
-print(" ")
-print(" ")
-term.setCursorPos(19,8)
-print("Are you sure?")
-print(" ")
-term.setCursorPos(5,11)
-term.setBackgroundColor(colors.lightGray)
+print("")
+print("")
+term.setCursorPos(1,18)
+term.setTextColor(16)
+print("                 Preparing Setup!                  ")
 term.setTextColor(1)
-print("                    ")
-term.setCursorPos(5,12)
-print("        Yes         ")
-term.setCursorPos(5,13)
-print("                    ")
-term.setCursorPos(27,11)
-print("                    ")
-term.setCursorPos(27,12)
-print("        No          ")
-term.setCursorPos(27,13)
-print("                    ")
+term.setBackgroundColor(colors.gray)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(1)
+print("ReboOSt Installation")
+term.setTextColor(colors.cyan)
+print("")
+print("ReboOSt is now repairing.")
 
-while true do
-local event, button, X, Y = os.pullEvent("mouse_click")
-XY = X..","..Y
-
-if X >=5 and X <= 25 and Y >= 11 and Y <= 13 and button == 1 then
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setTextColor(1)
- print("ReboOSt Installation")
- term.setTextColor(colors.cyan)
- print(" ")
- print("You want to repair ReboOSt. This deletes any custom")
- print(" mod which you have installed.                     ")
- print(" ")
- print(" ")
- term.setCursorPos(1,18)
- term.setTextColor(16)
- print("                 Preparing Setup!                  ")
- term.setTextColor(1)
- sleep(2.5)
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setTextColor(1)
- print("ReboOSt Installation")
- term.setTextColor(colors.cyan)
- print(" ")
- print("ReboOSt is now repairing.")
- 
- if fs.exists("/User") then
-  fs.makeDir("/Uninst/Backup")
-  fs.copy("/User", "/Uninst/Backup/User")
- end
- if fs.exists("/ReboOSt/configs/colortheme") then
-  fs.makeDir("/Uninst/Backup")
-  fs.copy("/ReboOSt/configs/colortheme", "/Uninst/Backup/colortheme")
- end
- if fs.exists("/ReboOSt/configs/main") then
-  fs.makeDir("/Uninst/Backup")
-  fs.copy("/ReboOSt/configs/main", "/Uninst/Backup/mainconf")
- end
- if fs.exists("/ReboOSt/configs/browser") then
-  fs.makeDir("/Uninst/Backup")
-  fs.copy("/ReboOSt/configs/brwoser", "/Uninst/Backup/brwsconf")
- end
- if fs.exists("startup") then
-  fs.delete("startup")
- end
- if fs.exists("Start") then
-  fs.delete("Start")
- end
- if fs.exists("/ReboOSt") then
-  fs.delete("/ReboOSt")
- end
- GitHubGet(nil)
- fs.delete("/README.md")
- fs.delete("/version")
- fs.delete("/updat")
- if fs.exists("/Uninst/Backup/User") then
-  fs.copy("/Uninst/Backup/User", "/User")
- end
- if fs.exists("/Uninst/Backup/mainconf") then
-  fs.delete("/ReboOSt/configs/main")
-  fs.copy("/Uninst/Backup/mainconf", "/ReboOSt/configs/main")
- end
- if fs.exists("/Uninst/Backup/brwsconf") then
-  fs.copy("/Uninst/Backup/brwsconf", "/ReboOSt/configs/browser")
- end
- if fs.exists("/Uninst/Backup/colortheme") then
-  fs.delete("/ReboOSt/configs/colortheme")
-  fs.copy("/Uninst/Backup/colortheme", "/ReboOSt/configs/colortheme")
- end
- if fs.exists("/Uninst/Backup") then
-  fs.delete("/Uninst/Backup")
- end
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setTextColor(1)
- print("ReboOSt Installation")
- term.setTextColor(colors.cyan)
- print(" ")
- print("ReboOSt is now repaired.")
- print("The system will be rebooted any second.")
- fs.delete("/Setup")
- sleep(2)
- os.reboot()
-break
+if fs.exists("/User") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/User", "/Uninst/Backup/User")
 end
-
-if X >= 27 and X <= 47 and Y >= 11 and Y <= 13 and button == 1 then
- term.setBackgroundColor(colors.gray)
- term.clear()
- term.setCursorPos(1,1)
- term.setTextColor(colors.white)
- print("ReboOSt Installation")
- term.setTextColor(colors.cyan)
- print(" ")
- print("You'll go now back to the Menu!")
- sleep(2)
- break
-end end
+if fs.exists("/ReboOSt/configs/colortheme") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/ReboOSt/configs/colortheme", "/Uninst/Backup/colortheme")
+end
+if fs.exists("/ReboOSt/configs/main") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/ReboOSt/configs/main", "/Uninst/Backup/mainconf")
+end
+if fs.exists("/ReboOSt/configs/browser") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/ReboOSt/configs/browser", "/Uninst/Backup/brwsconf")
+end
+if fs.exists("/ReboOSt/configs/stcount") then
+ fs.makeDir("/Uninst/Backup")
+ fs.copy("/ReboOSt/configs/stcount", "/Uninst/Backup/stcount")
+end
+if fs.exists("startup") then
+ fs.delete("startup")
+end
+if fs.exists("Start") then
+ fs.delete("Start")
+end
+if fs.exists("/ReboOSt") then
+ fs.delete("/ReboOSt")
+end
+if fs.exists("/User") then
+ fs.delete("/User")
+end
+GitHubGet(nil)
+fs.delete("/README.md")
+fs.delete("/version")
+fs.delete("/updat")
+if fs.exists("/Uninst/Backup/User") then
+ fs.copy("/Uninst/Backup/User", "/User")
+end
+if fs.exists("/Uninst/Backup/mainconf") then
+ fs.delete("/ReboOSt/configs/main")
+ fs.copy("/Uninst/Backup/mainconf", "/ReboOSt/configs/main")
+end
+if fs.exists("/Uninst/Backup/brwsconf") then
+ fs.copy("/Uninst/Backup/brwsconf", "/ReboOSt/configs/browser")
+end
+if fs.exists("/Uninst/Backup/colortheme") then
+ fs.delete("/ReboOSt/configs/colortheme")
+ fs.copy("/Uninst/Backup/colortheme", "/ReboOSt/configs/colortheme")
+end
+if fs.exists("/Uninst/Backup/stcount") and fs.exists("/User") then
+ fs.copy("/Uninst/Backup/stcount", "/ReboOSt/configs/stcount")
+end
+if fs.exists("/Uninst/Backup") then
+ fs.delete("/Uninst/Backup")
+end
+term.setBackgroundColor(colors.gray)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(1)
+print("ReboOSt Installation")
+term.setTextColor(colors.cyan)
+print("")
+print("ReboOSt is now repaired.")
+print("The system will be rebooted any second.")
+fs.delete("/Uninst")
+sleep(1)
+os.reboot()
