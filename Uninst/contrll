@@ -34,6 +34,7 @@ elseif X >= 1 and X <= 51 and Y >= 9 and Y <= 11 and button == 1 then
  break
 
 elseif Y >= 13 and Y <= 15 and button == 1 then
+ fs.delete("/Uninst")
  term.setBackgroundColor(colors.black)
  term.setTextColor(colors.white)
  term.clear()
