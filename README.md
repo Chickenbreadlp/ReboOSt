@@ -7,7 +7,7 @@ It's over 1,5 Years ago and I improved a lot in lua, so I decided to give ApfelO
 This Build of ReboOSt in perticular contains the following features:
 
     A very secure login (SHA-256) with unlimited accounts and 2 Stage user rights
-    Change the colors from the OS as much as you want, your free from restrictions
+    Change the colors from the OS as much as you want, your free from restrictions*
     Mouse File Browser by BigSHinyToys
     Sketch by oeed
     luaIDE by GravityScore
@@ -15,4 +15,7 @@ This Build of ReboOSt in perticular contains the following features:
     a little shell overlay to prevent damaging system files & adding additional systemfeatures
     ReboOSt can log panel activity, if wished
 
-*all changes apply for every user and can be changed by every user. changes do not apply for 3rd Party Programs
+*changes do not apply for 3rd Party Programs
+
+
+You found my repository! As a reward, get a teaser image for ReboOSt v2: https://www.dropbox.com/s/9xf6smns54etmm1/nowInDev.png?dl=0
