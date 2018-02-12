@@ -17,5 +17,6 @@ This Build of ReboOSt in perticular contains the following features:
 
 *changes do not apply for 3rd Party Programs
 
-
-You found my repository! As a reward, get a teaser image for ReboOSt v2: https://www.dropbox.com/s/9xf6smns54etmm1/nowInDev.png?dl=0
+# ReboOSt is no longer in Development
+This OS/GUI is no longer beeing developed on. There will be no full Release and ReboOSt v2 (aka roundOS) Development is on hold.
+This is due to the complicated situation in ComputerCraft Development.
